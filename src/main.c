@@ -3,6 +3,18 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#define BG      0x282A36
+#define LINE    0x44475A
+#define FG      0xF8F8F2
+#define COMMENT 0x6272A4
+#define CYAN    0x8BE9FD
+#define GREEN   0x50FA7B
+#define ORANGE  0xFFB86C
+#define PINK    0xFF79C6
+#define PURPLE  0xBD93F9
+#define RED     0xFF5555
+#define YELLOW  0xF1FA8C
+
 bool is_running = false;
 
 int window_width       = 800;
