@@ -20,12 +20,19 @@ bool is_running = false;
 int window_width       = 800;
 int window_height      = 600;
 
+int grid_size          = 1;
+int grid_spacing       = 10;
+
 SDL_Window* window     = NULL;
 SDL_Renderer* renderer = NULL;
 
 SDL_Texture* color_buffer_texture = NULL;
 uint32_t* color_buffer            = NULL;
 
+
+void set_pixel(int x, int y, uint32_t color) {
+  color_buffer[(window_width * y) + x] = color;
+}
 
 bool initialize_window(void) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -37,7 +44,7 @@ bool initialize_window(void) {
   SDL_GetCurrentDisplayMode(0, &display_mode);
 
   window_width = display_mode.w;
-  window_height = display_mode.h;
+  window_height = display_mode.h - 29;
 
   window = SDL_CreateWindow(
     NULL,
@@ -58,7 +65,7 @@ bool initialize_window(void) {
     return false;
   }
 
-  SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+  // SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
   return true;
 }
@@ -86,6 +93,8 @@ void process_input(void) {
     case SDL_KEYDOWN:
       if (event.key.keysym.sym == SDLK_ESCAPE) {
         is_running = false;
+      } else if (event.key.keysym.sym == SDLK_UP) {
+
       }
       break;
   }
@@ -102,13 +111,27 @@ void render_color_buffer(void) {
     (int) (window_width * sizeof(uint32_t))
   );
 
-  SDL_RenderCopy( renderer, color_buffer_texture, NULL, NULL);
+  SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
 void clear_color_buffer(uint32_t color) {
   for(int y = 0; y < window_height; y++) {
     for(int x = 0; x < window_width; x++) {
-      color_buffer[(window_width * y) + x] = color;
+      set_pixel(x, y, color);
+    }
+  }
+}
+
+void draw_grid(int spacing, int size) {
+  for(int y = 0; y < window_height; y++) {
+    for(int x = 0; x < window_width; x++) {
+      if(x % spacing < size) {
+        set_pixel(x, y, LINE);
+      }
+
+      if(y % spacing < size) {
+        set_pixel(x, y, LINE);
+      }
     }
   }
 }
@@ -117,9 +140,11 @@ void render(void) {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
   SDL_RenderClear(renderer);
 
+  draw_grid(grid_spacing, grid_size);
+
   render_color_buffer();
 
-  clear_color_buffer(0xFF282a36);
+  clear_color_buffer(BG);
 
   SDL_RenderPresent(renderer);
 }
