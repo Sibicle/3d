@@ -27,6 +27,12 @@ int window_height      = 600;
 int grid_size          = 1;
 int grid_spacing       = 10;
 
+int box_x              = 10;
+int box_y              = 10;
+int box_w              = 20;
+int box_h              = 10;
+int move_speed         = 5;
+
 SDL_Window* window     = NULL;
 SDL_Renderer* renderer = NULL;
 
@@ -112,6 +118,18 @@ void process_input(void) {
           grid_spacing = fmax(grid_spacing - 1, 1);
           grid_size = fmin(grid_size, grid_spacing);
           break;
+        case SDLK_w:
+          box_y = fmax(box_y - move_speed, 0);
+          break;
+        case SDLK_s:
+          box_y = fmin(box_y + move_speed, window_height - box_h);
+          break;
+        case SDLK_a:
+          box_x = fmax(box_x - move_speed, 0);
+          break;
+        case SDLK_d:
+          box_x = fmin(box_x + move_speed, window_width - box_w);
+          break;
       }
       break;
   }
@@ -157,12 +175,27 @@ void draw_dots(int spacing, uint32_t color) {
   }
 }
 
+void draw_rect(int x_pos, int y_pos, int w, int h, uint32_t color, uint32_t stroke) {
+  for(int y = y_pos; y <= y_pos + h; y++) {
+    for(int x = x_pos; x <= x_pos + w; x++) {
+      if (x == x_pos || x == x_pos + w || y == y_pos || y == y_pos + h) {
+        set_pixel(x, y, stroke);
+      } else {
+        set_pixel(x, y, color);
+      }
+
+    }
+  }
+}
+
 void render(void) {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
   SDL_RenderClear(renderer);
 
   // draw_grid(grid_spacing, grid_size, LINE);
   draw_dots(grid_spacing, LINE);
+  draw_rect(box_x, box_y, box_w, box_h, PURPLE, GREEN);
+
   render_color_buffer();
   clear_color_buffer(BG);
 
