@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
@@ -14,6 +15,9 @@
 #define PURPLE  0xBD93F9
 #define RED     0xFF5555
 #define YELLOW  0xF1FA8C
+
+#define fmin(a,b)            (((a) < (b)) ? (a) : (b))
+#define fmax(a,b)            (((a) > (b)) ? (a) : (b))
 
 bool is_running = false;
 
@@ -91,10 +95,23 @@ void process_input(void) {
       is_running = false;
       break;
     case SDL_KEYDOWN:
-      if (event.key.keysym.sym == SDLK_ESCAPE) {
-        is_running = false;
-      } else if (event.key.keysym.sym == SDLK_UP) {
-
+      switch(event.key.keysym.sym) {
+        case SDLK_ESCAPE:
+          is_running = false;
+          break;
+        case SDLK_UP:
+          grid_size = fmin(grid_size + 1, fmin(20, grid_spacing));
+          break;
+        case SDLK_DOWN:
+          grid_size = fmax(grid_size - 1, 1);
+          break;
+        case SDLK_RIGHT:
+          grid_spacing = fmin(grid_spacing + 1, 40);
+          break;
+        case SDLK_LEFT:
+          grid_spacing = fmax(grid_spacing - 1, 1);
+          grid_size = fmin(grid_size, grid_spacing);
+          break;
       }
       break;
   }
@@ -122,16 +139,20 @@ void clear_color_buffer(uint32_t color) {
   }
 }
 
-void draw_grid(int spacing, int size) {
+void draw_grid(int spacing, int size, uint32_t color) {
   for(int y = 0; y < window_height; y++) {
     for(int x = 0; x < window_width; x++) {
-      if(x % spacing < size) {
-        set_pixel(x, y, LINE);
+      if(x % spacing < size || y % spacing < size) {
+        set_pixel(x, y, color);
       }
+    }
+  }
+}
 
-      if(y % spacing < size) {
-        set_pixel(x, y, LINE);
-      }
+void draw_dots(int spacing, uint32_t color) {
+  for(int y = 0; y < window_height; y += spacing) {
+    for(int x = 0; x < window_width; x += spacing) {
+      set_pixel(x, y, color);
     }
   }
 }
@@ -140,10 +161,9 @@ void render(void) {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
   SDL_RenderClear(renderer);
 
-  draw_grid(grid_spacing, grid_size);
-
+  // draw_grid(grid_spacing, grid_size, LINE);
+  draw_dots(grid_spacing, LINE);
   render_color_buffer();
-
   clear_color_buffer(BG);
 
   SDL_RenderPresent(renderer);
