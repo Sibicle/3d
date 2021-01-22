@@ -16,6 +16,8 @@
 #define RED     0xFF5555
 #define YELLOW  0xF1FA8C
 
+uint32_t colors[7] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
+
 #define fmin(a,b)            (((a) < (b)) ? (a) : (b))
 #define fmax(a,b)            (((a) > (b)) ? (a) : (b))
 
@@ -27,11 +29,12 @@ int window_height      = 600;
 int grid_size          = 1;
 int grid_spacing       = 10;
 
-int box_x              = 10;
-int box_y              = 10;
-int box_w              = 20;
-int box_h              = 10;
-int move_speed         = 5;
+int      box_x      = 10;
+int      box_y      = 10;
+int      box_w      = 20;
+int      box_h      = 10;
+int      box_speed  = 5;
+uint32_t box_stroke = GREEN;
 
 SDL_Window* window     = NULL;
 SDL_Renderer* renderer = NULL;
@@ -39,6 +42,9 @@ SDL_Renderer* renderer = NULL;
 SDL_Texture* color_buffer_texture = NULL;
 uint32_t* color_buffer            = NULL;
 
+int rand_int(int lower, int upper) {
+  return (rand() % (upper - lower + 1)) + lower;
+}
 
 void set_pixel(int x, int y, uint32_t color) {
   color_buffer[(window_width * y) + x] = color;
@@ -119,16 +125,19 @@ void process_input(void) {
           grid_size = fmin(grid_size, grid_spacing);
           break;
         case SDLK_w:
-          box_y = fmax(box_y - move_speed, 0);
+          box_y = fmax(box_y - box_speed, 0);
           break;
         case SDLK_s:
-          box_y = fmin(box_y + move_speed, window_height - box_h);
+          box_y = fmin(box_y + box_speed, window_height - box_h);
           break;
         case SDLK_a:
-          box_x = fmax(box_x - move_speed, 0);
+          box_x = fmax(box_x - box_speed, 0);
           break;
         case SDLK_d:
-          box_x = fmin(box_x + move_speed, window_width - box_w);
+          box_x = fmin(box_x + box_speed, window_width - box_w);
+          break;
+        case SDLK_SPACE:
+          box_stroke = colors[rand_int(0, 7)];
           break;
       }
       break;
@@ -194,7 +203,7 @@ void render(void) {
 
   // draw_grid(grid_spacing, grid_size, LINE);
   draw_dots(grid_spacing, LINE);
-  draw_rect(box_x, box_y, box_w, box_h, PURPLE, GREEN);
+  draw_rect(box_x, box_y, box_w, box_h, PURPLE, box_stroke);
 
   render_color_buffer();
   clear_color_buffer(BG);
