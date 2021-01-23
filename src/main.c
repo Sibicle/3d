@@ -11,6 +11,8 @@
 #include "vector.h"
 #include "input.h"
 
+vec3_t camera_pos = { .x = 0, .y = 0, .z = -5 };
+
 void setup(void) {
   color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * window_height);
 
@@ -36,8 +38,8 @@ void setup(void) {
 
 vec2_t project(vec3_t point) {
   vec2_t projected_point = {
-    .x = (fov_factor * point.x),
-    .y = (fov_factor * point.y)
+    .x = (fov_factor * point.x) / point.z,
+    .y = (fov_factor * point.y) / point.z
   };
   return projected_point;
 }
@@ -53,6 +55,9 @@ vec2_t translate(vec2_t point, vec2_t trans) {
 void update(void) {
   for(int i = 0; i < N_POINTS; i++) {
     vec3_t point = cube_points[i];
+
+    point.z -= camera_pos.z;
+
     vec2_t projected_point = project(point);
 
     projected_points[i] = projected_point;
@@ -69,7 +74,7 @@ void render(void) {
 
   for(int i = 0; i < N_POINTS; i++) {
     vec2_t projected_point = translate(projected_points[i], trans);
-    draw_rect(projected_point.x, projected_point.y, 4, 4, YELLOW, YELLOW);
+    draw_rect(projected_point.x, projected_point.y, 1, 1, YELLOW, YELLOW);
   }
 
   render_color_buffer();

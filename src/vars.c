@@ -3,4 +3,4 @@
 
 bool is_running = false;
 
-float fov_factor = 128;
+float fov_factor = 640;

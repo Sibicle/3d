@@ -1,4 +1,5 @@
 #include "input.h"
+#include "vars.h"
 
 void process_input(void) {
   SDL_Event event;
@@ -40,6 +41,12 @@ void process_input(void) {
           break;
         case SDLK_SPACE:
           box_stroke = colors[rand_int(0, 7)];
+          break;
+        case SDLK_x:
+          fov_factor = fmin(fov_factor + 20, 800);
+          break;
+        case SDLK_z:
+          fov_factor = fmax(fov_factor - 20, 128);
           break;
       }
       break;
