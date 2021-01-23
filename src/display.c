@@ -23,8 +23,10 @@ int      box_speed  = 5;
 uint32_t box_stroke = GREEN;
 
 
-void set_pixel(int x, int y, uint32_t color) {
-  color_buffer[(window_width * y) + x] = color;
+void draw_pixel(int x, int y, uint32_t color) {
+  if (x >= 0 && x < window_width && y>= 0 && y < window_height) {
+    color_buffer[(window_width * y) + x] = color;
+  }
 }
 
 bool initialize_window(void) {
@@ -77,7 +79,7 @@ void render_color_buffer(void) {
 void clear_color_buffer(uint32_t color) {
   for(int y = 0; y < window_height; y++) {
     for(int x = 0; x < window_width; x++) {
-      set_pixel(x, y, color);
+      draw_pixel(x, y, color);
     }
   }
 }
@@ -86,7 +88,7 @@ void draw_grid(int spacing, int size, uint32_t color) {
   for(int y = 0; y < window_height; y++) {
     for(int x = 0; x < window_width; x++) {
       if(x % spacing < size || y % spacing < size) {
-        set_pixel(x, y, color);
+        draw_pixel(x, y, color);
       }
     }
   }
@@ -95,7 +97,7 @@ void draw_grid(int spacing, int size, uint32_t color) {
 void draw_dots(int spacing, uint32_t color) {
   for(int y = 0; y < window_height; y += spacing) {
     for(int x = 0; x < window_width; x += spacing) {
-      set_pixel(x, y, color);
+      draw_pixel(x, y, color);
     }
   }
 }
@@ -104,9 +106,9 @@ void draw_rect(int x_pos, int y_pos, int w, int h, uint32_t color, uint32_t stro
   for(int y = y_pos; y <= y_pos + h; y++) {
     for(int x = x_pos; x <= x_pos + w; x++) {
       if (x == x_pos || x == x_pos + w || y == y_pos || y == y_pos + h) {
-        set_pixel(x, y, stroke);
+        draw_pixel(x, y, stroke);
       } else {
-        set_pixel(x, y, color);
+        draw_pixel(x, y, color);
       }
 
     }

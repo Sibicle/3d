@@ -8,6 +8,7 @@
 #include "vars.h"
 
 #include "display.h"
+#include "vector.h"
 #include "input.h"
 
 void setup(void) {
@@ -20,18 +21,56 @@ void setup(void) {
     window_width,
     window_height
   );
+
+  int point_arr_i = 0;
+
+  for(float x = -1; x <= 1; x += 0.25) {
+    for(float y = -1; y <= 1; y += 0.25) {
+      for(float z = -1; z <= 1; z += 0.25) {
+        vec3_t new_point = { .x = x, .y = y, .z = z };
+        cube_points[point_arr_i++] = new_point;
+      }
+    }
+  }
+}
+
+vec2_t project(vec3_t point) {
+  vec2_t projected_point = {
+    .x = (fov_factor * point.x),
+    .y = (fov_factor * point.y)
+  };
+  return projected_point;
+}
+
+vec2_t translate(vec2_t point, vec2_t trans) {
+  vec2_t translated_point = {
+    .x = point.x + trans.x,
+    .y = point.y + trans.y
+  };
+  return translated_point;
 }
 
 void update(void) {
+  for(int i = 0; i < N_POINTS; i++) {
+    vec3_t point = cube_points[i];
+    vec2_t projected_point = project(point);
+
+    projected_points[i] = projected_point;
+  }
 }
 
 void render(void) {
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-  SDL_RenderClear(renderer);
-
-  // draw_grid(grid_spacing, grid_size, LINE);
   draw_dots(grid_spacing, LINE);
-  draw_rect(box_x, box_y, box_w, box_h, PURPLE, box_stroke);
+
+  vec2_t trans = {
+    .x = (window_width / 2),
+    .y = (window_height / 2)
+  };
+
+  for(int i = 0; i < N_POINTS; i++) {
+    vec2_t projected_point = translate(projected_points[i], trans);
+    draw_rect(projected_point.x, projected_point.y, 4, 4, YELLOW, YELLOW);
+  }
 
   render_color_buffer();
   clear_color_buffer(BG);
