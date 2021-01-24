@@ -55,6 +55,9 @@ vec2_t translate(vec2_t point, vec2_t trans) {
 void update(void) {
   for(int i = 0; i < N_POINTS; i++) {
     vec3_t point = cube_points[i];
+    vec3_t point_r = vec3_rotate_x(vec3_rotate_y(point, .01), .005);
+    cube_points[i] = point_r;
+    point = point_r;
 
     point.z -= camera_pos.z;
 

@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 
 #include "util.h"
+#include "vector.h"
 
 #define BG      0x282A36
 #define LINE    0x44475A
