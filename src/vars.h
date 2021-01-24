@@ -14,4 +14,6 @@ vec3_t camera_pos;
 vec3_t cube_points [N_POINTS];
 vec2_t projected_points [N_POINTS];
 
+vec2_t velocity;
+
 #endif
