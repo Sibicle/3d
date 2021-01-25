@@ -53,15 +53,17 @@ vec2_t translate(vec2_t point, vec2_t trans) {
 }
 
 void update(void) {
+  cube_rotation.x += cube_velocity.x;
+  cube_rotation.y += cube_velocity.y;
+  cube_rotation.z += cube_velocity.z;
+
   for(int i = 0; i < N_POINTS; i++) {
     vec3_t point = cube_points[i];
-    vec3_t point_r = vec3_rotate_x(vec3_rotate_y(point, velocity.x), velocity.y);
-    cube_points[i] = point_r;
-    point = point_r;
+    vec3_t point_r = vec3_rotate_x(vec3_rotate_y(point, cube_rotation.x), cube_rotation.y);
 
-    point.z -= camera_pos.z;
+    point_r.z -= camera_pos.z;
 
-    vec2_t projected_point = project(point);
+    vec2_t projected_point = project(point_r);
 
     projected_points[i] = projected_point;
   }

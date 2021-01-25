@@ -1,3 +1,4 @@
+#include <math.h>
 #include "vector.h"
 
 vec3_t vec3_rotate_x(vec3_t v, float a) {

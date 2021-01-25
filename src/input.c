@@ -55,7 +55,6 @@ void process_input(void) {
   int mouse_x, mouse_y;
   SDL_GetGlobalMouseState( &mouse_x, &mouse_y );
 
-  velocity.x = ( mouse_x - (window_width / 2)) / 2000.0;
-  velocity.y = ( mouse_y - (window_height / 2)) / 2000.0;
-
+  cube_velocity.x = ( mouse_x - (window_width / 2)) / 2000.0;
+  cube_velocity.y = ( mouse_y - (window_height / 2)) / 2000.0;
 }
