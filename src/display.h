@@ -20,10 +20,12 @@
 #define RED     0xFF5555
 #define YELLOW  0xF1FA8C
 
-uint32_t colors[7];
+extern uint32_t colors[7];
 
 extern int window_width;
 extern int window_height;
+
+extern bool is_running;
 
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
@@ -32,20 +34,6 @@ extern SDL_Texture* color_buffer_texture;
 extern uint32_t* color_buffer;
 
 extern int previous_frame_time;
-
-#define GRID_GRID 0
-#define GRID_DOT  1
-
-extern int grid_size;
-extern int grid_spacing;
-extern int grid_type;
-
-extern int      box_x;
-extern int      box_y;
-extern int      box_w;
-extern int      box_h;
-extern int      box_speed;
-extern uint32_t box_stroke;
 
 bool initialize_window(void);
 void destroy_window(void);

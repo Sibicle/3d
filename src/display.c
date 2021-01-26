@@ -1,9 +1,12 @@
+#include <stdbool.h>
 #include "display.h"
 
 uint32_t colors[7] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
 
 int window_width       = 800;
 int window_height      = 600;
+
+bool is_running        = false;
 
 SDL_Window* window     = NULL;
 SDL_Renderer* renderer = NULL;
@@ -12,18 +15,6 @@ SDL_Texture* color_buffer_texture = NULL;
 uint32_t* color_buffer            = NULL;
 
 int previous_frame_time = 0;
-
-int grid_size          = 1;
-int grid_spacing       = 10;
-int grid_type          = GRID_DOT;
-
-int      box_x      = 10;
-int      box_y      = 10;
-int      box_w      = 20;
-int      box_h      = 10;
-int      box_speed  = 5;
-uint32_t box_stroke = GREEN;
-
 
 void draw_pixel(int x, int y, uint32_t color) {
   if (x >= 0 && x < window_width && y>= 0 && y < window_height) {
