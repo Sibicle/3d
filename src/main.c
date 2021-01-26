@@ -75,7 +75,7 @@ void update(void) {
 
       vec2_t projected_point = project(transformed_vertex);
 
-      triangles[i].points[j] = projected_point;
+      projected_triangles[i].points[j] = projected_point;
     }
   }
 }
@@ -89,7 +89,7 @@ void render(void) {
   };
 
   for(int i = 0; i < N_MESH_FACES; i++) {
-    triangle_t triangle = triangles[i];
+    triangle_t triangle = projected_triangles[i];
 
     for(int j = 0; j < 3; j++)
     {

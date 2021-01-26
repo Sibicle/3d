@@ -44,7 +44,7 @@ vec3_t mesh_velocity = {
   .z = 0
 };
 
-triangle_t triangles [N_MESH_FACES];
+triangle_t projected_triangles [N_MESH_FACES];
 
 int grid_size    = 1;
 int grid_spacing = 10;
