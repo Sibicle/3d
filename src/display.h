@@ -31,6 +31,8 @@ extern SDL_Renderer* renderer;
 extern SDL_Texture* color_buffer_texture;
 extern uint32_t* color_buffer;
 
+extern int previous_frame_time;
+
 #define GRID_GRID 0
 #define GRID_DOT  1
 

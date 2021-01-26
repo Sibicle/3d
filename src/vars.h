@@ -1,10 +1,12 @@
 #ifndef VARS_H
 #define VARS_H
-#define N_POINTS (9 * 9 * 9)
 
 #include <stdbool.h>
-
 #include "vector.h"
+
+#define N_POINTS (9 * 9 * 9)
+#define FPS 60
+#define FRAME_TARGET_TIME (1000 / FPS)
 
 bool is_running;
 

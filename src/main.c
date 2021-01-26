@@ -53,6 +53,11 @@ vec2_t translate(vec2_t point, vec2_t trans) {
 }
 
 void update(void) {
+
+  while(!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
+
+  previous_frame_time = SDL_GetTicks();
+
   cube_rotation.x += cube_velocity.x;
   cube_rotation.y += cube_velocity.y;
   cube_rotation.z += cube_velocity.z;
