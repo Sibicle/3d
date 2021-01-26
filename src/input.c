@@ -1,5 +1,6 @@
 #include "input.h"
 #include "camera.h"
+#include "mesh.h"
 
 void process_input(void) {
   SDL_Event event;
@@ -24,5 +25,5 @@ void process_input(void) {
       break;
   }
 
-  SDL_GetGlobalMouseState( &mouse_x, &mouse_y );
+  SDL_GetGlobalMouseState(&mouse_x, &mouse_y);
 }
