@@ -45,5 +45,7 @@ void draw_pixel(int x, int y, uint32_t color);
 void draw_grid(int spacing, int size, uint32_t color);
 void draw_dots(int spacing, uint32_t color);
 void draw_rect(int x_pos, int y_pos, int w, int h, uint32_t color, uint32_t stroke);
+void draw_line(int x0, int y0, int x1, int y1, uint32_t stroke);
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t stroke);
 
 #endif

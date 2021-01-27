@@ -49,6 +49,11 @@ void update(void) {
 
   previous_frame_time = SDL_GetTicks();
 
+  vec2_t trans = {
+    .x = (window_width / 2),
+    .y = (window_height / 2)
+  };
+
   mesh_velocity.x = ( mouse_y - (window_height / 2)) / 2000.0;
   mesh_velocity.y = ( mouse_x - (window_width / 2)) / 2000.0;
 
@@ -74,6 +79,7 @@ void update(void) {
       transformed_vertex.z -= camera_pos.z;
 
       vec2_t projected_point = project(transformed_vertex);
+      projected_point = translate(projected_point, trans);
 
       projected_triangles[i].points[j] = projected_point;
     }
@@ -83,19 +89,20 @@ void update(void) {
 void render(void) {
   draw_dots(grid_spacing, LINE);
 
-  vec2_t trans = {
-    .x = (window_width / 2),
-    .y = (window_height / 2)
-  };
-
   for(int i = 0; i < N_MESH_FACES; i++) {
     triangle_t triangle = projected_triangles[i];
 
     for(int j = 0; j < 3; j++)
     {
-      vec2_t point = translate(triangle.points[j], trans);
-      draw_rect(point.x, point.y, 1, 1, YELLOW, YELLOW);
+      draw_rect(triangle.points[j].x - 1, triangle.points[j].y - 1, 3, 3, YELLOW, YELLOW);
     }
+
+    draw_triangle(
+      triangle.points[0].x, triangle.points[0].y,
+      triangle.points[1].x, triangle.points[1].y,
+      triangle.points[2].x, triangle.points[2].y,
+      GREEN
+    );
   }
 
   render_color_buffer();

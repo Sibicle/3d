@@ -105,9 +105,42 @@ void draw_rect(int x_pos, int y_pos, int w, int h, uint32_t color, uint32_t stro
       } else {
         draw_pixel(x, y, color);
       }
-
     }
   }
+}
+
+void draw_line(int x0, int y0, int x1, int y1, uint32_t stroke) {
+  int dx = x1 - x0;
+  int dy = y1 - y0;
+  int step;
+
+  if(abs(dx) >= abs(dy)) {
+    step = abs(dx);
+  } else {
+    step = abs(dy);
+  }
+
+  float inc_x = dx / (float) step;
+  float inc_y = dy / (float) step;
+
+  float x = x0;
+  float y = y0;
+
+  int i = 1;
+
+  while(i <= step) {
+    draw_pixel(round(x), round(y), stroke);
+
+    x += inc_x;
+    y += inc_y;
+    i += 1;
+  }
+}
+
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t stroke) {
+  draw_line(x0, y0, x1, y1, stroke);
+  draw_line(x1, y1, x2, y2, stroke);
+  draw_line(x2, y2, x0, y0, stroke);
 }
 
 void destroy_window(void) {
