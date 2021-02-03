@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#include "array.h"
 #include "util.h"
 #include "vector.h"
 #include "mesh.h"
@@ -49,6 +50,8 @@ void update(void) {
 
   previous_frame_time = SDL_GetTicks();
 
+  projected_triangles = 0;
+
   vec2_t trans = {
     .x = (window_width / 2),
     .y = (window_height / 2)
@@ -81,15 +84,18 @@ void update(void) {
       vec2_t projected_point = project(transformed_vertex);
       projected_point = translate(projected_point, trans);
 
-      projected_triangles[i].points[j] = projected_point;
+      projected_triangle.points[j] = projected_point;
     }
+
+    array_push(projected_triangles, projected_triangle);
   }
 }
 
 void render(void) {
   draw_dots(grid_spacing, LINE);
 
-  for(int i = 0; i < N_MESH_FACES; i++) {
+  int num_tri = array_length(projected_triangles);
+  for(int i = 0; i < num_tri; i++) {
     triangle_t triangle = projected_triangles[i];
 
     for(int j = 0; j < 3; j++)
@@ -104,6 +110,8 @@ void render(void) {
       GREEN
     );
   }
+
+  array_free(projected_triangles);
 
   render_color_buffer();
   clear_color_buffer(BG);
