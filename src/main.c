@@ -59,11 +59,8 @@ void update(void) {
     .y = (window_height / 2)
   };
 
-  float rotational_velocity_x = ( mouse_y - (window_height / 2)) / 2000.0;
-  float rotational_velocity_y = ( mouse_x - (window_width / 2)) / 2000.0;
-
-  mesh.rotation.x += rotational_velocity_x;
-  mesh.rotation.y += rotational_velocity_y;
+  mesh.rotation.x = (( mouse_y - (window_height / 2)) / 200.0) + 180;
+  mesh.rotation.y = ( mouse_x - (window_width / 2)) / 200.0;
 
   int num_faces = array_length(mesh.faces);
 
@@ -84,6 +81,8 @@ void update(void) {
       transformed_vertex = vec3_rotate_y(transformed_vertex, mesh.rotation.y);
       transformed_vertex = vec3_rotate_z(transformed_vertex, mesh.rotation.z);
 
+      transformed_vertex.x -= camera_pos.x;
+      transformed_vertex.y -= camera_pos.y;
       transformed_vertex.z -= camera_pos.z;
 
       vec2_t projected_point = project(transformed_vertex);
