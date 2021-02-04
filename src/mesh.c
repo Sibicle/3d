@@ -1,4 +1,11 @@
 #include "mesh.h"
+#include "array.h"
+
+mesh_t mesh = {
+    .vertices = 0,
+    .faces = 0,
+    .rotation = { 0, 0, 0 }
+};
 
 vec3_t cube_vertices[N_CUBE_VERTICES] = {
     { .x = -1, .y = -1, .z = -1 },
@@ -32,9 +39,16 @@ face_t cube_faces[N_CUBE_FACES] = {
     { .a = 5, .b = 0, .c = 3 }
 };
 
-mesh_t mesh = {
-  .vertices = cube_vertices,
-  .faces = cube_faces
-};
-
 triangle_t* projected_triangles = 0;
+
+void load_cube_mesh() {
+  for(int i = 0; i < N_CUBE_VERTICES; i++) {
+    vec3_t mesh_vertex = cube_vertices[i];
+    array_push(mesh.vertices, mesh_vertex);
+  }
+
+  for(int j = 0; j < N_CUBE_FACES; j++) {
+    face_t mesh_face = cube_faces[j];
+    array_push(mesh.faces, mesh_face);
+  }
+}

@@ -17,4 +17,6 @@ extern mesh_t mesh;
 
 extern triangle_t* projected_triangles;
 
+void load_cube_mesh();
+
 #endif

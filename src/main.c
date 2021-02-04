@@ -23,6 +23,8 @@ void setup(void) {
     window_width,
     window_height
   );
+
+  load_cube_mesh();
 }
 
 vec2_t project(vec3_t point) {
@@ -64,6 +66,8 @@ void update(void) {
   mesh.rotation.y += rotational_velocity_y;
 
   for(int i = 0; i < N_CUBE_FACES; i++) {
+
+
     face_t cube_face = mesh.faces[i];
 
     vec3_t face_verticies [3];
