@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <inttypes.h>
+
 #include "mesh.h"
 #include "array.h"
 
@@ -7,48 +12,74 @@ mesh_t mesh = {
     .rotation = { 0, 0, 0 }
 };
 
-vec3_t cube_vertices[N_CUBE_VERTICES] = {
-    { .x = -1, .y = -1, .z = -1 },
-    { .x = -1, .y =  1, .z = -1 },
-    { .x =  1, .y =  1, .z = -1 },
-    { .x =  1, .y = -1, .z = -1 },
-    { .x =  1, .y =  1, .z =  1 },
-    { .x =  1, .y = -1, .z =  1 },
-    { .x = -1, .y =  1, .z =  1 },
-    { .x = -1, .y = -1, .z =  1 }
-};
-
-face_t cube_faces[N_CUBE_FACES] = {
-    // front
-    { .a = 0, .b = 1, .c = 2 },
-    { .a = 0, .b = 2, .c = 3 },
-    // right
-    { .a = 3, .b = 2, .c = 4 },
-    { .a = 3, .b = 4, .c = 5 },
-    // back
-    { .a = 5, .b = 4, .c = 6 },
-    { .a = 5, .b = 6, .c = 7 },
-    // left
-    { .a = 7, .b = 6, .c = 1 },
-    { .a = 7, .b = 1, .c = 0 },
-    // top
-    { .a = 1, .b = 6, .c = 4 },
-    { .a = 1, .b = 4, .c = 2 },
-    // bottom
-    { .a = 5, .b = 7, .c = 0 },
-    { .a = 5, .b = 0, .c = 3 }
-};
-
 triangle_t* projected_triangles = 0;
 
-void load_cube_mesh() {
-  for(int i = 0; i < N_CUBE_VERTICES; i++) {
-    vec3_t mesh_vertex = cube_vertices[i];
-    array_push(mesh.vertices, mesh_vertex);
+void parse_obj_line(char * line) {
+  char l[256];
+
+  strcpy(l, line);
+  char delim[] = " \n";
+	char *ptr = strtok(l, delim);
+
+	while (ptr != NULL) {
+    switch(*ptr) {
+      case 'v':
+      {
+        char * x = strtok(NULL, delim);
+        char * y = strtok(NULL, delim);
+        char * z = strtok(NULL, delim);
+
+        char * end;
+
+        vec3_t vertex = {
+          .x = strtod(x, &end),
+          .y = strtod(y, &end),
+          .z = strtod(z, &end)
+        };
+
+        array_push(mesh.vertices, vertex);
+        break;
+      }
+
+      case 'f':
+      {
+        char * a = strtok(NULL, delim);
+        char * b = strtok(NULL, delim);
+        char * c = strtok(NULL, delim);
+
+        char * end;
+
+        face_t face = {
+          .a = strtoimax(a, &end, 10),
+          .b = strtoimax(b, &end, 10),
+          .c = strtoimax(c, &end, 10)
+        };
+
+        array_push(mesh.faces, face);
+        break;
+      }
+    }
+
+		ptr = strtok(NULL, delim);
+	}
+}
+
+void load_obj(char * filename) {
+  FILE *  fp;
+  char *  line = NULL;
+  size_t  len = 0;
+  ssize_t read;
+
+  fp = fopen(filename, "r");
+  if (fp == NULL)
+    exit(EXIT_FAILURE);
+
+  while ((read = getline(&line, &len, fp)) != -1) {
+    parse_obj_line(line);
   }
 
-  for(int j = 0; j < N_CUBE_FACES; j++) {
-    face_t mesh_face = cube_faces[j];
-    array_push(mesh.faces, mesh_face);
-  }
+  fclose(fp);
+
+  if (line)
+    free(line);
 }

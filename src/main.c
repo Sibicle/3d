@@ -24,7 +24,7 @@ void setup(void) {
     window_height
   );
 
-  load_cube_mesh();
+  load_obj("assets/teapot.obj");
 }
 
 vec2_t project(vec3_t point) {
@@ -65,15 +65,15 @@ void update(void) {
   mesh.rotation.x += rotational_velocity_x;
   mesh.rotation.y += rotational_velocity_y;
 
-  for(int i = 0; i < N_CUBE_FACES; i++) {
+  int num_faces = array_length(mesh.faces);
 
-
+  for(int i = 0; i < num_faces; i++) {
     face_t cube_face = mesh.faces[i];
 
     vec3_t face_verticies [3];
-    face_verticies[0] = mesh.vertices[cube_face.a];
-    face_verticies[1] = mesh.vertices[cube_face.b];
-    face_verticies[2] = mesh.vertices[cube_face.c];
+    face_verticies[0] = mesh.vertices[cube_face.a - 1];
+    face_verticies[1] = mesh.vertices[cube_face.b - 1];
+    face_verticies[2] = mesh.vertices[cube_face.c - 1];
 
     triangle_t projected_triangle;
 
@@ -124,6 +124,12 @@ void render(void) {
   SDL_RenderPresent(renderer);
 }
 
+void free_resources() {
+  free(color_buffer);
+  array_free(mesh.faces);
+  array_free(mesh.vertices);
+}
+
 int main(void) {
   is_running = initialize_window();
 
@@ -136,6 +142,7 @@ int main(void) {
   }
 
   destroy_window();
+  free_resources();
 
   return 0;
 }
