@@ -57,29 +57,28 @@ void update(void) {
     .y = (window_height / 2)
   };
 
-  mesh_velocity.x = ( mouse_y - (window_height / 2)) / 2000.0;
-  mesh_velocity.y = ( mouse_x - (window_width / 2)) / 2000.0;
+  float v_r_x = ( mouse_y - (window_height / 2)) / 2000.0;
+  float v_r_y = ( mouse_x - (window_width / 2)) / 2000.0;
 
-  mesh_rotation.x += mesh_velocity.x;
-  mesh_rotation.y += mesh_velocity.y;
-  mesh_rotation.z += mesh_velocity.z;
+  cube.r.x += v_r_x;
+  cube.r.y += v_r_y;
 
   for(int i = 0; i < N_CUBE_FACES; i++) {
-    face_t cube_face = cube_faces[i];
+    face_t cube_face = cube.faces[i];
 
     vec3_t face_verticies [3];
-    face_verticies[0] = cube_vertices[cube_face.a - 1];
-    face_verticies[1] = cube_vertices[cube_face.b - 1];
-    face_verticies[2] = cube_vertices[cube_face.c - 1];
+    face_verticies[0] = cube.vertices[cube_face.a];
+    face_verticies[1] = cube.vertices[cube_face.b];
+    face_verticies[2] = cube.vertices[cube_face.c];
 
     triangle_t projected_triangle;
 
     for(int j = 0; j < 3; j++) {
       vec3_t transformed_vertex = face_verticies[j];
 
-      transformed_vertex = vec3_rotate_x(transformed_vertex, mesh_rotation.x);
-      transformed_vertex = vec3_rotate_y(transformed_vertex, mesh_rotation.y);
-      transformed_vertex = vec3_rotate_z(transformed_vertex, mesh_rotation.z);
+      transformed_vertex = vec3_rotate_x(transformed_vertex, cube.r.x);
+      transformed_vertex = vec3_rotate_y(transformed_vertex, cube.r.y);
+      transformed_vertex = vec3_rotate_z(transformed_vertex, cube.r.z);
 
       transformed_vertex.z -= camera_pos.z;
 

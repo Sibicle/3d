@@ -7,13 +7,17 @@
 #define N_CUBE_VERTICES 8
 #define N_CUBE_FACES (6 * 2)
 
-extern vec3_t cube_vertices [N_CUBE_VERTICES];
-extern face_t cube_faces [N_CUBE_FACES];
+typedef struct {
+  vec3_t* vertices;
+  face_t* faces;
+  vec3_t r;
+  vec3_t v_r;
+} mesh_t;
+
+extern mesh_t mesh;
+extern mesh_t cube;
 
 extern triangle_t* projected_triangles;
-
-extern vec3_t mesh_rotation;
-extern vec3_t mesh_velocity;
 
 #define GRID_GRID 0
 #define GRID_DOT  1
