@@ -149,3 +149,7 @@ void destroy_window(void) {
   SDL_DestroyWindow(window);
   SDL_Quit();
 }
+
+int grid_size    = 1;
+int grid_spacing = 10;
+int grid_type    = GRID_DOT;

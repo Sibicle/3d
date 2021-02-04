@@ -1,15 +1,5 @@
 #include "mesh.h"
 
-mesh_t mesh = {
-  .vertices = 0,
-  .faces = 0,
-  .r = {
-    .x = 0,
-    .y = 0,
-    .z = 0
-  }
-};
-
 vec3_t cube_vertices[N_CUBE_VERTICES] = {
     { .x = -1, .y = -1, .z = -1 },
     { .x = -1, .y =  1, .z = -1 },
@@ -42,13 +32,9 @@ face_t cube_faces[N_CUBE_FACES] = {
     { .a = 5, .b = 0, .c = 3 }
 };
 
-mesh_t cube = {
+mesh_t mesh = {
   .vertices = cube_vertices,
   .faces = cube_faces
 };
 
 triangle_t* projected_triangles = 0;
-
-int grid_size    = 1;
-int grid_spacing = 10;
-int grid_type    = GRID_DOT;

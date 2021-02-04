@@ -48,4 +48,11 @@ void draw_rect(int x_pos, int y_pos, int w, int h, uint32_t color, uint32_t stro
 void draw_line(int x0, int y0, int x1, int y1, uint32_t stroke);
 void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t stroke);
 
+#define GRID_GRID 0
+#define GRID_DOT  1
+
+extern int grid_size;
+extern int grid_spacing;
+extern int grid_type;
+
 #endif
