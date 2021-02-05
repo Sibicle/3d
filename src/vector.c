@@ -1,5 +1,108 @@
 #include <math.h>
+#include <stdio.h>
+
 #include "vector.h"
+
+float vec2_length(vec2_t v) {
+  return sqrt(v.x * v.x + v.y * v.y);
+}
+
+vec2_t vec2_add(vec2_t a, vec2_t b) {
+  vec2_t sum = {
+    .x = a.x + b.x,
+    .y = a.y + b.y,
+  };
+
+  return sum;
+}
+
+vec2_t vec2_sub(vec2_t a, vec2_t b) {
+  vec2_t dif = {
+    .x = a.x - b.x,
+    .y = a.y - b.y,
+  };
+
+  return dif;
+}
+
+vec2_t vec2_scale(vec2_t v, float s) {
+  vec2_t scale = {
+    .x = v.x * s,
+    .y = v.y * s,
+  };
+
+  return scale;
+}
+
+vec2_t vec2_div(vec2_t v, float s) {
+  vec2_t quo = {
+    .x = v.x / s,
+    .y = v.y / s,
+  };
+
+  return quo;
+}
+
+float vec3_length(vec3_t v) {
+  return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+vec3_t vec3_add(vec3_t a, vec3_t b) {
+  vec3_t sum = {
+    .x = a.x + b.x,
+    .y = a.y + b.y,
+    .z = a.z + b.z
+  };
+
+  return sum;
+}
+
+vec3_t vec3_sub(vec3_t a, vec3_t b) {
+  vec3_t dif = {
+    .x = a.x - b.x,
+    .y = a.y - b.y,
+    .z = a.z - b.z
+  };
+
+  return dif;
+}
+
+vec3_t vec3_scale(vec3_t v, float s) {
+  vec3_t scale = {
+    .x = v.x * s,
+    .y = v.y * s,
+    .z = v.z * s
+  };
+
+  return scale;
+}
+
+vec3_t vec3_div(vec3_t v, float s) {
+  vec3_t quo = {
+    .x = v.x / s,
+    .y = v.y / s,
+    .z = v.z / s
+  };
+
+  return quo;
+}
+
+vec3_t vec3_cross(vec3_t a, vec3_t b) {
+  vec3_t cross = {
+    .x = a.y * b.z - a.z * b.y,
+    .y = a.z * b.x - a.x * b.z,
+    .z = a.x * b.y - a.y * b.x
+  };
+  return cross;
+}
+
+vec3_t tri_normal(vec3_t a, vec3_t b, vec3_t c) {
+  vec3_t ab     = vec3_sub(b, a);
+  vec3_t ac     = vec3_sub(c, a);
+  vec3_t normal = vec3_cross(ab, ac);
+
+  return normal;
+}
 
 vec3_t vec3_rotate_x(vec3_t v, float a) {
   vec3_t v_1 = {
@@ -29,4 +132,8 @@ vec3_t vec3_rotate_z(vec3_t v, float a) {
   };
 
   return v_1;
+}
+
+void vec3_to_string(char * str, vec3_t v) {
+  sprintf(str, "(%f, %f, %f)", v.x + 0.0, v.y + 0.0, v.z + 0.0);
 }
