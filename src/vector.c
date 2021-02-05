@@ -79,7 +79,17 @@ vec3_t vec3_sub(vec3_t a, vec3_t b) {
   return dif;
 }
 
-vec3_t vec3_scale(vec3_t v, float s) {
+vec3_t vec3_scale(vec3_t v, vec3_t s) {
+  vec3_t scale = {
+    .x = v.x * s.x,
+    .y = v.y * s.y,
+    .z = v.z * s.z
+  };
+
+  return scale;
+}
+
+vec3_t vec3_scale_uniform(vec3_t v, float s) {
   vec3_t scale = {
     .x = v.x * s,
     .y = v.y * s,

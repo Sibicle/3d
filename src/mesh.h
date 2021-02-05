@@ -20,4 +20,6 @@ extern vec2_t* projected_centroids;
 
 void load_obj(char* filename);
 
+void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale);
+
 #endif
