@@ -9,10 +9,13 @@
 mesh_t mesh = {
     .vertices = 0,
     .faces = 0,
+    .normals = 0,
     .rotation = { 0, 0, 0 }
 };
 
 triangle_t* projected_triangles = 0;
+
+vec2_t* projected_normals = 0;
 
 void parse_obj_line(char * line) {
   char l[256];
@@ -56,6 +59,7 @@ void parse_obj_line(char * line) {
         };
 
         array_push(mesh.faces, face);
+
         break;
       }
     }
@@ -65,9 +69,9 @@ void parse_obj_line(char * line) {
 }
 
 void load_obj(char * filename) {
-  FILE *  fp;
-  char *  line = NULL;
-  size_t  len = 0;
+  FILE * fp;
+  char * line = NULL;
+  size_t len = 0;
   ssize_t read;
 
   fp = fopen(filename, "r");
@@ -82,4 +86,16 @@ void load_obj(char * filename) {
 
   if (line)
     free(line);
+
+  for(int i = 0; i < array_length(mesh.faces); i++) {
+    face_t face = mesh.faces[i];
+
+    vec3_t a = mesh.vertices[face.a - 1];
+    vec3_t b = mesh.vertices[face.b - 1];
+    vec3_t c = mesh.vertices[face.c - 1];
+
+    vec3_t normal = tri_normal(a, b, c);
+
+    array_push(mesh.normals, normal);
+  }
 }

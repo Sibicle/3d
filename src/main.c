@@ -24,7 +24,7 @@ void setup(void) {
     window_height
   );
 
-  load_obj("assets/teapot.obj");
+  load_obj("assets/cube.obj");
 }
 
 vec2_t project(vec3_t point) {
@@ -53,29 +53,30 @@ void update(void) {
   previous_frame_time = SDL_GetTicks();
 
   projected_triangles = 0;
+  projected_normals = 0;
 
   vec2_t trans = {
     .x = (window_width / 2),
     .y = (window_height / 2)
   };
 
-  mesh.rotation.x = (( mouse_y - (window_height / 2)) / 200.0) + 180;
+  mesh.rotation.x = ( mouse_y - (window_height / 2)) / 200.0;
   mesh.rotation.y = ( mouse_x - (window_width / 2)) / 200.0;
 
   int num_faces = array_length(mesh.faces);
 
   for(int i = 0; i < num_faces; i++) {
-    face_t cube_face = mesh.faces[i];
+    face_t mesh_face = mesh.faces[i];
 
-    vec3_t face_verticies [3];
-    face_verticies[0] = mesh.vertices[cube_face.a - 1];
-    face_verticies[1] = mesh.vertices[cube_face.b - 1];
-    face_verticies[2] = mesh.vertices[cube_face.c - 1];
+    vec3_t face_vertices [3];
+    face_vertices[0] = mesh.vertices[mesh_face.a - 1];
+    face_vertices[1] = mesh.vertices[mesh_face.b - 1];
+    face_vertices[2] = mesh.vertices[mesh_face.c - 1];
 
     triangle_t projected_triangle;
 
     for(int j = 0; j < 3; j++) {
-      vec3_t transformed_vertex = face_verticies[j];
+      vec3_t transformed_vertex = face_vertices[j];
 
       transformed_vertex = vec3_rotate_x(transformed_vertex, mesh.rotation.x);
       transformed_vertex = vec3_rotate_y(transformed_vertex, mesh.rotation.y);
@@ -92,6 +93,28 @@ void update(void) {
     }
 
     array_push(projected_triangles, projected_triangle);
+
+    vec3_t normal_vertex = mesh.normals[i];
+    normal_vertex = vec3_add(face_vertices[0], normal_vertex);
+
+    vec3_t transformed_normal_vertex = {
+      .x = normal_vertex.x,
+      .y = normal_vertex.y,
+      .z = normal_vertex.z
+    };
+
+    transformed_normal_vertex = vec3_rotate_x(transformed_normal_vertex, mesh.rotation.x);
+    transformed_normal_vertex = vec3_rotate_y(transformed_normal_vertex, mesh.rotation.y);
+    transformed_normal_vertex = vec3_rotate_z(transformed_normal_vertex, mesh.rotation.z);
+
+    transformed_normal_vertex.x -= camera_pos.x;
+    transformed_normal_vertex.y -= camera_pos.y;
+    transformed_normal_vertex.z -= camera_pos.z;
+
+    vec2_t projected_normal_vertex = project(transformed_normal_vertex);
+    projected_normal_vertex = translate(projected_normal_vertex, trans);
+
+    array_push(projected_normals, projected_normal_vertex);
   }
 }
 
@@ -101,10 +124,15 @@ void render(void) {
   int num_tri = array_length(projected_triangles);
   for(int i = 0; i < num_tri; i++) {
     triangle_t triangle = projected_triangles[i];
+    vec2_t normal = projected_normals[i];
 
     for(int j = 0; j < 3; j++)
     {
-      draw_rect(triangle.points[j].x - 1, triangle.points[j].y - 1, 3, 3, YELLOW, YELLOW);
+      draw_rect(
+        triangle.points[j].x - 1, triangle.points[j].y - 1,
+        3, 3,
+        YELLOW, YELLOW
+      );
     }
 
     draw_triangle(
@@ -113,9 +141,16 @@ void render(void) {
       triangle.points[2].x, triangle.points[2].y,
       GREEN
     );
+
+    draw_line(
+      triangle.points[0].x, triangle.points[0].y,
+      normal.x, normal.y,
+      RED
+    );
   }
 
   array_free(projected_triangles);
+  array_free(projected_normals);
 
   render_color_buffer();
   clear_color_buffer(BG);
@@ -127,6 +162,7 @@ void free_resources() {
   free(color_buffer);
   array_free(mesh.faces);
   array_free(mesh.vertices);
+  array_free(mesh.normals);
 }
 
 int main(void) {

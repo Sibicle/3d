@@ -7,12 +7,14 @@
 typedef struct {
   vec3_t* vertices;
   face_t* faces;
+  vec3_t* normals;
   vec3_t rotation;
 } mesh_t;
 
 extern mesh_t mesh;
 
 extern triangle_t* projected_triangles;
+extern vec2_t* projected_normals;
 
 void load_obj(char* filename);
 
