@@ -3,6 +3,18 @@
 
 #include "vector.h"
 
+const vec3_t VEC3_ZERO = {
+  .x = 0.0,
+  .y = 0.0,
+  .z = 0.0
+};
+
+const vec3_t VEC3_ONE = {
+  .x = 1.0,
+  .y = 1.0,
+  .z = 1.0
+};
+
 float vec2_length(vec2_t v) {
   return sqrt(v.x * v.x + v.y * v.y);
 }

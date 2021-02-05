@@ -12,6 +12,9 @@ typedef struct {
   float z;
 } vec3_t;
 
+const vec3_t VEC3_ZERO;
+const vec3_t VEC3_ONE;
+
 float vec2_length(vec2_t v);
 vec2_t vec2_add(vec2_t a, vec2_t b);
 vec2_t vec2_sub(vec2_t a, vec2_t b);
