@@ -12,6 +12,10 @@
 #include "display.h"
 #include "input.h"
 
+#define RENDER_CENTROIDS false
+#define RENDER_NORMALS false
+#define RENDER_VERTICES false
+
 
 void setup(void) {
   color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * window_height);
@@ -24,7 +28,7 @@ void setup(void) {
     window_height
   );
 
-  load_obj("assets/cube.obj");
+  load_obj("assets/teapot.obj");
 }
 
 vec2_t project(vec3_t point) {
@@ -54,6 +58,7 @@ void update(void) {
 
   projected_triangles = 0;
   projected_normals = 0;
+  projected_centroids = 0;
 
   vec2_t trans = {
     .x = (window_width / 2),
@@ -94,14 +99,25 @@ void update(void) {
 
     array_push(projected_triangles, projected_triangle);
 
-    vec3_t normal_vertex = mesh.normals[i];
-    normal_vertex = vec3_add(face_vertices[0], normal_vertex);
+    vec3_t centroid = mesh.centroids[i];
+    vec3_t transformed_centroid = centroid;
 
-    vec3_t transformed_normal_vertex = {
-      .x = normal_vertex.x,
-      .y = normal_vertex.y,
-      .z = normal_vertex.z
-    };
+    transformed_centroid = vec3_rotate_x(transformed_centroid, mesh.rotation.x);
+    transformed_centroid = vec3_rotate_y(transformed_centroid, mesh.rotation.y);
+    transformed_centroid = vec3_rotate_z(transformed_centroid, mesh.rotation.z);
+
+    transformed_centroid.x -= camera_pos.x;
+    transformed_centroid.y -= camera_pos.y;
+    transformed_centroid.z -= camera_pos.z;
+
+    vec2_t projected_centroid = project(transformed_centroid);
+    projected_centroid = translate(projected_centroid, trans);
+
+    array_push(projected_centroids, projected_centroid);
+
+    vec3_t normal = mesh.normals[i];
+    vec3_t transformed_normal_vertex = vec3_div(normal, vec3_length(normal));
+    transformed_normal_vertex = vec3_add(centroid, transformed_normal_vertex);
 
     transformed_normal_vertex = vec3_rotate_x(transformed_normal_vertex, mesh.rotation.x);
     transformed_normal_vertex = vec3_rotate_y(transformed_normal_vertex, mesh.rotation.y);
@@ -125,15 +141,7 @@ void render(void) {
   for(int i = 0; i < num_tri; i++) {
     triangle_t triangle = projected_triangles[i];
     vec2_t normal = projected_normals[i];
-
-    for(int j = 0; j < 3; j++)
-    {
-      draw_rect(
-        triangle.points[j].x - 1, triangle.points[j].y - 1,
-        3, 3,
-        YELLOW, YELLOW
-      );
-    }
+    vec2_t centroid = projected_centroids[i];
 
     draw_triangle(
       triangle.points[0].x, triangle.points[0].y,
@@ -142,15 +150,36 @@ void render(void) {
       GREEN
     );
 
-    draw_line(
-      triangle.points[0].x, triangle.points[0].y,
-      normal.x, normal.y,
-      RED
-    );
+    if(RENDER_VERTICES) {
+      for(int j = 0; j < 3; j++) {
+        draw_rect(
+          triangle.points[j].x - 1, triangle.points[j].y - 1,
+          3, 3,
+          YELLOW, YELLOW
+        );
+      }
+    }
+
+    if(RENDER_CENTROIDS) {
+      draw_rect(
+        centroid.x - 1, centroid.y - 1,
+        3, 3,
+        RED, RED
+      );
+    }
+
+    if(RENDER_NORMALS) {
+      draw_line(
+        centroid.x, centroid.y,
+        normal.x, normal.y,
+        RED
+      );
+    }
   }
 
   array_free(projected_triangles);
   array_free(projected_normals);
+  array_free(projected_centroids);
 
   render_color_buffer();
   clear_color_buffer(BG);

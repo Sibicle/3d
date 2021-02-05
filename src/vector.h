@@ -24,7 +24,9 @@ vec3_t vec3_sub(vec3_t a, vec3_t b);
 vec3_t vec3_scale(vec3_t v, float s);
 vec3_t vec3_div(vec3_t v, float s);
 vec3_t vec3_cross(vec3_t a, vec3_t b);
+
 vec3_t tri_normal(vec3_t a, vec3_t b, vec3_t c);
+vec3_t tri_centroid(vec3_t a, vec3_t b, vec3_t c);
 
 vec3_t vec3_rotate_x(vec3_t v, float a);
 vec3_t vec3_rotate_y(vec3_t v, float a);

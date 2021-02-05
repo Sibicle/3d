@@ -104,6 +104,16 @@ vec3_t tri_normal(vec3_t a, vec3_t b, vec3_t c) {
   return normal;
 }
 
+vec3_t tri_centroid(vec3_t a, vec3_t b, vec3_t c) {
+  vec3_t centroid = {
+    .x = (a.x + b.x + c.x) / 3,
+    .y = (a.y + b.y + c.y) / 3,
+    .z = (a.z + b.z + c.z) / 3
+  };
+
+  return centroid;
+}
+
 vec3_t vec3_rotate_x(vec3_t v, float a) {
   vec3_t v_1 = {
     .x = v.x,

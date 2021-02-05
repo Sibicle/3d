@@ -10,12 +10,13 @@ mesh_t mesh = {
     .vertices = 0,
     .faces = 0,
     .normals = 0,
+    .centroids = 0,
     .rotation = { 0, 0, 0 }
 };
 
 triangle_t* projected_triangles = 0;
-
 vec2_t* projected_normals = 0;
+vec2_t* projected_centroids = 0;
 
 void parse_obj_line(char * line) {
   char l[256];
@@ -97,5 +98,9 @@ void load_obj(char * filename) {
     vec3_t normal = tri_normal(a, b, c);
 
     array_push(mesh.normals, normal);
+
+    vec3_t centroid = tri_centroid(a, b, c);
+
+    array_push(mesh.centroids, centroid);
   }
 }
