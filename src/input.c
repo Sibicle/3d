@@ -55,6 +55,9 @@ void process_input(void) {
         case SDLK_n:
           render_normals = !render_normals;
           break;
+        case SDLK_b:
+          render_back_faces = !render_back_faces;
+          break;
       }
       break;
   }

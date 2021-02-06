@@ -67,6 +67,45 @@ void update(void) {
 
   for (int i = 0; i < array_length(mesh.faces); i++) {
     face_t mesh_face = mesh.faces[i];
+    vec3_t normal    = mesh.normals[i];
+    vec3_t centroid  = mesh.centroids[i];
+
+    if (render_centroids || render_normals || render_back_faces == false) {
+      vec3_t transformed_centroid = centroid;
+
+      transformed_centroid = vec3_rotate(transformed_centroid, mesh.rotation);
+      transformed_centroid = vec3_sub(transformed_centroid, camera_pos);
+
+      vec2_t projected_centroid;
+
+      projected_centroid = project(transformed_centroid);
+      projected_centroid = translate(projected_centroid, trans);
+
+      array_push(projected_centroids, projected_centroid);
+    }
+
+    if (render_normals || render_back_faces == false) {
+      vec3_t transformed_normal_vertex = normal;
+
+      transformed_normal_vertex = vec3_rotate(transformed_normal_vertex, mesh.rotation);
+
+      float back_dot = vec3_dot(camera_pos, transformed_normal_vertex);
+
+      if (render_back_faces == false && back_dot < 0) {
+        continue;
+      }
+
+      transformed_normal_vertex = vec3_div(normal, vec3_length(normal) * 2);
+      transformed_normal_vertex = vec3_add(centroid, transformed_normal_vertex);
+      transformed_normal_vertex = vec3_sub(transformed_normal_vertex, camera_pos);
+
+      vec2_t projected_normal_vertex;
+
+      projected_normal_vertex = project(transformed_normal_vertex);
+      projected_normal_vertex = translate(projected_normal_vertex, trans);
+
+      array_push(projected_normals, projected_normal_vertex);
+    }
 
     vec3_t face_vertices [3];
     face_vertices[0] = mesh.vertices[mesh_face.a - 1];
@@ -89,43 +128,6 @@ void update(void) {
     }
 
     array_push(projected_triangles, projected_triangle);
-
-    vec3_t centroid;
-    vec3_t normal;
-
-    if (render_centroids || render_normals) {
-      centroid = mesh.centroids[i];
-
-      vec3_t transformed_centroid = centroid;
-
-      transformed_centroid = vec3_rotate(transformed_centroid, mesh.rotation);
-      transformed_centroid = vec3_sub(transformed_centroid, camera_pos);
-
-      vec2_t projected_centroid;
-
-      projected_centroid = project(transformed_centroid);
-      projected_centroid = translate(projected_centroid, trans);
-
-      array_push(projected_centroids, projected_centroid);
-    }
-
-    if (render_normals) {
-      normal = mesh.normals[i];
-
-      vec3_t transformed_normal_vertex = normal;
-
-      transformed_normal_vertex = vec3_div(normal, vec3_length(normal) * 2);
-      transformed_normal_vertex = vec3_add(centroid, transformed_normal_vertex);
-      transformed_normal_vertex = vec3_rotate(transformed_normal_vertex, mesh.rotation);
-      transformed_normal_vertex = vec3_sub(transformed_normal_vertex, camera_pos);
-
-      vec2_t projected_normal_vertex;
-
-      projected_normal_vertex = project(transformed_normal_vertex);
-      projected_normal_vertex = translate(projected_normal_vertex, trans);
-
-      array_push(projected_normals, projected_normal_vertex);
-    }
   }
 }
 
@@ -133,9 +135,10 @@ void render(void) {
   draw_dots(grid_spacing, LINE);
 
   for (int i = 0; i < array_length(projected_triangles); i++) {
-    triangle_t triangle = projected_triangles[i];
     vec2_t normal;
     vec2_t centroid;
+
+    triangle_t triangle = projected_triangles[i];
 
     if (render_faces) {
       draw_triangle(

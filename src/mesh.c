@@ -18,10 +18,11 @@ triangle_t * projected_triangles = 0;
 vec2_t * projected_normals = 0;
 vec2_t * projected_centroids = 0;
 
-bool render_faces     = RENDER_FACES;
-bool render_vertices  = RENDER_VERTICES;
-bool render_centroids = RENDER_CENTROIDS;
-bool render_normals   = RENDER_NORMALS;
+bool render_faces      = RENDER_FACES;
+bool render_vertices   = RENDER_VERTICES;
+bool render_centroids  = RENDER_CENTROIDS;
+bool render_normals    = RENDER_NORMALS;
+bool render_back_faces = RENDER_BACK_FACES;
 
 void parse_obj_line(char * line) {
   if (strncmp(line, "v ", 2) == 0) {
