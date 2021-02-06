@@ -18,6 +18,7 @@ typedef struct {
   vec3_t * normals;
   vec3_t * centroids;
   vec3_t rotation;
+  vec3_t position;
 } mesh_t;
 
 extern mesh_t mesh;

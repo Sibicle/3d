@@ -1,14 +1,14 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <stdbool.h>
-
-#include "vector.h"
-
 #define FPS 60
 #define FRAME_TARGET_TIME (1000 / FPS)
 
-#define RENDER_CAMERA_RAY true
+#define RENDER_CAMERA_RAY false
+
+#include <stdbool.h>
+
+#include "vector.h"
 
 float fov_factor;
 vec3_t camera_pos;

@@ -41,6 +41,26 @@ void process_input(void) {
         case SDLK_q:
           camera_pos.z -= 0.1;
           break;
+
+        case SDLK_RIGHT:
+          mesh.position.x += 0.1;
+          break;
+        case SDLK_LEFT:
+          mesh.position.x -= 0.1;
+          break;
+        case SDLK_UP:
+          mesh.position.y += 0.1;
+          break;
+        case SDLK_DOWN:
+          mesh.position.y -= 0.1;
+          break;
+        case SDLK_PERIOD:
+          mesh.position.z += 0.1;
+          break;
+        case SDLK_COMMA:
+          mesh.position.z -= 0.1;
+          break;
+
         case SDLK_SPACE:
           load_next_mesh_file();
           break;
@@ -50,6 +70,7 @@ void process_input(void) {
         case SDLK_MINUS:
           scale_mesh_uniform(0.9);
           break;
+
         case SDLK_f:
           render_faces = !render_faces;
           break;

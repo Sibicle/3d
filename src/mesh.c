@@ -11,7 +11,8 @@ mesh_t mesh = {
     .faces = 0,
     .normals = 0,
     .centroids = 0,
-    .rotation = { 0, 0, 0 }
+    .rotation = { 0, 0, 0 },
+    .position = { 0, 0, 5 }
 };
 
 triangle_t * projected_triangles = 0;

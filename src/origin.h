@@ -15,5 +15,6 @@ extern vec3_t y_axis;
 extern vec3_t z_axis;
 
 void origin_render(void);
+void mesh_origin_render(void);
 
 #endif

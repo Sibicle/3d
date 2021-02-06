@@ -3,7 +3,7 @@
 #include "display.h"
 
 float fov_factor = 640;
-vec3_t camera_pos = { .x = 0, .y = 0, .z = -5 };
+vec3_t camera_pos = { .x = 0, .y = 0, .z = 0 };
 vec2_t projected_camera_pos = { .x = 0, .y = 0 };
 bool render_camera_ray = RENDER_CAMERA_RAY;
 
@@ -16,25 +16,22 @@ vec2_t project(vec3_t point) {
 }
 
 void camera_ray_render(void) {
-  vec3_t camera_pos_alt = camera_pos;
-  camera_pos_alt.z = camera_pos_alt.z + 1;
-
-  projected_camera_pos = project(camera_pos_alt);
+  projected_camera_pos = project(camera_pos);
   projected_camera_pos = vec2_add(projected_camera_pos, window_center);
 
-  // vec2_t projected_origin = project(origin);
-  // projected_origin = vec2_add(projected_origin, window_center);
+  vec2_t projected_origin = project(origin);
+  projected_origin = vec2_add(projected_origin, window_center);
 
-  // draw_rect(
-  //   projected_origin.x - 1, projected_origin.y - 1,
-  //   3, 3,
-  //   ORANGE,
-  //   ORANGE
-  // );
+  draw_rect(
+    projected_origin.x - 1, projected_origin.y - 1,
+    3, 3,
+    ORANGE,
+    ORANGE
+  );
 
-  // draw_line(
-  //   projected_origin.x, projected_origin.y,
-  //   projected_camera_pos.x, projected_camera_pos.y,
-  //   PURPLE
-  // );
+  draw_line(
+    projected_origin.x, projected_origin.y,
+    projected_camera_pos.x, projected_camera_pos.y,
+    PURPLE
+  );
 }

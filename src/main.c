@@ -53,12 +53,12 @@ void update(void) {
     vec3_t transformed_normal = normal;
 
     transformed_centroid = vec3_rotate(transformed_centroid, mesh.rotation);
-    transformed_centroid = vec3_sub(transformed_centroid, camera_pos);
+    transformed_centroid = vec3_add(transformed_centroid, mesh.position);
 
     transformed_normal = vec3_div(transformed_normal, vec3_length(normal) * 2);
     transformed_normal = vec3_add(centroid, transformed_normal);
     transformed_normal = vec3_rotate(transformed_normal, mesh.rotation);
-    transformed_normal = vec3_sub(transformed_normal, camera_pos);
+    transformed_normal = vec3_add(transformed_normal, mesh.position);
 
     vec3_t face_vertices [3];
     face_vertices[0] = mesh.vertices[mesh_face.a - 1];
@@ -71,7 +71,7 @@ void update(void) {
       vec3_t transformed_vertex = face_vertices[j];
 
       transformed_vertex = vec3_rotate(transformed_vertex, mesh.rotation);
-      transformed_vertex = vec3_sub(transformed_vertex, camera_pos);
+      transformed_vertex = vec3_add(transformed_vertex, mesh.position);
 
       transformed_vertices[j] = transformed_vertex;
     }
@@ -123,7 +123,8 @@ void render(void) {
   draw_dots(grid_spacing, LINE);
 
   if (render_origin) {
-    origin_render();
+    // origin_render();
+    mesh_origin_render();
   }
 
   for (int i = 0; i < array_length(projected_triangles); i++) {
@@ -161,16 +162,16 @@ void render(void) {
       );
     }
 
-    if (render_camera_ray) {
-      camera_ray_render();
-      centroid = projected_centroids[i];
+    // if (render_camera_ray) {
+    //   camera_ray_render();
+    //   centroid = projected_centroids[i];
 
-      draw_line(
-        projected_camera_pos.x, projected_camera_pos.y,
-        centroid.x, centroid.y,
-        PURPLE
-      );
-    }
+    //   draw_line(
+    //     projected_camera_pos.x, projected_camera_pos.y,
+    //     centroid.x, centroid.y,
+    //     PURPLE
+    //   );
+    // }
 
     if (render_normals) {
       normal = projected_normals[i];
