@@ -8,6 +8,7 @@
 #include "util.h"
 #include "vector.h"
 #include "mesh.h"
+#include "mesh_files.h"
 #include "camera.h"
 #include "display.h"
 #include "input.h"
@@ -28,19 +29,8 @@ void setup(void) {
     window_height
   );
 
-  vec3_t translate = VEC3_ZERO;
-  translate.y = -1;
-
-  vec3_t rotate = VEC3_ZERO;
-  rotate.x = M_PI;
-
-  vec3_t scale = VEC3_ONE;
-  scale.x = 0.75;
-  scale.y = 0.75;
-  scale.z = 0.75;
-
-  load_obj("assets/teapot.obj");
-  transform_mesh(translate, rotate, scale);
+  load_mesh_files();
+  load_next_mesh_file();
 }
 
 vec2_t project(vec3_t point) {
@@ -205,8 +195,8 @@ void render(void) {
 
 void free_resources() {
   free(color_buffer);
-
   free_mesh();
+  free_mesh_files();
 }
 
 int main(void) {

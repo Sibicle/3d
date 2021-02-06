@@ -14,9 +14,9 @@ mesh_t mesh = {
     .rotation = { 0, 0, 0 }
 };
 
-triangle_t* projected_triangles = 0;
-vec2_t* projected_normals = 0;
-vec2_t* projected_centroids = 0;
+triangle_t * projected_triangles = 0;
+vec2_t * projected_normals = 0;
+vec2_t * projected_centroids = 0;
 
 void parse_obj_line(char * line) {
   if (strncmp(line, "v ", 2) == 0) {
@@ -56,6 +56,11 @@ void parse_obj_line(char * line) {
 
 void load_obj(char * filename) {
   free_mesh();
+
+  mesh.vertices = 0;
+  mesh.faces = 0;
+  mesh.normals = 0;
+  mesh.centroids = 0;
 
   FILE * fp;
   char * line = NULL;
@@ -106,9 +111,9 @@ void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale) {
   for(int i = 0; i < array_length(mesh.vertices); i++) {
     vec3_t transformed_vertex = mesh.vertices[i];
 
-    transformed_vertex = vec3_add(transformed_vertex, translate);
-    transformed_vertex = vec3_scale(transformed_vertex, scale);
     transformed_vertex = vec3_rotate(transformed_vertex, rotate);
+    transformed_vertex = vec3_scale(transformed_vertex, scale);
+    transformed_vertex = vec3_add(transformed_vertex, translate);
 
     mesh.vertices[i] = transformed_vertex;
   }
@@ -145,6 +150,23 @@ void scale_mesh(vec3_t scale) {
     vec3_t transformed_vertex = mesh.vertices[i];
 
     transformed_vertex = vec3_scale(transformed_vertex, scale);
+
+    mesh.vertices[i] = transformed_vertex;
+  }
+
+  calculate_centroids_normals();
+}
+
+void scale_mesh_uniform(float scale) {
+  for(int i = 0; i < array_length(mesh.vertices); i++) {
+    vec3_t transformed_vertex = mesh.vertices[i];
+    vec3_t s = {
+      .x = scale,
+      .y = scale,
+      .z = scale
+    };
+
+    transformed_vertex = vec3_scale(transformed_vertex, s);
 
     mesh.vertices[i] = transformed_vertex;
   }

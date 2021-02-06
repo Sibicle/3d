@@ -18,19 +18,15 @@ extern triangle_t * projected_triangles;
 extern vec2_t * projected_normals;
 extern vec2_t * projected_centroids;
 
-extern char ** mesh_names;
-extern int mesh_index;
-
 void load_obj(char * filename);
 
-void load_mesh_names();
-void load_next_mesh();
 void calculate_centroids_normals();
 
 void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale);
 void translate_mesh(vec3_t translate);
 void rotate_mesh(vec3_t rotate);
 void scale_mesh(vec3_t scale);
+void scale_mesh_uniform(float scale);
 
 void free_mesh();
 

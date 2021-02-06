@@ -1,6 +1,7 @@
 #include "input.h"
 #include "camera.h"
 #include "mesh.h"
+#include "mesh_files.h"
 
 void process_input(void) {
   SDL_Event event;
@@ -32,6 +33,9 @@ void process_input(void) {
           break;
         case SDLK_d:
           camera_pos.x -= 0.1;
+          break;
+        case SDLK_SPACE:
+          load_next_mesh_file();
           break;
       }
       break;
