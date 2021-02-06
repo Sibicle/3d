@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "input.h"
 #include "camera.h"
 #include "mesh.h"
@@ -25,40 +27,52 @@ void process_input(void) {
           break;
         case SDLK_a:
           camera_pos.x += 0.1;
+          print_camera_pos();
           break;
         case SDLK_d:
           camera_pos.x -= 0.1;
+          print_camera_pos();
           break;
         case SDLK_w:
           camera_pos.y += 0.1;
+          print_camera_pos();
           break;
         case SDLK_s:
           camera_pos.y -= 0.1;
+          print_camera_pos();
           break;
         case SDLK_e:
           camera_pos.z += 0.1;
+          print_camera_pos();
           break;
         case SDLK_q:
           camera_pos.z -= 0.1;
+          print_camera_pos();
           break;
 
         case SDLK_RIGHT:
           mesh.position.x += 0.1;
+          print_mesh_pos();
           break;
         case SDLK_LEFT:
           mesh.position.x -= 0.1;
+          print_mesh_pos();
           break;
         case SDLK_UP:
           mesh.position.y += 0.1;
+          print_mesh_pos();
           break;
         case SDLK_DOWN:
           mesh.position.y -= 0.1;
+          print_mesh_pos();
           break;
         case SDLK_PERIOD:
           mesh.position.z += 0.1;
+          print_mesh_pos();
           break;
         case SDLK_COMMA:
           mesh.position.z -= 0.1;
+          print_mesh_pos();
           break;
 
         case SDLK_SPACE:

@@ -18,4 +18,6 @@ bool render_camera_ray;
 vec2_t project(vec3_t point);
 void camera_ray_render(void);
 
+void print_camera_pos(void);
+
 #endif

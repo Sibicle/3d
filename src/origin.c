@@ -32,11 +32,9 @@ vec3_t z_axis = {
 void origin_render() {
   vec2_t projected_origin;
   projected_origin = project(origin);
-  projected_origin = vec2_add(projected_origin, window_center);
 
   vec2_t projected_x_axis;
-  projected_x_axis = project(vec3_scale_uniform(x_axis, 0.5));
-  projected_x_axis = vec2_add(projected_x_axis, window_center);
+  projected_x_axis = project(vec3_scale_uniform(x_axis, 0.1));
 
   draw_line(
     projected_origin.x, projected_origin.y,
@@ -45,8 +43,7 @@ void origin_render() {
   );
 
   vec2_t projected_y_axis;
-  projected_y_axis = project(vec3_scale_uniform(y_axis, 0.5));
-  projected_y_axis = vec2_add(projected_y_axis, window_center);
+  projected_y_axis = project(vec3_scale_uniform(y_axis, 0.1));
 
   draw_line(
     projected_origin.x, projected_origin.y,
@@ -55,8 +52,7 @@ void origin_render() {
   );
 
   vec2_t projected_z_axis;
-  projected_z_axis = project(vec3_scale_uniform(z_axis, 0.5));
-  projected_z_axis = vec2_add(projected_z_axis, window_center);
+  projected_z_axis = project(vec3_scale_uniform(z_axis, 0.1));
 
   draw_line(
     projected_origin.x, projected_origin.y,
@@ -72,7 +68,6 @@ void mesh_origin_render() {
 
   vec2_t projected_origin;
   projected_origin = project(transformed_origin);
-  projected_origin = vec2_add(projected_origin, window_center);
 
   draw_rect(
     projected_origin.x - 1, projected_origin.y - 1,
@@ -87,7 +82,6 @@ void mesh_origin_render() {
 
   vec2_t projected_x_axis;
   projected_x_axis = project(transformed_x_axis);
-  projected_x_axis = vec2_add(projected_x_axis, window_center);
 
   draw_line(
     projected_origin.x, projected_origin.y,
@@ -108,7 +102,6 @@ void mesh_origin_render() {
 
   vec2_t projected_y_axis;
   projected_y_axis = project(transformed_y_axis);
-  projected_y_axis = vec2_add(projected_y_axis, window_center);
 
   draw_line(
     projected_origin.x, projected_origin.y,
@@ -129,7 +122,6 @@ void mesh_origin_render() {
 
   vec2_t projected_z_axis;
   projected_z_axis = project(transformed_z_axis);
-  projected_z_axis = vec2_add(projected_z_axis, window_center);
 
   draw_line(
     projected_origin.x, projected_origin.y,

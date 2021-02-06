@@ -21,6 +21,9 @@ uint32_t* color_buffer            = NULL;
 
 int previous_frame_time = 0;
 
+triangle_t * projected_triangles = 0;
+vec2_t * projected_normals = 0;
+vec2_t * projected_centroids = 0;
 void draw_pixel(int x, int y, uint32_t color) {
   if (x >= 0 && x < window_width && y>= 0 && y < window_height) {
     color_buffer[(window_width * y) + x] = color;

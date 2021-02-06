@@ -85,36 +85,27 @@ void update(void) {
 
     vec3_t calc_normal = vec3_cross(ab, ac);
 
-    vec3_t camera_ray = vec3_sub(camera_pos, a);
+    vec3_t camera_ray = vec3_add(camera_pos, a);
     float back_dot = vec3_dot(calc_normal, camera_ray);
 
-    if (render_back_faces == false && back_dot < 0) {
+    if (render_back_faces == false && back_dot > 0) {
       continue;
     }
 
     vec2_t projected_centroid;
-    vec2_t projected_normal;
-
-    triangle_t projected_triangle;
-
     projected_centroid = project(transformed_centroid);
-    projected_centroid = vec2_add(projected_centroid, window_center);
-
     array_push(projected_centroids, projected_centroid);
 
+    vec2_t projected_normal;
     projected_normal = project(transformed_normal);
-    projected_normal = vec2_add(projected_normal, window_center);
-
     array_push(projected_normals, projected_normal);
 
+    triangle_t projected_triangle;
     for (int j = 0; j < 3; j++) {
       vec2_t projected_point;
       projected_point = project(transformed_vertices[j]);
-      projected_point = vec2_add(projected_point, window_center);
-
       projected_triangle.points[j] = projected_point;
     }
-
     array_push(projected_triangles, projected_triangle);
   }
 }
@@ -123,7 +114,7 @@ void render(void) {
   draw_dots(grid_spacing, LINE);
 
   if (render_origin) {
-    // origin_render();
+    origin_render();
     mesh_origin_render();
   }
 

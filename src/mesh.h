@@ -23,10 +23,6 @@ typedef struct {
 
 extern mesh_t mesh;
 
-extern triangle_t * projected_triangles;
-extern vec2_t * projected_normals;
-extern vec2_t * projected_centroids;
-
 extern bool render_faces;
 extern bool render_vertices;
 extern bool render_centroids;
@@ -42,6 +38,8 @@ void translate_mesh(vec3_t translate);
 void rotate_mesh(vec3_t rotate);
 void scale_mesh(vec3_t scale);
 void scale_mesh_uniform(float scale);
+
+void print_mesh_pos(void);
 
 void free_mesh();
 
