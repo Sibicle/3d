@@ -19,57 +19,44 @@ vec2_t* projected_normals = 0;
 vec2_t* projected_centroids = 0;
 
 void parse_obj_line(char * line) {
-  char l[256];
+  if (strncmp(line, "v ", 2) == 0) {
+    vec3_t vertex;
+    sscanf(line, "v %f %f %f", &vertex.x, &vertex.y, &vertex.z);
+    array_push(mesh.vertices, vertex);
+  } else if (strncmp(line, "f ", 2) == 0) {
+    int vertex_indices[3];
+    int texture_indices[3];
+    int normal_indices[3];
 
-  strcpy(l, line);
-  char delim[] = " \n";
-	char *ptr = strtok(l, delim);
+    int matches = sscanf(
+      line, "f %d/%d/%d %d/%d/%d %d/%d/%d",
+      &vertex_indices[0], &texture_indices[0], &normal_indices[0],
+      &vertex_indices[1], &texture_indices[1], &normal_indices[1],
+      &vertex_indices[2], &texture_indices[2], &normal_indices[2]
+    );
 
-	while (ptr != NULL) {
-    switch(*ptr) {
-      case 'v':
-      {
-        char * x = strtok(NULL, delim);
-        char * y = strtok(NULL, delim);
-        char * z = strtok(NULL, delim);
-
-        char * end;
-
-        vec3_t vertex = {
-          .x = strtod(x, &end),
-          .y = strtod(y, &end),
-          .z = strtod(z, &end)
-        };
-
-        array_push(mesh.vertices, vertex);
-        break;
-      }
-
-      case 'f':
-      {
-        char * a = strtok(NULL, delim);
-        char * b = strtok(NULL, delim);
-        char * c = strtok(NULL, delim);
-
-        char * end;
-
-        face_t face = {
-          .a = strtoimax(a, &end, 10),
-          .b = strtoimax(b, &end, 10),
-          .c = strtoimax(c, &end, 10)
-        };
-
-        array_push(mesh.faces, face);
-
-        break;
-      }
+    if (matches != 9) {
+      matches = sscanf(
+        line, "f %d %d %d",
+        &vertex_indices[0],
+        &vertex_indices[1],
+        &vertex_indices[2]
+      );
     }
 
-		ptr = strtok(NULL, delim);
-	}
+    face_t face = {
+      .a = vertex_indices[0],
+      .b = vertex_indices[1],
+      .c = vertex_indices[2]
+    };
+
+    array_push(mesh.faces, face);
+  }
 }
 
 void load_obj(char * filename) {
+  free_mesh();
+
   FILE * fp;
   char * line = NULL;
   size_t len = 0;
@@ -87,6 +74,16 @@ void load_obj(char * filename) {
 
   if (line)
     free(line);
+
+  calculate_centroids_normals();
+}
+
+void calculate_centroids_normals() {
+  array_free(mesh.centroids);
+  array_free(mesh.normals);
+
+  mesh.centroids = 0;
+  mesh.normals = 0;
 
   for(int i = 0; i < array_length(mesh.faces); i++) {
     face_t face = mesh.faces[i];
@@ -115,6 +112,8 @@ void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale) {
 
     mesh.vertices[i] = transformed_vertex;
   }
+
+  calculate_centroids_normals();
 }
 
 void translate_mesh(vec3_t translate) {
@@ -125,6 +124,8 @@ void translate_mesh(vec3_t translate) {
 
     mesh.vertices[i] = transformed_vertex;
   }
+
+  calculate_centroids_normals();
 }
 
 void rotate_mesh(vec3_t rotate) {
@@ -135,6 +136,8 @@ void rotate_mesh(vec3_t rotate) {
 
     mesh.vertices[i] = transformed_vertex;
   }
+
+  calculate_centroids_normals();
 }
 
 void scale_mesh(vec3_t scale) {
@@ -145,4 +148,13 @@ void scale_mesh(vec3_t scale) {
 
     mesh.vertices[i] = transformed_vertex;
   }
+
+  calculate_centroids_normals();
+}
+
+void free_mesh() {
+  array_free(mesh.vertices);
+  array_free(mesh.faces);
+  array_free(mesh.normals);
+  array_free(mesh.centroids);
 }
