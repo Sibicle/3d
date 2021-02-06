@@ -41,7 +41,7 @@ void update(void) {
   projected_normals   = 0;
   projected_centroids = 0;
 
-  mesh.rotation.x = ( mouse_y - (window_height / 2)) / 200.0;
+  mesh.rotation.x = ( mouse_y - (window_height / 2)) / -200.0;
   mesh.rotation.y = ( mouse_x - (window_width  / 2)) / 200.0;
 
   for (int i = 0; i < array_length(mesh.faces); i++) {
@@ -85,10 +85,10 @@ void update(void) {
 
     vec3_t calc_normal = vec3_cross(ab, ac);
 
-    vec3_t camera_ray = vec3_add(camera_pos, a);
+    vec3_t camera_ray = vec3_sub(camera_pos, a);
     float back_dot = vec3_dot(calc_normal, camera_ray);
 
-    if (render_back_faces == false && back_dot > 0) {
+    if (render_back_faces == false && back_dot < 0) {
       continue;
     }
 

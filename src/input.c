@@ -26,11 +26,11 @@ void process_input(void) {
           fov_factor = fmax(fov_factor - 20, 128);
           break;
         case SDLK_a:
-          camera_pos.x += 0.1;
+          camera_pos.x -= 0.1;
           print_camera_pos();
           break;
         case SDLK_d:
-          camera_pos.x -= 0.1;
+          camera_pos.x += 0.1;
           print_camera_pos();
           break;
         case SDLK_w:

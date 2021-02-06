@@ -12,7 +12,7 @@ mesh_t mesh = {
     .normals = 0,
     .centroids = 0,
     .rotation = { 0, 0, 0 },
-    .position = { 0, 0, 5 }
+    .position = { 0, 0, 0 }
 };
 
 bool render_faces      = RENDER_FACES;
@@ -114,9 +114,9 @@ void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale) {
   for(int i = 0; i < array_length(mesh.vertices); i++) {
     vec3_t transformed_vertex = mesh.vertices[i];
 
+    transformed_vertex = vec3_add(transformed_vertex, translate);
     transformed_vertex = vec3_rotate(transformed_vertex, rotate);
     transformed_vertex = vec3_scale(transformed_vertex, scale);
-    transformed_vertex = vec3_add(transformed_vertex, translate);
 
     mesh.vertices[i] = transformed_vertex;
   }

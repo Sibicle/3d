@@ -1,4 +1,5 @@
 #include <stdbool.h>
+
 #include "display.h"
 
 uint32_t colors[7] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
@@ -7,6 +8,7 @@ bool is_running        = false;
 
 int window_width       = DEFAULT_WINDOW_WIDTH;
 int window_height      = DEFAULT_WINDOW_HEIGHT;
+int pixels             = DEFAULT_WINDOW_WIDTH * DEFAULT_WINDOW_HEIGHT;
 
 vec2_t window_center = {
   .x = (DEFAULT_WINDOW_WIDTH / 2),
@@ -24,9 +26,10 @@ int previous_frame_time = 0;
 triangle_t * projected_triangles = 0;
 vec2_t * projected_normals = 0;
 vec2_t * projected_centroids = 0;
+
 void draw_pixel(int x, int y, uint32_t color) {
   if (x >= 0 && x < window_width && y>= 0 && y < window_height) {
-    color_buffer[(window_width * y) + x] = color;
+    color_buffer[(window_width * (window_height - y - 1)) + x] = color;
   }
 }
 
@@ -39,8 +42,9 @@ bool initialize_window(void) {
   SDL_DisplayMode display_mode;
   SDL_GetCurrentDisplayMode(0, &display_mode);
 
-  window_width = display_mode.w;
+  window_width  = display_mode.w;
   window_height = display_mode.h - 29;
+  pixels        = window_width * window_height;
 
   window = SDL_CreateWindow(
     NULL,

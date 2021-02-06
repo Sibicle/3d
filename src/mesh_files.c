@@ -16,36 +16,35 @@ void load_mesh_files() {
   array_push(mesh_files, file);
 
   INIT_MESH_FILE(file, "teapot.obj");
-  file.rotate.x = M_PI;
+  file.translate.y = -1;
   file.scale.x = 0.75;
   file.scale.y = 0.75;
   file.scale.z = 0.75;
-  file.translate.y = 1;
   array_push(mesh_files, file);
 
   INIT_MESH_FILE(file, "f22.obj");
-  file.rotate.x = M_PI;
   array_push(mesh_files, file);
 
   INIT_MESH_FILE(file, "bear.obj");
-  file.rotate.x = M_PI;
+  file.rotate.y = M_PI;
   file.scale.x = 0.1;
   file.scale.y = 0.1;
   file.scale.z = 0.1;
   array_push(mesh_files, file);
 
   INIT_MESH_FILE(file, "cow.obj");
-  file.rotate.x = M_PI;
   file.scale.x = 0.5;
   file.scale.y = 0.5;
   file.scale.z = 0.5;
   array_push(mesh_files, file);
 
-  // INIT_MESH_FILE(file, "pumpkin.obj");
-  // file.scale.x = 0.5;
-  // file.scale.y = 0.5;
-  // file.scale.z = 0.5;
-  // array_push(mesh_files, file);
+  INIT_MESH_FILE(file, "pumpkin.obj");
+  file.translate.z = 110;
+  file.rotate.x = -M_PI_2;
+  file.scale.x = 0.05;
+  file.scale.y = 0.05;
+  file.scale.z = 0.05;
+  array_push(mesh_files, file);
 }
 
 void load_next_mesh_file() {

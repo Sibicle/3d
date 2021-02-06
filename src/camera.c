@@ -6,12 +6,12 @@
 #include "vector.h"
 
 float fov_factor = 640;
-vec3_t camera_pos = { .x = 0, .y = 0, .z = 5 };
+vec3_t camera_pos = { .x = 0, .y = 0, .z = -5 };
 vec2_t projected_camera_pos = { .x = 0, .y = 0 };
 bool render_camera_ray = RENDER_CAMERA_RAY;
 
 vec2_t project(vec3_t point) {
-  vec3_t point_from_camera = vec3_add(point, camera_pos);
+  vec3_t point_from_camera = vec3_sub(point, camera_pos);
 
   vec2_t projected_point = {
     .x = (fov_factor * point_from_camera.x) / point_from_camera.z,
