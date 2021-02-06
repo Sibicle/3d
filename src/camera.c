@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "config.h"
 #include "camera.h"
 #include "origin.h"
 #include "display.h"
@@ -8,7 +9,6 @@
 float fov_factor = 640;
 vec3_t camera_pos = { .x = 0, .y = 0, .z = -5 };
 vec2_t projected_camera_pos = { .x = 0, .y = 0 };
-bool render_camera_ray = RENDER_CAMERA_RAY;
 
 vec2_t project(vec3_t point) {
   vec3_t point_from_camera = vec3_sub(point, camera_pos);
@@ -24,26 +24,15 @@ vec2_t project(vec3_t point) {
 }
 
 void camera_ray_render(void) {
-  projected_camera_pos = project(camera_pos);
-
-  vec2_t projected_origin = project(origin);
-
-  draw_rect(
-    projected_origin.x - 1, projected_origin.y - 1,
-    3, 3,
-    ORANGE,
-    ORANGE
-  );
-
-  draw_line(
-    projected_origin.x, projected_origin.y,
-    projected_camera_pos.x, projected_camera_pos.y,
-    PURPLE
-  );
+  vec3_t prime_camera_pos  = camera_pos;
+  prime_camera_pos.z       = prime_camera_pos.z + 1;
+  projected_camera_pos     = project(prime_camera_pos);
 }
 
 void print_camera_pos(void) {
-  char str[1024];
-  vec3_to_string(str, camera_pos);
-  printf("camera: %s\n", str);
+  if (DEBUG_MODE) {
+    char str[1024];
+    vec3_to_string(str, camera_pos);
+    printf("camera: %s\n", str);
+  }
 }

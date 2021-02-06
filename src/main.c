@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#include "config.h"
 #include "array.h"
 #include "vector.h"
 #include "display.h"
@@ -153,16 +154,17 @@ void render(void) {
       );
     }
 
-    // if (render_camera_ray) {
-    //   camera_ray_render();
-    //   centroid = projected_centroids[i];
+    if (render_camera_ray) {
+      centroid = projected_centroids[i];
 
-    //   draw_line(
-    //     projected_camera_pos.x, projected_camera_pos.y,
-    //     centroid.x, centroid.y,
-    //     PURPLE
-    //   );
-    // }
+      camera_ray_render();
+
+      draw_line(
+        projected_camera_pos.x, projected_camera_pos.y,
+        centroid.x, centroid.y,
+        PURPLE
+      );
+    }
 
     if (render_normals) {
       normal = projected_normals[i];

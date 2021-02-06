@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "config.h"
 #include "input.h"
 #include "camera.h"
 #include "mesh.h"

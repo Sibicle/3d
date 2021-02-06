@@ -1,12 +1,6 @@
 #ifndef MESH_H
 #define MESH_H
 
-#define RENDER_FACES      true
-#define RENDER_VERTICES   false
-#define RENDER_CENTROIDS  false
-#define RENDER_NORMALS    false
-#define RENDER_BACK_FACES false
-
 #include <stdbool.h>
 
 #include "vector.h"
@@ -22,12 +16,6 @@ typedef struct {
 } mesh_t;
 
 extern mesh_t mesh;
-
-extern bool render_faces;
-extern bool render_vertices;
-extern bool render_centroids;
-extern bool render_normals;
-extern bool render_back_faces;
 
 void load_obj(char * filename);
 

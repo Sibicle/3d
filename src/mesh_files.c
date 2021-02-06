@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "config.h"
 #include "mesh_files.h"
 #include "mesh.h"
 #include "array.h"
@@ -55,7 +56,9 @@ void load_next_mesh_file() {
   char path[1024] = "assets/";
   strcat(path, file.filename);
 
-  printf("loading mesh '%s'\n", file.filename);
+  if (DEBUG_MODE) {
+    printf("loading mesh '%s'\n", file.filename);
+  }
 
   load_obj(path);
   transform_mesh(file.translate, file.rotate, file.scale);

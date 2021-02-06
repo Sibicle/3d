@@ -3,6 +3,7 @@
 #include <string.h>
 #include <inttypes.h>
 
+#include "config.h"
 #include "mesh.h"
 #include "array.h"
 
@@ -14,12 +15,6 @@ mesh_t mesh = {
     .rotation = { 0, 0, 0 },
     .position = { 0, 0, 0 }
 };
-
-bool render_faces      = RENDER_FACES;
-bool render_vertices   = RENDER_VERTICES;
-bool render_centroids  = RENDER_CENTROIDS;
-bool render_normals    = RENDER_NORMALS;
-bool render_back_faces = RENDER_BACK_FACES;
 
 void parse_obj_line(char * line) {
   if (strncmp(line, "v ", 2) == 0) {
@@ -178,9 +173,11 @@ void scale_mesh_uniform(float scale) {
 }
 
 void print_mesh_pos(void) {
-  char str[1024];
-  vec3_to_string(str, mesh.position);
-  printf("mesh: %s\n", str);
+  if (DEBUG_MODE) {
+    char str[1024];
+    vec3_to_string(str, mesh.position);
+    printf("mesh: %s\n", str);
+  }
 }
 
 void free_mesh() {

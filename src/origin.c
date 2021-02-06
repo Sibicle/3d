@@ -3,8 +3,6 @@
 #include "camera.h"
 #include "display.h"
 
-bool render_origin = RENDER_ORIGIN;
-
 vec3_t origin = {
   .x = 0.0,
   .y = 0.0,
