@@ -13,7 +13,10 @@
 #define RENDER_VERTICES     false
 #define RENDER_CENTROIDS    false
 #define RENDER_NORMALS      false
-#define RENDER_BACK_FACES   false
+
+#define CULL_NO_FACES       0
+#define CULL_FRONT_FACES    1
+#define CULL_BACK_FACES     2
 
 #define MOVE_CAMERA_W_MOUSE false
 
@@ -25,7 +28,8 @@ extern bool render_faces;
 extern bool render_vertices;
 extern bool render_centroids;
 extern bool render_normals;
-extern bool render_back_faces;
+
+extern int cull_faces;
 
 extern bool move_camera_w_mouse;
 

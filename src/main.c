@@ -67,7 +67,11 @@ void update(void) {
     vec3_t camera_ray = vec3_sub(camera_pos, transformed_centroid);
     float back_dot = vec3_dot(transformed_normal, camera_ray);
 
-    if (render_back_faces == false && back_dot < 0) {
+    if (cull_faces == CULL_BACK_FACES && back_dot < 0) {
+      continue;
+    }
+
+    if (cull_faces == CULL_FRONT_FACES && back_dot > 0) {
       continue;
     }
 

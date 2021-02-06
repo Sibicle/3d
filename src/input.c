@@ -98,15 +98,17 @@ void process_input(void) {
         case SDLK_n:
           render_normals = !render_normals;
           break;
-        case SDLK_b:
-          render_back_faces = !render_back_faces;
-          break;
         case SDLK_o:
           render_origin = !render_origin;
           break;
         case SDLK_r:
           render_camera_ray = !render_camera_ray;
           break;
+
+        case SDLK_b:
+          cull_faces = (cull_faces + 1) % 3;
+          break;
+
         case SDLK_SLASH:
           move_camera_w_mouse = !move_camera_w_mouse;
           break;
