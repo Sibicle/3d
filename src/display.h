@@ -20,12 +20,17 @@
 #define RED     0xFF5555
 #define YELLOW  0xF1FA8C
 
+#define DEFAULT_WINDOW_WIDTH 800
+#define DEFAULT_WINDOW_HEIGHT 600
+
 extern uint32_t colors[7];
+
+extern bool is_running;
 
 extern int window_width;
 extern int window_height;
 
-extern bool is_running;
+extern vec2_t window_center;
 
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;

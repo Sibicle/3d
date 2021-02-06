@@ -3,10 +3,15 @@
 
 uint32_t colors[7] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
 
-int window_width       = 800;
-int window_height      = 600;
-
 bool is_running        = false;
+
+int window_width       = DEFAULT_WINDOW_WIDTH;
+int window_height      = DEFAULT_WINDOW_HEIGHT;
+
+vec2_t window_center = {
+  .x = (DEFAULT_WINDOW_WIDTH / 2),
+  .y = (DEFAULT_WINDOW_HEIGHT / 2)
+};
 
 SDL_Window* window     = NULL;
 SDL_Renderer* renderer = NULL;
@@ -47,6 +52,11 @@ bool initialize_window(void) {
     return false;
   }
 
+  window_center = (vec2_t) {
+    .x = (window_width / 2),
+    .y = (window_height / 2)
+  };
+
   renderer = SDL_CreateRenderer(window, -1, 0);
   if (!renderer) {
     fprintf(stderr, "error creating SDL renderer");
@@ -58,6 +68,12 @@ bool initialize_window(void) {
   SDL_PumpEvents();
 
   return true;
+}
+
+void destroy_window(void) {
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+  SDL_Quit();
 }
 
 void render_color_buffer(void) {
@@ -97,13 +113,13 @@ void draw_dots(int spacing, uint32_t color) {
   }
 }
 
-void draw_rect(int x_pos, int y_pos, int w, int h, uint32_t color, uint32_t stroke) {
-  for(int y = y_pos; y <= y_pos + h; y++) {
-    for(int x = x_pos; x <= x_pos + w; x++) {
-      if (x == x_pos || x == x_pos + w || y == y_pos || y == y_pos + h) {
-        draw_pixel(x, y, stroke);
+void draw_rect(int x, int y, int w, int h, uint32_t color, uint32_t stroke) {
+  for(int i = y; i <= y + h; i++) {
+    for(int j = x; j <= x + w; j++) {
+      if (j == x || j == x + w || i == y || i == y + h) {
+        draw_pixel(j, i, stroke);
       } else {
-        draw_pixel(x, y, color);
+        draw_pixel(j, i, color);
       }
     }
   }
@@ -141,12 +157,6 @@ void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t stro
   draw_line(x0, y0, x1, y1, stroke);
   draw_line(x1, y1, x2, y2, stroke);
   draw_line(x2, y2, x0, y0, stroke);
-}
-
-void destroy_window(void) {
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
 }
 
 int grid_size    = 1;

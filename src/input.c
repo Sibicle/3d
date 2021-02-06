@@ -2,6 +2,7 @@
 #include "camera.h"
 #include "mesh.h"
 #include "mesh_files.h"
+#include "origin.h"
 
 void process_input(void) {
   SDL_Event event;
@@ -22,17 +23,23 @@ void process_input(void) {
         case SDLK_z:
           fov_factor = fmax(fov_factor - 20, 128);
           break;
-        case SDLK_w:
-          camera_pos.z += 0.1;
-          break;
-        case SDLK_s:
-          camera_pos.z -= 0.1;
-          break;
         case SDLK_a:
           camera_pos.x += 0.1;
           break;
         case SDLK_d:
           camera_pos.x -= 0.1;
+          break;
+        case SDLK_w:
+          camera_pos.y += 0.1;
+          break;
+        case SDLK_s:
+          camera_pos.y -= 0.1;
+          break;
+        case SDLK_e:
+          camera_pos.z += 0.1;
+          break;
+        case SDLK_q:
+          camera_pos.z -= 0.1;
           break;
         case SDLK_SPACE:
           load_next_mesh_file();
@@ -57,6 +64,12 @@ void process_input(void) {
           break;
         case SDLK_b:
           render_back_faces = !render_back_faces;
+          break;
+        case SDLK_o:
+          render_origin = !render_origin;
+          break;
+        case SDLK_r:
+          render_camera_ray = !render_camera_ray;
           break;
       }
       break;
