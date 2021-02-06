@@ -166,6 +166,16 @@ vec3_t vec3_rotate_z(vec3_t v, float a) {
   return v_1;
 }
 
+vec3_t vec3_rotate(vec3_t v, vec3_t r) {
+  vec3_t rotated = v;
+
+  rotated = vec3_rotate_x(rotated, r.x);
+  rotated = vec3_rotate_y(rotated, r.y);
+  rotated = vec3_rotate_z(rotated, r.z);
+
+  return rotated;
+}
+
 void vec3_to_string(char * str, vec3_t v) {
   sprintf(str, "(%f, %f, %f)", v.x + 0.0, v.y + 0.0, v.z + 0.0);
 }

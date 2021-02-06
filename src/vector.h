@@ -35,6 +35,7 @@ vec3_t tri_centroid(vec3_t a, vec3_t b, vec3_t c);
 vec3_t vec3_rotate_x(vec3_t v, float a);
 vec3_t vec3_rotate_y(vec3_t v, float a);
 vec3_t vec3_rotate_z(vec3_t v, float a);
+vec3_t vec3_rotate(vec3_t v, vec3_t r);
 
 void vec3_to_string(char * str, vec3_t v);
 

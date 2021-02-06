@@ -28,7 +28,19 @@ void setup(void) {
     window_height
   );
 
+  vec3_t translate = VEC3_ZERO;
+  translate.y = -1;
+
+  vec3_t rotate = VEC3_ZERO;
+  rotate.x = M_PI;
+
+  vec3_t scale = VEC3_ONE;
+  scale.x = 0.75;
+  scale.y = 0.75;
+  scale.z = 0.75;
+
   load_obj("assets/teapot.obj");
+  transform_mesh(translate, rotate, scale);
 }
 
 vec2_t project(vec3_t point) {
@@ -83,13 +95,9 @@ void update(void) {
     for(int j = 0; j < 3; j++) {
       vec3_t transformed_vertex = face_vertices[j];
 
-      transformed_vertex = vec3_rotate_x(transformed_vertex, mesh.rotation.x);
-      transformed_vertex = vec3_rotate_y(transformed_vertex, mesh.rotation.y);
-      transformed_vertex = vec3_rotate_z(transformed_vertex, mesh.rotation.z);
+      transformed_vertex = vec3_rotate(transformed_vertex, mesh.rotation);
 
-      transformed_vertex.x -= camera_pos.x;
-      transformed_vertex.y -= camera_pos.y;
-      transformed_vertex.z -= camera_pos.z;
+      transformed_vertex = vec3_sub(transformed_vertex, camera_pos);
 
       vec2_t projected_point = project(transformed_vertex);
       projected_point = translate(projected_point, trans);

@@ -107,20 +107,42 @@ void load_obj(char * filename) {
 
 void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale) {
   for(int i = 0; i < array_length(mesh.vertices); i++) {
-    vec3_t * vertex = &mesh.vertices[i];
+    vec3_t transformed_vertex = mesh.vertices[i];
 
-    vec3_t transformed_vertex = *vertex;
+    transformed_vertex = vec3_add(transformed_vertex, translate);
+    transformed_vertex = vec3_scale(transformed_vertex, scale);
+    transformed_vertex = vec3_rotate(transformed_vertex, rotate);
+
+    mesh.vertices[i] = transformed_vertex;
+  }
+}
+
+void translate_mesh(vec3_t translate) {
+  for(int i = 0; i < array_length(mesh.vertices); i++) {
+    vec3_t transformed_vertex = mesh.vertices[i];
 
     transformed_vertex = vec3_add(transformed_vertex, translate);
 
+    mesh.vertices[i] = transformed_vertex;
+  }
+}
+
+void rotate_mesh(vec3_t rotate) {
+  for(int i = 0; i < array_length(mesh.vertices); i++) {
+    vec3_t transformed_vertex = mesh.vertices[i];
+
+    transformed_vertex = vec3_rotate(transformed_vertex, rotate);
+
+    mesh.vertices[i] = transformed_vertex;
+  }
+}
+
+void scale_mesh(vec3_t scale) {
+  for(int i = 0; i < array_length(mesh.vertices); i++) {
+    vec3_t transformed_vertex = mesh.vertices[i];
+
     transformed_vertex = vec3_scale(transformed_vertex, scale);
 
-    transformed_vertex = vec3_rotate_x(transformed_vertex, rotate.x);
-    transformed_vertex = vec3_rotate_y(transformed_vertex, rotate.y);
-    transformed_vertex = vec3_rotate_z(transformed_vertex, rotate.z);
-
-    vertex->x = transformed_vertex.x;
-    vertex->y = transformed_vertex.y;
-    vertex->z = transformed_vertex.z;
+    mesh.vertices[i] = transformed_vertex;
   }
 }
