@@ -42,8 +42,13 @@ void update(void) {
   projected_normals   = 0;
   projected_centroids = 0;
 
-  mesh.rotation.x = ( mouse_y - (window_height / 2)) / -200.0;
-  mesh.rotation.y = ( mouse_x - (window_width  / 2)) / 200.0;
+  if (true == move_camera_w_mouse) {
+    camera_pos.y = ( mouse_y - (window_height / 2)) / -200.0;
+    camera_pos.x = ( mouse_x - (window_width  / 2)) / 200.0;
+  } else {
+    mesh.rotation.x = ( mouse_y - (window_height / 2)) / -200.0;
+    mesh.rotation.y = ( mouse_x - (window_width  / 2)) / 200.0;
+  }
 
   for (int i = 0; i < array_length(mesh.faces); i++) {
     face_t mesh_face = mesh.faces[i];
