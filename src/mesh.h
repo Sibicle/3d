@@ -1,6 +1,13 @@
 #ifndef MESH_H
 #define MESH_H
 
+#define RENDER_FACES     true
+#define RENDER_VERTICES  true
+#define RENDER_CENTROIDS false
+#define RENDER_NORMALS   false
+
+#include <stdbool.h>
+
 #include "vector.h"
 #include "triangle.h"
 
@@ -17,6 +24,11 @@ extern mesh_t mesh;
 extern triangle_t * projected_triangles;
 extern vec2_t * projected_normals;
 extern vec2_t * projected_centroids;
+
+extern bool render_faces;
+extern bool render_vertices;
+extern bool render_centroids;
+extern bool render_normals;
 
 void load_obj(char * filename);
 

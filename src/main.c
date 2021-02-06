@@ -13,11 +13,6 @@
 #include "display.h"
 #include "input.h"
 
-#define RENDER_FACES     true
-#define RENDER_CENTROIDS true
-#define RENDER_NORMALS   true
-#define RENDER_VERTICES  true
-
 void setup(void) {
   color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * window_height);
 
@@ -98,7 +93,7 @@ void update(void) {
     vec3_t centroid;
     vec3_t normal;
 
-    if (RENDER_CENTROIDS || RENDER_NORMALS) {
+    if (render_centroids || render_normals) {
       centroid = mesh.centroids[i];
 
       vec3_t transformed_centroid = centroid;
@@ -114,7 +109,7 @@ void update(void) {
       array_push(projected_centroids, projected_centroid);
     }
 
-    if (RENDER_NORMALS) {
+    if (render_normals) {
       normal = mesh.normals[i];
 
       vec3_t transformed_normal_vertex = normal;
@@ -142,7 +137,7 @@ void render(void) {
     vec2_t normal;
     vec2_t centroid;
 
-    if (RENDER_FACES) {
+    if (render_faces) {
       draw_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
@@ -151,7 +146,7 @@ void render(void) {
       );
     }
 
-    if (RENDER_VERTICES) {
+    if (render_vertices) {
       for(int j = 0; j < 3; j++) {
         draw_rect(
           triangle.points[j].x - 1, triangle.points[j].y - 1,
@@ -161,7 +156,7 @@ void render(void) {
       }
     }
 
-    if (RENDER_CENTROIDS) {
+    if (render_centroids) {
       centroid = projected_centroids[i];
 
       draw_rect(
@@ -171,7 +166,7 @@ void render(void) {
       );
     }
 
-    if (RENDER_NORMALS) {
+    if (render_normals) {
       normal = projected_normals[i];
       centroid = projected_centroids[i];
 

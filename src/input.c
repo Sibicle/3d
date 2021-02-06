@@ -37,6 +37,24 @@ void process_input(void) {
         case SDLK_SPACE:
           load_next_mesh_file();
           break;
+        case SDLK_EQUALS:
+          scale_mesh_uniform(1.1);
+          break;
+        case SDLK_MINUS:
+          scale_mesh_uniform(0.9);
+          break;
+        case SDLK_f:
+          render_faces = !render_faces;
+          break;
+        case SDLK_v:
+          render_vertices = !render_vertices;
+          break;
+        case SDLK_c:
+          render_centroids = !render_centroids;
+          break;
+        case SDLK_n:
+          render_normals = !render_normals;
+          break;
       }
       break;
   }
