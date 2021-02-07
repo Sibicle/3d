@@ -9,6 +9,7 @@
 
 #define RENDER_ORIGIN       false
 
+#define RENDER_LINES        true
 #define RENDER_FACES        true
 #define RENDER_VERTICES     false
 #define RENDER_CENTROIDS    false
@@ -24,6 +25,7 @@ extern bool render_camera_ray;
 
 extern bool render_origin;
 
+extern bool render_lines;
 extern bool render_faces;
 extern bool render_vertices;
 extern bool render_centroids;

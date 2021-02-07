@@ -126,12 +126,21 @@ void render(void) {
 
     triangle_t triangle = projected_triangles[i];
 
-    if (render_faces) {
+    if (render_lines) {
       draw_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
         triangle.points[2].x, triangle.points[2].y,
         GREEN
+      );
+    }
+
+    if (render_faces) {
+      draw_filled_triangle(
+        triangle.points[0].x, triangle.points[0].y,
+        triangle.points[1].x, triangle.points[1].y,
+        triangle.points[2].x, triangle.points[2].y,
+        PURPLE
       );
     }
 

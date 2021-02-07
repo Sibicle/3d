@@ -4,6 +4,7 @@ bool render_camera_ray   = RENDER_CAMERA_RAY;
 
 bool render_origin       = RENDER_ORIGIN;
 
+bool render_lines        = RENDER_LINES;
 bool render_faces        = RENDER_FACES;
 bool render_vertices     = RENDER_VERTICES;
 bool render_centroids    = RENDER_CENTROIDS;
