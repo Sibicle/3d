@@ -80,7 +80,7 @@ mat4_t mat4_make_rotate_z(float rz) {
   return m;
 }
 
-void mat4_mul_vec4_inplace(mat4_t * m, vec4_t * v) {
+void mat4_mul_vec4(mat4_t * m, vec4_t * v) {
   vec4_t prod = VEC4_ZERO;
 
   prod.x = m->m[0][0] * v->x + m->m[0][1] * v->y + m->m[0][2] * v->z + m->m[0][3] * v->w;
@@ -92,6 +92,25 @@ void mat4_mul_vec4_inplace(mat4_t * m, vec4_t * v) {
   v->y = prod.y;
   v->z = prod.z;
   v->w = prod.w;
+}
+
+void mat4_mul_mat4(mat4_t * m, mat4_t * n) {
+  mat4_t r = {{ 0 }};
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      r.m[i][j] = m->m[i][0] * n->m[0][j]
+                + m->m[i][1] * n->m[1][j]
+                + m->m[i][2] * n->m[2][j]
+                + m->m[i][3] * n->m[3][j];
+    }
+  }
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      m->m[i][j] = r.m[i][j];
+    }
+  }
 }
 
 void mat4_to_string(char * str, mat4_t * m) {

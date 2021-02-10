@@ -15,7 +15,8 @@ mat4_t mat4_make_rotate_x(float rx);
 mat4_t mat4_make_rotate_y(float ry);
 mat4_t mat4_make_rotate_z(float rz);
 
-void mat4_mul_vec4_inplace(mat4_t * m, vec4_t * v);
+void mat4_mul_vec4(mat4_t * m, vec4_t * v);
+void mat4_mul_mat4(mat4_t * m, mat4_t * n);
 
 void mat4_to_string(char * str, mat4_t * m);
 
