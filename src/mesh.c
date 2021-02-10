@@ -11,9 +11,10 @@
 
 mesh_t mesh = {
     .vertices = 0,
-    .faces = 0,
-    .rotation = { 0, 0, 0 },
-    .position = { 0, 0, 0 }
+    .faces    = 0,
+    .rotation = { 0.0, 0.0, 0.0 },
+    .position = { 0.0, 0.0, 0.0 },
+    .scale    = { 1.0, 1.0, 1.0 }
 };
 
 void parse_obj_line(char * line) {
@@ -144,7 +145,7 @@ void scale_mesh_uniform(float scale) {
 void print_mesh_pos(void) {
   if (DEBUG_MODE) {
     char str[1024];
-    vec3_to_string(str, mesh.position);
+    vec3_to_string(str, &mesh.position);
     printf("mesh: %s\n", str);
   }
 }

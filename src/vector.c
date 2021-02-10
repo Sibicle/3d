@@ -16,6 +16,20 @@ const vec3_t VEC3_ONE = {
   .z = 1.0
 };
 
+const vec4_t VEC4_ZERO = {
+  .x = 0.0,
+  .y = 0.0,
+  .z = 0.0,
+  .w = 0.0
+};
+
+const vec4_t VEC4_ONE = {
+  .x = 1.0,
+  .y = 1.0,
+  .z = 1.0,
+  .w = 1.0
+};
+
 float vec2_length(vec2_t v) {
   return sqrt(v.x * v.x + v.y * v.y);
 }
@@ -245,6 +259,33 @@ vec3_t vec3_rotate_z(vec3_t v, float a) {
   return v_1;
 }
 
+vec3_t vec3_from_vec4(vec4_t * v) {
+  vec3_t w = {
+    .x = v->x,
+    .y = v->y,
+    .z = v->z
+  };
+
+  return w;
+}
+
+//
+// vec4 operations
+//
+vec4_t vec4_from_vec3(vec3_t * v) {
+  vec4_t w = {
+    .x = v->x,
+    .y = v->y,
+    .z = v->z,
+    .w = 1.0
+  };
+
+  return w;
+}
+
+//
+// vector utility functions
+//
 vec3_t vec3_rotate(vec3_t v, vec3_t r) {
   vec3_t rotated = v;
 
@@ -255,6 +296,15 @@ vec3_t vec3_rotate(vec3_t v, vec3_t r) {
   return rotated;
 }
 
-void vec3_to_string(char * str, vec3_t v) {
-  sprintf(str, "(%f, %f, %f)", v.x + 0.0, v.y + 0.0, v.z + 0.0);
+void vec3_to_string(char * str, vec3_t * v) {
+  sprintf(str, "[ %0.1f, %0.1f, %0.1f ]", v->x, v->y, v->z);
+}
+
+void vec4_to_string(char * str, vec4_t * v) {
+  int len = 0;
+
+  len += sprintf(str + len, "┌ %0.1f ┐\n", v->x);
+  len += sprintf(str + len, "│ %0.1f │\n", v->y);
+  len += sprintf(str + len, "│ %0.1f │\n", v->z);
+  len += sprintf(str + len, "└ %0.1f ┘\n", v->w);
 }

@@ -12,8 +12,18 @@ typedef struct {
   float z;
 } vec3_t;
 
+typedef struct {
+  float x;
+  float y;
+  float z;
+  float w;
+} vec4_t;
+
 const vec3_t VEC3_ZERO;
 const vec3_t VEC3_ONE;
+
+const vec4_t VEC4_ZERO;
+const vec4_t VEC4_ONE;
 
 void vec2_normalize(vec2_t * a);
 
@@ -54,6 +64,12 @@ vec3_t vec3_rotate(vec3_t v, vec3_t t);
 vec3_t tri_normal(vec3_t a, vec3_t b, vec3_t c);
 vec3_t tri_centroid(vec3_t a, vec3_t b, vec3_t c);
 
-void vec3_to_string(char * str, vec3_t v);
+vec3_t vec3_from_vec4(vec4_t * v);
+
+vec4_t vec4_from_vec3(vec3_t * v);
+
+void vec3_to_string(char * str, vec3_t * v);
+
+void vec4_to_string(char * str, vec4_t * v);
 
 #endif

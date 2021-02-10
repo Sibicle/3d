@@ -7,6 +7,7 @@
 #include "config.h"
 #include "array.h"
 #include "vector.h"
+#include "matrix.h"
 #include "display.h"
 #include "input.h"
 #include "mesh_files.h"
@@ -48,6 +49,10 @@ void update(void) {
     mesh.rotation.y = ( mouse_x - (window_width  / 2)) / 200.0;
   }
 
+  mesh.scale.x += 0.002;
+
+  mat4_t scale_matrix = mat4_make_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
+
   for (int i = 0; i < array_length(mesh.faces); i++) {
     face_t mesh_face = mesh.faces[i];
 
@@ -56,10 +61,12 @@ void update(void) {
     face_vertices[1] = mesh.vertices[mesh_face.b - 1];
     face_vertices[2] = mesh.vertices[mesh_face.c - 1];
 
-    vec3_t transformed_vertices [3];
+    vec4_t transformed_vertices [3];
 
     for (int j = 0; j < 3; j++) {
-      vec3_t transformed_vertex = face_vertices[j];
+      vec4_t transformed_vertex = vec4_from_vec3(&face_vertices[j]);
+
+      mat4_mul_vec4_inplace(&scale_matrix, &transformed_vertex);
 
       vec3_rotate_inplace(&transformed_vertex, mesh.rotation);
       vec3_add_inplace(&transformed_vertex, mesh.position);
@@ -67,9 +74,9 @@ void update(void) {
       transformed_vertices[j] = transformed_vertex;
     }
 
-    vec3_t a = transformed_vertices[0];
-    vec3_t b = transformed_vertices[1];
-    vec3_t c = transformed_vertices[2];
+    vec3_t a = vec3_from_vec4(&transformed_vertices[0]);
+    vec3_t b = vec3_from_vec4(&transformed_vertices[1]);
+    vec3_t c = vec3_from_vec4(&transformed_vertices[2]);
 
     vec3_t centroid = tri_centroid(a, b, c);
     vec3_t normal = tri_normal(a, b, c);
@@ -92,7 +99,7 @@ void update(void) {
 
     for (int j = 0; j < 3; j++) {
       vec2_t projected_point;
-      projected_point = project(transformed_vertices[j]);
+      projected_point = project(vec3_from_vec4(&transformed_vertices[j]));
       projected_triangle.points[j] = projected_point;
     }
 

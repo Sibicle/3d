@@ -32,7 +32,7 @@ void camera_ray_render(void) {
 void print_camera_pos(void) {
   if (DEBUG_MODE) {
     char str[1024];
-    vec3_to_string(str, camera_pos);
+    vec3_to_string(str, &camera_pos);
     printf("camera: %s\n", str);
   }
 }
