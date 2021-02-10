@@ -1,7 +1,21 @@
 #include "triangle.h"
 #include "util.h"
 #include "display.h"
+#include "array.h"
 
+int compare_z_depth(const void * a, const void * b) {
+  triangle_t *a1 = (triangle_t *)a;
+  triangle_t *b1 = (triangle_t *)b;
+
+  if (a1->average_depth > b1->average_depth) return -1;
+  if (a1->average_depth < b1->average_depth) return 1;
+
+  return 0;
+}
+
+void sort_triangles_by_depth(triangle_t * a) {
+  qsort(a, array_length(a), sizeof a[0], compare_z_depth);
+}
 
 void draw_filled_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color) {
   if (y0 > y1) {

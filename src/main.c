@@ -39,8 +39,6 @@ void update(void) {
   previous_frame_time = SDL_GetTicks();
 
   projected_triangles = 0;
-  projected_normals   = 0;
-  projected_centroids = 0;
 
   if (true == move_camera_w_mouse) {
     camera_pos.y = ( mouse_y - (window_height / 2)) / -200.0;
@@ -52,17 +50,6 @@ void update(void) {
 
   for (int i = 0; i < array_length(mesh.faces); i++) {
     face_t mesh_face = mesh.faces[i];
-    vec3_t normal    = mesh.normals[i];
-    vec3_t centroid  = mesh.centroids[i];
-
-    vec3_t transformed_centroid = centroid;
-    vec3_t transformed_normal   = normal;
-
-    transformed_centroid = vec3_rotate(transformed_centroid, mesh.rotation);
-    transformed_centroid = vec3_add(transformed_centroid, mesh.position);
-
-    transformed_normal = vec3_rotate(transformed_normal, mesh.rotation);
-    transformed_normal = vec3_add(transformed_normal, mesh.position);
 
     vec3_t face_vertices [3];
     face_vertices[0] = mesh.vertices[mesh_face.a - 1];
@@ -84,13 +71,11 @@ void update(void) {
     vec3_t b = transformed_vertices[1];
     vec3_t c = transformed_vertices[2];
 
-    vec3_t ab = vec3_sub(b, a);
-    vec3_t ac = vec3_sub(c, a);
-
-    vec3_t calc_normal = vec3_cross(ab, ac);
+    vec3_t centroid = tri_centroid(a, b, c);
+    vec3_t normal = tri_normal(a, b, c);
 
     vec3_t camera_ray = vec3_sub(camera_pos, a);
-    float back_dot = vec3_dot(calc_normal, camera_ray);
+    float back_dot = vec3_dot(normal, camera_ray);
 
     if (cull_faces == CULL_BACK_FACES && back_dot < 0) {
       continue;
@@ -100,28 +85,27 @@ void update(void) {
       continue;
     }
 
-    calc_normal = vec3_div(calc_normal, vec3_length(normal) * 2);
-    calc_normal = vec3_add(transformed_centroid, calc_normal);
-
-    vec2_t projected_centroid;
-    projected_centroid = project(transformed_centroid);
-    array_push(projected_centroids, projected_centroid);
-
-    vec2_t projected_normal;
-    projected_normal = project(calc_normal);
-    array_push(projected_normals, projected_normal);
+    normal = vec3_div(normal, vec3_length(normal) * 2);
+    normal = vec3_add(centroid, normal);
 
     triangle_t projected_triangle;
-    projected_triangle.color         = mesh_face.color;
-    projected_triangle.average_depth = transformed_centroid.z;
 
     for (int j = 0; j < 3; j++) {
       vec2_t projected_point;
       projected_point = project(transformed_vertices[j]);
       projected_triangle.points[j] = projected_point;
     }
+
+    projected_triangle.centroid      = project(centroid);
+    projected_triangle.normal        = project(normal);
+    projected_triangle.average_depth = (a.z + b.z + c.z) / 3.0;
+
+    projected_triangle.color         = mesh_face.color;
+
     array_push(projected_triangles, projected_triangle);
   }
+
+  sort_triangles_by_depth(projected_triangles);
 }
 
 void render(void) {
@@ -133,9 +117,6 @@ void render(void) {
   }
 
   for (int i = 0; i < array_length(projected_triangles); i++) {
-    vec2_t normal;
-    vec2_t centroid;
-
     triangle_t triangle = projected_triangles[i];
 
     if (render_faces) {
@@ -168,42 +149,33 @@ void render(void) {
     }
 
     if (render_centroids) {
-      centroid = projected_centroids[i];
-
       draw_rect(
-        centroid.x - 1, centroid.y - 1,
+        triangle.centroid.x - 1, triangle.centroid.y - 1,
         3, 3,
         RED, RED
       );
     }
 
     if (render_camera_ray) {
-      centroid = projected_centroids[i];
-
       camera_ray_render();
 
       draw_line(
         projected_camera_pos.x, projected_camera_pos.y,
-        centroid.x, centroid.y,
+        triangle.centroid.x, triangle.centroid.y,
         PURPLE
       );
     }
 
     if (render_normals) {
-      normal = projected_normals[i];
-      centroid = projected_centroids[i];
-
       draw_line(
-        centroid.x, centroid.y,
-        normal.x, normal.y,
+        triangle.centroid.x, triangle.centroid.y,
+        triangle.normal.x, triangle.normal.y,
         RED
       );
     }
   }
 
   array_free(projected_triangles);
-  array_free(projected_normals);
-  array_free(projected_centroids);
 
   render_color_buffer();
   clear_color_buffer(BG);

@@ -12,8 +12,6 @@
 mesh_t mesh = {
     .vertices = 0,
     .faces = 0,
-    .normals = 0,
-    .centroids = 0,
     .rotation = { 0, 0, 0 },
     .position = { 0, 0, 0 }
 };
@@ -83,33 +81,8 @@ void load_obj(char * filename) {
 
   if (line)
     free(line);
-
-  calculate_centroids_normals();
 }
 
-void calculate_centroids_normals() {
-  array_free(mesh.centroids);
-  array_free(mesh.normals);
-
-  mesh.centroids = 0;
-  mesh.normals = 0;
-
-  for(int i = 0; i < array_length(mesh.faces); i++) {
-    face_t face = mesh.faces[i];
-
-    vec3_t a = mesh.vertices[face.a - 1];
-    vec3_t b = mesh.vertices[face.b - 1];
-    vec3_t c = mesh.vertices[face.c - 1];
-
-    vec3_t normal = tri_normal(a, b, c);
-
-    array_push(mesh.normals, normal);
-
-    vec3_t centroid = tri_centroid(a, b, c);
-
-    array_push(mesh.centroids, centroid);
-  }
-}
 
 void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale) {
   for(int i = 0; i < array_length(mesh.vertices); i++) {
@@ -121,8 +94,6 @@ void transform_mesh(vec3_t translate, vec3_t rotate, vec3_t scale) {
 
     mesh.vertices[i] = transformed_vertex;
   }
-
-  calculate_centroids_normals();
 }
 
 void translate_mesh(vec3_t translate) {
@@ -133,8 +104,6 @@ void translate_mesh(vec3_t translate) {
 
     mesh.vertices[i] = transformed_vertex;
   }
-
-  calculate_centroids_normals();
 }
 
 void rotate_mesh(vec3_t rotate) {
@@ -145,8 +114,6 @@ void rotate_mesh(vec3_t rotate) {
 
     mesh.vertices[i] = transformed_vertex;
   }
-
-  calculate_centroids_normals();
 }
 
 void scale_mesh(vec3_t scale) {
@@ -157,8 +124,6 @@ void scale_mesh(vec3_t scale) {
 
     mesh.vertices[i] = transformed_vertex;
   }
-
-  calculate_centroids_normals();
 }
 
 void scale_mesh_uniform(float scale) {
@@ -174,8 +139,6 @@ void scale_mesh_uniform(float scale) {
 
     mesh.vertices[i] = transformed_vertex;
   }
-
-  calculate_centroids_normals();
 }
 
 void print_mesh_pos(void) {
@@ -189,6 +152,4 @@ void print_mesh_pos(void) {
 void free_mesh() {
   array_free(mesh.vertices);
   array_free(mesh.faces);
-  array_free(mesh.normals);
-  array_free(mesh.centroids);
 }

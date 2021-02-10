@@ -44,8 +44,6 @@ extern uint32_t* color_buffer;
 extern int previous_frame_time;
 
 extern triangle_t * projected_triangles;
-extern vec2_t * projected_normals;
-extern vec2_t * projected_centroids;
 
 bool initialize_window(void);
 void destroy_window(void);
