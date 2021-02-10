@@ -61,8 +61,8 @@ void update(void) {
     for (int j = 0; j < 3; j++) {
       vec3_t transformed_vertex = face_vertices[j];
 
-      transformed_vertex = vec3_rotate(transformed_vertex, mesh.rotation);
-      transformed_vertex = vec3_add(transformed_vertex, mesh.position);
+      vec3_rotate_inplace(&transformed_vertex, mesh.rotation);
+      vec3_add_inplace(&transformed_vertex, mesh.position);
 
       transformed_vertices[j] = transformed_vertex;
     }
@@ -85,7 +85,7 @@ void update(void) {
       continue;
     }
 
-    normal = vec3_div(normal, vec3_length(normal) * 2);
+    normal = vec3_scale_uniform(normal, vec3_length(normal) * 2);
     normal = vec3_add(centroid, normal);
 
     triangle_t projected_triangle;

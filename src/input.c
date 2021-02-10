@@ -87,10 +87,10 @@ void process_input(void) {
           break;
 
         case SDLK_f:
-          render_lines = !render_lines;
+          render_faces = !render_faces;
           break;
         case SDLK_g:
-          render_faces = !render_faces;
+          render_lines = !render_lines;
           break;
         case SDLK_v:
           render_vertices = !render_vertices;

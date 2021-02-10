@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "vector.h"
 
@@ -28,6 +29,16 @@ vec2_t vec2_add(vec2_t a, vec2_t b) {
   return sum;
 }
 
+void vec2_add_inplace(vec2_t * a, vec2_t * b) {
+  a->x = a->x + b->x;
+  a->y = a->y + b->y;
+}
+
+void vec2_scale_inplace(vec2_t * a, float s) {
+  a->x = a->x * s;
+  a->y = a->y * s;
+}
+
 vec2_t vec2_sub(vec2_t a, vec2_t b) {
   vec2_t dif = {
     .x = a.x - b.x,
@@ -46,21 +57,95 @@ vec2_t vec2_scale(vec2_t v, float s) {
   return scale;
 }
 
-vec2_t vec2_div(vec2_t v, float s) {
-  vec2_t quo = {
-    .x = v.x / s,
-    .y = v.y / s,
-  };
-
-  return quo;
-}
-
 float vec2_dot(vec2_t a, vec2_t b) {
   return (a.x * b.x) + (a.y * b.y);
 }
 
+void vec2_normalize(vec2_t * a) {
+  float length = vec2_length(* a);
+  a->x = a->x / length;
+  a->y = a->y / length;
+}
+
+//
+// vec3 in place functions
+//
+void vec3_add_inplace(vec3_t * a, vec3_t b) {
+  a->x = a->x + b.x;
+  a->y = a->y + b.y;
+  a->z = a->z + b.z;
+}
+
+void vec3_sub_inplace(vec3_t * a, vec3_t b) {
+  a->x = a->x - b.x;
+  a->y = a->y - b.y;
+  a->z = a->z - b.z;
+}
+
+void vec3_scale_inplace(vec3_t * a, vec3_t s) {
+  a->x = a->x * s.x;
+  a->y = a->y * s.y;
+  a->z = a->z * s.z;
+}
+
+void vec3_scale_uniform_inplace(vec3_t * a, float s) {
+  a->x = a->x * s;
+  a->y = a->y * s;
+  a->z = a->z * s;
+}
+
+void vec3_normalize_inplace(vec3_t * a) {
+  float length = vec3_length(* a);
+  a->x = a->x / length;
+  a->y = a->y / length;
+  a->z = a->z / length;
+}
+
+void vec3_rotate_x_inplace(vec3_t * a, float t) {
+  vec3_t a_1 = {
+    .x = a->x,
+    .y = a->y * cos(t) - a->z * sin(t),
+    .z = a->y * sin(t) + a->z * cos(t)
+  };
+
+  memcpy(a, &a_1, sizeof a_1);
+}
+
+void vec3_rotate_y_inplace(vec3_t * a, float t) {
+  vec3_t a_1 = {
+    .x = a->x * cos(t) - a->z * sin(t),
+    .y = a->y,
+    .z = a->x * sin(t) + a->z * cos(t)
+  };
+
+  memcpy(a, &a_1, sizeof a_1);
+}
+
+void vec3_rotate_z_inplace(vec3_t * a, float t) {
+  vec3_t a_1 = {
+    .x = a->x * cos(t) - a->y * sin(t),
+    .y = a->x * sin(t) + a->y * cos(t),
+    .z = a->z
+  };
+
+  memcpy(a, &a_1, sizeof a_1);
+}
+
+void vec3_rotate_inplace(vec3_t * a, vec3_t t) {
+  vec3_rotate_x_inplace(a, t.x);
+  vec3_rotate_y_inplace(a, t.y);
+  vec3_rotate_z_inplace(a, t.z);
+}
+
+//
+// vector operations returning a scalar
+//
 float vec3_length(vec3_t v) {
   return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+float vec3_dot(vec3_t a, vec3_t b) {
+  return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 vec3_t vec3_add(vec3_t a, vec3_t b) {
@@ -103,16 +188,6 @@ vec3_t vec3_scale_uniform(vec3_t v, float s) {
   return scale;
 }
 
-vec3_t vec3_div(vec3_t v, float s) {
-  vec3_t quo = {
-    .x = v.x / s,
-    .y = v.y / s,
-    .z = v.z / s
-  };
-
-  return quo;
-}
-
 vec3_t vec3_cross(vec3_t a, vec3_t b) {
   vec3_t cross = {
     .x = a.y * b.z - a.z * b.y,
@@ -120,10 +195,6 @@ vec3_t vec3_cross(vec3_t a, vec3_t b) {
     .z = a.x * b.y - a.y * b.x
   };
   return cross;
-}
-
-float vec3_dot(vec3_t a, vec3_t b) {
-  return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 vec3_t tri_normal(vec3_t a, vec3_t b, vec3_t c) {
