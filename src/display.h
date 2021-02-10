@@ -26,7 +26,7 @@
 #define DEFAULT_WINDOW_WIDTH 800
 #define DEFAULT_WINDOW_HEIGHT 600
 
-extern uint32_t colors[7];
+extern color_t colors[7];
 
 extern bool is_running;
 
@@ -39,7 +39,7 @@ extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 
 extern SDL_Texture* color_buffer_texture;
-extern uint32_t* color_buffer;
+extern color_t* color_buffer;
 
 extern int previous_frame_time;
 
@@ -49,14 +49,14 @@ bool initialize_window(void);
 void destroy_window(void);
 
 void render_color_buffer(void);
-void clear_color_buffer(uint32_t color);
-void draw_pixel(int x, int y, uint32_t color);
+void clear_color_buffer(color_t color);
+void draw_pixel(int x, int y, color_t color);
 
-void draw_grid(int spacing, int size, uint32_t color);
-void draw_dots(int spacing, uint32_t color);
-void draw_rect(int x_pos, int y_pos, int w, int h, uint32_t color, uint32_t stroke);
-void draw_line(int x0, int y0, int x1, int y1, uint32_t stroke);
-void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t stroke);
+void draw_grid(int spacing, int size, color_t color);
+void draw_dots(int spacing, color_t color);
+void draw_rect(int x_pos, int y_pos, int w, int h, color_t color, color_t stroke);
+void draw_line(int x0, int y0, int x1, int y1, color_t stroke);
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t stroke);
 
 #define GRID_GRID 0
 #define GRID_DOT  1

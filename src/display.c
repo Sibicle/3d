@@ -2,7 +2,7 @@
 
 #include "display.h"
 
-uint32_t colors[NUM_COLORS] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
+color_t colors[NUM_COLORS] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
 
 bool is_running        = false;
 
@@ -19,13 +19,13 @@ SDL_Window* window     = NULL;
 SDL_Renderer* renderer = NULL;
 
 SDL_Texture* color_buffer_texture = NULL;
-uint32_t* color_buffer            = NULL;
+color_t* color_buffer            = NULL;
 
 int previous_frame_time = 0;
 
 triangle_t * projected_triangles = 0;
 
-void draw_pixel(int x, int y, uint32_t color) {
+void draw_pixel(int x, int y, color_t color) {
   if (x >= 0 && x < window_width && y>= 0 && y < window_height) {
     color_buffer[(window_width * (window_height - y - 1)) + x] = color;
   }
@@ -86,13 +86,13 @@ void render_color_buffer(void) {
     color_buffer_texture,
     NULL,
     color_buffer,
-    (int) (window_width * sizeof(uint32_t))
+    (int) (window_width * sizeof(color_t))
   );
 
   SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
-void clear_color_buffer(uint32_t color) {
+void clear_color_buffer(color_t color) {
   for(int y = 0; y < window_height; y++) {
     for(int x = 0; x < window_width; x++) {
       draw_pixel(x, y, color);
@@ -100,7 +100,7 @@ void clear_color_buffer(uint32_t color) {
   }
 }
 
-void draw_grid(int spacing, int size, uint32_t color) {
+void draw_grid(int spacing, int size, color_t color) {
   for(int y = 0; y < window_height; y++) {
     for(int x = 0; x < window_width; x++) {
       if(x % spacing < size || y % spacing < size) {
@@ -110,7 +110,7 @@ void draw_grid(int spacing, int size, uint32_t color) {
   }
 }
 
-void draw_dots(int spacing, uint32_t color) {
+void draw_dots(int spacing, color_t color) {
   for(int y = 0; y < window_height; y += spacing) {
     for(int x = 0; x < window_width; x += spacing) {
       draw_pixel(x, y, color);
@@ -118,7 +118,7 @@ void draw_dots(int spacing, uint32_t color) {
   }
 }
 
-void draw_rect(int x, int y, int w, int h, uint32_t color, uint32_t stroke) {
+void draw_rect(int x, int y, int w, int h, color_t color, color_t stroke) {
   for(int i = y; i <= y + h; i++) {
     for(int j = x; j <= x + w; j++) {
       if (j == x || j == x + w || i == y || i == y + h) {
@@ -130,7 +130,7 @@ void draw_rect(int x, int y, int w, int h, uint32_t color, uint32_t stroke) {
   }
 }
 
-void draw_line(int x0, int y0, int x1, int y1, uint32_t stroke) {
+void draw_line(int x0, int y0, int x1, int y1, color_t stroke) {
   int dx = x1 - x0;
   int dy = y1 - y0;
   int step;
@@ -158,7 +158,7 @@ void draw_line(int x0, int y0, int x1, int y1, uint32_t stroke) {
   }
 }
 
-void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t stroke) {
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t stroke) {
   draw_line(x0, y0, x1, y1, stroke);
   draw_line(x1, y1, x2, y2, stroke);
   draw_line(x2, y2, x0, y0, stroke);

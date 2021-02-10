@@ -16,7 +16,7 @@
 #include "camera.h"
 
 void setup(void) {
-  color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * window_height);
+  color_buffer = (color_t*) malloc(sizeof(color_t) * window_width * window_height);
 
   color_buffer_texture = SDL_CreateTexture(
     renderer,
@@ -127,7 +127,7 @@ void render(void) {
     triangle_t triangle = projected_triangles[i];
 
     if (render_faces) {
-      uint32_t color = render_colors ? triangle.color : PURPLE;
+      color_t color = render_colors ? triangle.color : PURPLE;
       draw_filled_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,

@@ -17,7 +17,7 @@ void sort_triangles_by_depth(triangle_t * a) {
   qsort(a, array_length(a), sizeof a[0], compare_z_depth);
 }
 
-void draw_filled_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color) {
+void draw_filled_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t color) {
   if (y0 > y1) {
     int_swap(&y0, &y1);
     int_swap(&x0, &x1);
@@ -44,7 +44,7 @@ void draw_filled_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32
   }
 }
 
-void fill_flat_bottom_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color) {
+void fill_flat_bottom_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t color) {
   float slope_1 = (float)(x1 - x0) / (y1 - y0);
   float slope_2 = (float)(x2 - x0) / (y2 - y0);
 
@@ -58,7 +58,7 @@ void fill_flat_bottom_triangle(int x0, int y0, int x1, int y1, int x2, int y2, u
   }
 }
 
-void fill_flat_top_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color) {
+void fill_flat_top_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t color) {
   float slope_1 = (float)(x2 - x0) / (y2 - y0);
   float slope_2 = (float)(x2 - x1) / (y2 - y1);
 
