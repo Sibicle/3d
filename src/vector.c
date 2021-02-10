@@ -127,9 +127,9 @@ void vec3_rotate_x_inplace(vec3_t * a, float t) {
 
 void vec3_rotate_y_inplace(vec3_t * a, float t) {
   vec3_t a_1 = {
-    .x = a->x * cos(t) - a->z * sin(t),
-    .y = a->y,
-    .z = a->x * sin(t) + a->z * cos(t)
+    .x =  a->x * cos(t) + a->z * sin(t),
+    .y =  a->y,
+    .z = -a->x * sin(t) + a->z * cos(t)
   };
 
   memcpy(a, &a_1, sizeof a_1);

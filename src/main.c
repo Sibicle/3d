@@ -46,11 +46,14 @@ void update(void) {
     camera_pos.x = ( mouse_x - (window_width  / 2)) / 200.0;
   } else {
     mesh.rotation.x = ( mouse_y - (window_height / 2)) / -200.0;
-    mesh.rotation.y = ( mouse_x - (window_width  / 2)) / 200.0;
+    mesh.rotation.y = ( mouse_x - (window_width  / 2)) / -200.0;
   }
 
   mat4_t scale_matrix = mat4_make_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
   mat4_t trans_matrix = mat4_make_trans(mesh.position.x, mesh.position.y, mesh.position.z);
+  mat4_t rotate_x_matrix = mat4_make_rotate_x(mesh.rotation.x);
+  mat4_t rotate_y_matrix = mat4_make_rotate_y(mesh.rotation.y);
+  mat4_t rotate_z_matrix = mat4_make_rotate_z(mesh.rotation.z);
 
   for (int i = 0; i < array_length(mesh.faces); i++) {
     face_t mesh_face = mesh.faces[i];
@@ -67,8 +70,9 @@ void update(void) {
 
       mat4_mul_vec4_inplace(&scale_matrix, &transformed_vertex);
       mat4_mul_vec4_inplace(&trans_matrix, &transformed_vertex);
-
-      vec3_rotate_inplace(&transformed_vertex, mesh.rotation);
+      mat4_mul_vec4_inplace(&rotate_x_matrix, &transformed_vertex);
+      mat4_mul_vec4_inplace(&rotate_y_matrix, &transformed_vertex);
+      mat4_mul_vec4_inplace(&rotate_z_matrix, &transformed_vertex);
 
       transformed_vertices[j] = transformed_vertex;
     }

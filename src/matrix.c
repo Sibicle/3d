@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 #include "matrix.h"
 
@@ -26,12 +27,55 @@ mat4_t mat4_make_scale(float sx, float sy, float sz) {
 mat4_t mat4_make_scale_uniform(float s) {
   return mat4_make_scale(s, s, s);
 }
+
 mat4_t mat4_make_trans(float tx, float ty, float tz) {
   mat4_t m = mat4_make_identity();
 
   m.m[0][3] = tx;
   m.m[1][3] = ty;
   m.m[2][3] = tz;
+
+  return m;
+}
+
+mat4_t mat4_make_rotate_x(float rx) {
+  mat4_t m = mat4_make_identity();
+  float  s = sin(rx);
+  float  c = cos(rx);
+
+  m.m[1][1] = c;
+  m.m[1][2] = -s;
+
+  m.m[2][1] = s;
+  m.m[2][2] = c;
+
+  return m;
+}
+
+mat4_t mat4_make_rotate_y(float ry) {
+  mat4_t m = mat4_make_identity();
+  float  s = sin(ry);
+  float  c = cos(ry);
+
+  m.m[0][0] = c;
+  m.m[0][2] = s;
+
+  m.m[2][0] = -s;
+  m.m[2][2] = c;
+
+  return m;
+}
+
+mat4_t mat4_make_rotate_z(float rz) {
+  mat4_t m = mat4_make_identity();
+  float  s = sin(rz);
+  float  c = cos(rz);
+
+  m.m[0][0] = c;
+  m.m[0][1] = -s;
+
+  m.m[1][0] = s;
+  m.m[1][1] = c;
 
   return m;
 }
