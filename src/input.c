@@ -107,6 +107,9 @@ void process_input(void) {
         case SDLK_r:
           render_camera_ray = !render_camera_ray;
           break;
+        case SDLK_1:
+          render_colors = !render_colors;
+          break;
 
         case SDLK_b:
           cull_faces = (cull_faces + 1) % 3;

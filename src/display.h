@@ -9,6 +9,8 @@
 #include "vector.h"
 #include "triangle.h"
 
+#define NUM_COLORS 7
+
 #define BG      0x282A36
 #define LINE    0x44475A
 #define FG      0xF8F8F2

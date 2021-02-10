@@ -14,6 +14,7 @@
 #define RENDER_VERTICES     false
 #define RENDER_CENTROIDS    false
 #define RENDER_NORMALS      false
+#define RENDER_COLORS       false
 
 #define CULL_NO_FACES       0
 #define CULL_FRONT_FACES    1
@@ -30,6 +31,7 @@ extern bool render_faces;
 extern bool render_vertices;
 extern bool render_centroids;
 extern bool render_normals;
+extern bool render_colors;
 
 extern int cull_faces;
 

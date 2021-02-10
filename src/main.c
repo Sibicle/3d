@@ -55,28 +55,14 @@ void update(void) {
     vec3_t normal    = mesh.normals[i];
     vec3_t centroid  = mesh.centroids[i];
 
-    vec3_t transformed_centroid      = centroid;
-    vec3_t transformed_normal        = normal;
+    vec3_t transformed_centroid = centroid;
+    vec3_t transformed_normal   = normal;
 
     transformed_centroid = vec3_rotate(transformed_centroid, mesh.rotation);
     transformed_centroid = vec3_add(transformed_centroid, mesh.position);
 
     transformed_normal = vec3_rotate(transformed_normal, mesh.rotation);
     transformed_normal = vec3_add(transformed_normal, mesh.position);
-
-    vec3_t camera_ray = vec3_sub(camera_pos, transformed_centroid);
-    float back_dot = vec3_dot(transformed_normal, camera_ray);
-
-    if (cull_faces == CULL_BACK_FACES && back_dot < 0) {
-      continue;
-    }
-
-    if (cull_faces == CULL_FRONT_FACES && back_dot > 0) {
-      continue;
-    }
-
-    transformed_normal = vec3_div(transformed_normal, vec3_length(normal) * 2);
-    transformed_normal = vec3_add(transformed_centroid, transformed_normal);
 
     vec3_t face_vertices [3];
     face_vertices[0] = mesh.vertices[mesh_face.a - 1];
@@ -94,15 +80,41 @@ void update(void) {
       transformed_vertices[j] = transformed_vertex;
     }
 
+    vec3_t a = transformed_vertices[0];
+    vec3_t b = transformed_vertices[1];
+    vec3_t c = transformed_vertices[2];
+
+    vec3_t ab = vec3_sub(b, a);
+    vec3_t ac = vec3_sub(c, a);
+
+    vec3_t calc_normal = vec3_cross(ab, ac);
+
+    vec3_t camera_ray = vec3_sub(camera_pos, a);
+    float back_dot = vec3_dot(calc_normal, camera_ray);
+
+    if (cull_faces == CULL_BACK_FACES && back_dot < 0) {
+      continue;
+    }
+
+    if (cull_faces == CULL_FRONT_FACES && back_dot > 0) {
+      continue;
+    }
+
+    calc_normal = vec3_div(calc_normal, vec3_length(normal) * 2);
+    calc_normal = vec3_add(transformed_centroid, calc_normal);
+
     vec2_t projected_centroid;
     projected_centroid = project(transformed_centroid);
     array_push(projected_centroids, projected_centroid);
 
     vec2_t projected_normal;
-    projected_normal = project(transformed_normal);
+    projected_normal = project(calc_normal);
     array_push(projected_normals, projected_normal);
 
     triangle_t projected_triangle;
+    projected_triangle.color         = mesh_face.color;
+    projected_triangle.average_depth = transformed_centroid.z;
+
     for (int j = 0; j < 3; j++) {
       vec2_t projected_point;
       projected_point = project(transformed_vertices[j]);
@@ -126,21 +138,22 @@ void render(void) {
 
     triangle_t triangle = projected_triangles[i];
 
+    if (render_faces) {
+      uint32_t color = render_colors ? triangle.color : PURPLE;
+      draw_filled_triangle(
+        triangle.points[0].x, triangle.points[0].y,
+        triangle.points[1].x, triangle.points[1].y,
+        triangle.points[2].x, triangle.points[2].y,
+        color
+      );
+    }
+
     if (render_lines) {
       draw_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
         triangle.points[2].x, triangle.points[2].y,
         GREEN
-      );
-    }
-
-    if (render_faces) {
-      draw_filled_triangle(
-        triangle.points[0].x, triangle.points[0].y,
-        triangle.points[1].x, triangle.points[1].y,
-        triangle.points[2].x, triangle.points[2].y,
-        PURPLE
       );
     }
 

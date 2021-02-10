@@ -6,6 +6,8 @@
 #include "config.h"
 #include "mesh.h"
 #include "array.h"
+#include "util.h"
+#include "display.h"
 
 mesh_t mesh = {
     .vertices = 0,
@@ -42,10 +44,14 @@ void parse_obj_line(char * line) {
       );
     }
 
+    int color_index = rand_int(0, NUM_COLORS - 1);
+    uint32_t color = colors[color_index];
+
     face_t face = {
       .a = vertex_indices[0],
       .b = vertex_indices[1],
-      .c = vertex_indices[2]
+      .c = vertex_indices[2],
+      .color = color
     };
 
     array_push(mesh.faces, face);

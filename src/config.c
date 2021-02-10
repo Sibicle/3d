@@ -9,6 +9,7 @@ bool render_faces        = RENDER_FACES;
 bool render_vertices     = RENDER_VERTICES;
 bool render_centroids    = RENDER_CENTROIDS;
 bool render_normals      = RENDER_NORMALS;
+bool render_colors       = RENDER_COLORS;
 
 int cull_faces           = CULL_BACK_FACES;
 

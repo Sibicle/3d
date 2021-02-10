@@ -2,7 +2,7 @@
 
 #include "display.h"
 
-uint32_t colors[7] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
+uint32_t colors[NUM_COLORS] = { CYAN, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW };
 
 bool is_running        = false;
 
@@ -149,7 +149,7 @@ void draw_line(int x0, int y0, int x1, int y1, uint32_t stroke) {
   float x = x0;
   float y = y0;
 
-  int i = 1;
+  int i = 0;
 
   while(i <= step) {
     draw_pixel(round(x), round(y), stroke);
