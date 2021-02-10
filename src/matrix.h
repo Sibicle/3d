@@ -10,6 +10,7 @@ typedef struct {
 mat4_t mat4_make_identity(void);
 mat4_t mat4_make_scale(float sx, float sy, float sz);
 mat4_t mat4_make_scale_uniform(float s);
+mat4_t mat4_make_trans(float tx, float ty, float tz);
 
 void mat4_mul_vec4_inplace(mat4_t * m, vec4_t * v);
 

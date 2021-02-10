@@ -26,6 +26,15 @@ mat4_t mat4_make_scale(float sx, float sy, float sz) {
 mat4_t mat4_make_scale_uniform(float s) {
   return mat4_make_scale(s, s, s);
 }
+mat4_t mat4_make_trans(float tx, float ty, float tz) {
+  mat4_t m = mat4_make_identity();
+
+  m.m[0][3] = tx;
+  m.m[1][3] = ty;
+  m.m[2][3] = tz;
+
+  return m;
+}
 
 void mat4_mul_vec4_inplace(mat4_t * m, vec4_t * v) {
   vec4_t prod = VEC4_ZERO;

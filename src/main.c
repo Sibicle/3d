@@ -49,9 +49,8 @@ void update(void) {
     mesh.rotation.y = ( mouse_x - (window_width  / 2)) / 200.0;
   }
 
-  mesh.scale.x += 0.002;
-
   mat4_t scale_matrix = mat4_make_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
+  mat4_t trans_matrix = mat4_make_trans(mesh.position.x, mesh.position.y, mesh.position.z);
 
   for (int i = 0; i < array_length(mesh.faces); i++) {
     face_t mesh_face = mesh.faces[i];
@@ -67,9 +66,9 @@ void update(void) {
       vec4_t transformed_vertex = vec4_from_vec3(&face_vertices[j]);
 
       mat4_mul_vec4_inplace(&scale_matrix, &transformed_vertex);
+      mat4_mul_vec4_inplace(&trans_matrix, &transformed_vertex);
 
       vec3_rotate_inplace(&transformed_vertex, mesh.rotation);
-      vec3_add_inplace(&transformed_vertex, mesh.position);
 
       transformed_vertices[j] = transformed_vertex;
     }
@@ -105,7 +104,7 @@ void update(void) {
 
     projected_triangle.centroid      = project(centroid);
     projected_triangle.normal        = project(normal);
-    projected_triangle.average_depth = (a.z + b.z + c.z) / 3.0;
+    projected_triangle.average_depth = centroid.z;
 
     projected_triangle.color         = mesh_face.color;
 
