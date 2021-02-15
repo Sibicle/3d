@@ -113,11 +113,39 @@ void mat4_mul_mat4(mat4_t * m, mat4_t * n) {
   }
 }
 
+vec4_t mat4_mul_vec4_project(mat4_t * m, vec4_t * v) {
+  vec4_t res = *v;
+
+  mat4_mul_vec4(m, &res);
+
+  if (res.w != 0.0) {
+    res.x = res.x / res.w;
+    res.y = res.y / res.w;
+    res.z = res.z / res.w;
+  }
+
+  return res;
+}
+
+mat4_t mat4_make_persp(float fov, float aspect, float znear, float zfar) {
+   mat4_t r = { 0 };
+   float t  = tan(fov / 2.0);
+   float dz = zfar - znear;
+
+   r.m[0][0] = aspect * (1.0 / t);
+   r.m[1][1] = 1.0 / t;
+   r.m[2][2] = zfar / dz;
+   r.m[2][3] = (-zfar * znear) / dz;
+   r.m[3][2] = 1.0;
+
+   return r;
+}
+
 void mat4_to_string(char * str, mat4_t * m) {
   int len = 0;
 
-  len += sprintf(str + len, "┌ %0.1f  %0.1f  %0.1f  %0.1f  ┐\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
-  len += sprintf(str + len, "│ %0.1f  %0.1f  %0.1f  %0.1f  │\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
-  len += sprintf(str + len, "│ %0.1f  %0.1f  %0.1f  %0.1f  │\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
-  len += sprintf(str + len, "└ %0.1f  %0.1f  %0.1f  %0.1f  ┘\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
+  len += sprintf(str + len, "┌ %6.2f  %6.2f  %6.2f  %6.2f  ┐\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
+  len += sprintf(str + len, "│ %6.2f  %6.2f  %6.2f  %6.2f  │\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
+  len += sprintf(str + len, "│ %6.2f  %6.2f  %6.2f  %6.2f  │\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
+  len += sprintf(str + len, "└ %6.2f  %6.2f  %6.2f  %6.2f  ┘\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
 }

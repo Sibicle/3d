@@ -211,22 +211,49 @@ vec3_t vec3_cross(vec3_t a, vec3_t b) {
   return cross;
 }
 
-vec3_t tri_normal(vec3_t a, vec3_t b, vec3_t c) {
-  vec3_t ab     = vec3_sub(b, a);
-  vec3_t ac     = vec3_sub(c, a);
-  vec3_t normal = vec3_cross(ab, ac);
+vec4_t vec4_cross(vec4_t * a, vec4_t * b) {
+  vec4_t cross = {
+    .x = a->y * b->z - a->z * b->y,
+    .y = a->z * b->x - a->x * b->z,
+    .z = a->x * b->y - a->y * b->x,
+    .w = 1.0
+  };
 
-  return normal;
+  return cross;
 }
 
-vec3_t tri_centroid(vec3_t a, vec3_t b, vec3_t c) {
-  vec3_t centroid = {
-    .x = (a.x + b.x + c.x) / 3,
-    .y = (a.y + b.y + c.y) / 3,
-    .z = (a.z + b.z + c.z) / 3
+float vec4_dot(vec4_t * a, vec4_t * b) {
+  return (a->x * b->x) + (a->y * b->y) + (a->z * b->z);
+}
+
+vec4_t vec4_sub(vec4_t * a, vec4_t * b) {
+  vec4_t dif = {
+    .x = a->x - b->x,
+    .y = a->y - b->y,
+    .z = a->z - b->z,
+    .w = 1
+  };
+
+  return dif;
+}
+
+vec4_t vec4_centroid(vec4_t * a, vec4_t * b, vec4_t * c) {
+  vec4_t centroid = {
+    .x = (a->x + b->x + c->x) / 3.0,
+    .y = (a->y + b->y + c->y) / 3.0,
+    .z = (a->z + b->z + c->z) / 3.0,
+    .w = 1.0
   };
 
   return centroid;
+}
+
+vec4_t vec4_normal(vec4_t * a, vec4_t * b, vec4_t * c) {
+  vec4_t ab     = vec4_sub(b, a);
+  vec4_t ac     = vec4_sub(c, a);
+  vec4_t normal = vec4_cross(&ab, &ac);
+
+  return normal;
 }
 
 vec3_t vec3_rotate_x(vec3_t v, float a) {
@@ -303,8 +330,8 @@ void vec3_to_string(char * str, vec3_t * v) {
 void vec4_to_string(char * str, vec4_t * v) {
   int len = 0;
 
-  len += sprintf(str + len, "┌ %0.1f ┐\n", v->x);
-  len += sprintf(str + len, "│ %0.1f │\n", v->y);
-  len += sprintf(str + len, "│ %0.1f │\n", v->z);
-  len += sprintf(str + len, "└ %0.1f ┘\n", v->w);
+  len += sprintf(str + len, "┌ %6.2f ┐\n", v->x);
+  len += sprintf(str + len, "│ %6.2f │\n", v->y);
+  len += sprintf(str + len, "│ %6.2f │\n", v->z);
+  len += sprintf(str + len, "└ %6.2f ┘\n", v->w);
 }

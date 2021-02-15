@@ -8,6 +8,7 @@
 #include "util.h"
 #include "vector.h"
 #include "triangle.h"
+#include "matrix.h"
 
 #define NUM_COLORS 7
 
@@ -43,6 +44,8 @@ extern color_t* color_buffer;
 
 extern int previous_frame_time;
 
+extern mat4_t proj_matrix;
+
 extern triangle_t * projected_triangles;
 
 bool initialize_window(void);
@@ -51,6 +54,8 @@ void destroy_window(void);
 void render_color_buffer(void);
 void clear_color_buffer(color_t color);
 void draw_pixel(int x, int y, color_t color);
+
+mat4_t mat4_make_screen_matrix();
 
 void draw_grid(int spacing, int size, color_t color);
 void draw_dots(int spacing, color_t color);

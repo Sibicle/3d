@@ -61,10 +61,15 @@ vec3_t vec3_rotate_y(vec3_t v, float a);
 vec3_t vec3_rotate_z(vec3_t v, float a);
 vec3_t vec3_rotate(vec3_t v, vec3_t t);
 
-vec3_t tri_normal(vec3_t a, vec3_t b, vec3_t c);
-vec3_t tri_centroid(vec3_t a, vec3_t b, vec3_t c);
-
 vec3_t vec3_from_vec4(vec4_t * v);
+
+vec4_t vec4_sub(vec4_t * a, vec4_t * b);
+
+vec4_t vec4_cross(vec4_t * a, vec4_t * b);
+float vec4_dot(vec4_t * a, vec4_t * b);
+
+vec4_t vec4_centroid(vec4_t * a, vec4_t * b, vec4_t * c);
+vec4_t vec4_normal(vec4_t * a, vec4_t * b, vec4_t * c);
 
 vec4_t vec4_from_vec3(vec3_t * v);
 

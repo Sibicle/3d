@@ -23,6 +23,8 @@ color_t* color_buffer            = NULL;
 
 int previous_frame_time = 0;
 
+mat4_t proj_matrix = {{{ 0 }}};
+
 triangle_t * projected_triangles = 0;
 
 void draw_pixel(int x, int y, color_t color) {
@@ -90,6 +92,21 @@ void render_color_buffer(void) {
   );
 
   SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
+}
+
+mat4_t mat4_make_screen_matrix() {
+  mat4_t screen_matrix = mat4_make_identity();
+
+  float w_2 = window_width / 2.0;
+  float h_2 = window_height / 2.0;
+
+  mat4_t scale_matrix = mat4_make_scale(w_2, h_2, 1.0);
+  mat4_t trans_matrix = mat4_make_trans(w_2, h_2, 0.0);
+
+  // mat4_mul_mat4(&screen_matrix, &trans_matrix);
+  mat4_mul_mat4(&screen_matrix, &scale_matrix);
+
+  return screen_matrix;
 }
 
 void clear_color_buffer(color_t color) {

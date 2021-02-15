@@ -15,9 +15,9 @@ typedef struct {
 } face_t;
 
 typedef struct {
-  vec2_t points[3];
-  vec2_t centroid;
-  vec2_t normal;
+  vec4_t points[3];
+  vec4_t centroid;
+  vec4_t normal;
 
   float average_depth;
 

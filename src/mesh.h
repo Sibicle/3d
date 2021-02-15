@@ -5,6 +5,7 @@
 
 #include "vector.h"
 #include "triangle.h"
+#include "matrix.h"
 
 typedef struct {
   vec3_t * vertices;
@@ -27,6 +28,8 @@ void translate_mesh(vec3_t translate);
 void rotate_mesh(vec3_t rotate);
 void scale_mesh(vec3_t scale);
 void scale_mesh_uniform(float scale);
+
+mat4_t mat4_make_world_matrix();
 
 void print_mesh_pos(void);
 

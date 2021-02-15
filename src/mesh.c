@@ -13,7 +13,7 @@ mesh_t mesh = {
     .vertices = 0,
     .faces    = 0,
     .rotation = { 0.0, 0.0, 0.0 },
-    .position = { 0.0, 0.0, 0.0 },
+    .position = { 0.0, 0.0, 5.0 },
     .scale    = { 1.0, 1.0, 1.0 }
 };
 
@@ -140,6 +140,24 @@ void scale_mesh_uniform(float scale) {
 
     mesh.vertices[i] = transformed_vertex;
   }
+}
+
+mat4_t mat4_make_world_matrix() {
+  mat4_t world_matrix    = mat4_make_identity();
+
+  mat4_t scale_matrix    = mat4_make_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
+  mat4_t rotate_x_matrix = mat4_make_rotate_x(mesh.rotation.x);
+  mat4_t rotate_y_matrix = mat4_make_rotate_y(mesh.rotation.y);
+  mat4_t rotate_z_matrix = mat4_make_rotate_z(mesh.rotation.z);
+  mat4_t trans_matrix    = mat4_make_trans(mesh.position.x, mesh.position.y, mesh.position.z);
+
+  mat4_mul_mat4(&world_matrix, &trans_matrix);
+  mat4_mul_mat4(&world_matrix, &rotate_x_matrix);
+  mat4_mul_mat4(&world_matrix, &rotate_y_matrix);
+  mat4_mul_mat4(&world_matrix, &rotate_z_matrix);
+  mat4_mul_mat4(&world_matrix, &scale_matrix);
+
+  return world_matrix;
 }
 
 void print_mesh_pos(void) {
