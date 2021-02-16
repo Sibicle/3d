@@ -104,9 +104,9 @@ void update(void) {
 
     float light_dot = vec3_dot(normal_normal, light_orientation);
 
-    vec3_scale_uniform_inplace(&normal_normal, 0.5);
+    vec3_scale_uniform_inplace(&normal_normal, 0.3);
+    vec3_add_inplace(&normal_normal, vec3_from_vec4(&centroid));
     vec4_t vec4_normal_normal = vec4_from_vec3(&normal_normal);
-    vec4_add(&vec4_normal_normal, &centroid);
 
     triangle_t projected_triangle;
 
