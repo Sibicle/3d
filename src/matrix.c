@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 
 #include "matrix.h"
@@ -106,11 +107,7 @@ void mat4_mul_mat4(mat4_t * m, mat4_t * n) {
     }
   }
 
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      m->m[i][j] = r.m[i][j];
-    }
-  }
+  memcpy(m, &r, sizeof(*m));
 }
 
 vec4_t mat4_mul_vec4_project(mat4_t * m, vec4_t * v) {
