@@ -63,6 +63,7 @@ vec3_t vec3_rotate(vec3_t v, vec3_t t);
 
 vec3_t vec3_from_vec4(vec4_t * v);
 
+vec4_t vec4_add(vec4_t * a, vec4_t * b);
 vec4_t vec4_sub(vec4_t * a, vec4_t * b);
 
 vec4_t vec4_cross(vec4_t * a, vec4_t * b);

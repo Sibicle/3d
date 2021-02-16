@@ -101,7 +101,7 @@ mat4_t mat4_make_screen_matrix() {
   float h_2 = window_height / 2.0;
 
   mat4_t scale_matrix = mat4_make_scale(w_2, h_2, 1.0);
-  mat4_t trans_matrix = mat4_make_trans(w_2, h_2, 0.0);
+  // mat4_t trans_matrix = mat4_make_trans(w_2, h_2, 0.0);
 
   // mat4_mul_mat4(&screen_matrix, &trans_matrix);
   mat4_mul_mat4(&screen_matrix, &scale_matrix);

@@ -237,6 +237,17 @@ vec4_t vec4_sub(vec4_t * a, vec4_t * b) {
   return dif;
 }
 
+vec4_t vec4_add(vec4_t * a, vec4_t * b) {
+  vec4_t sum = {
+    .x = a->x + b->x,
+    .y = a->y + b->y,
+    .z = a->z + b->z,
+    .w = 1
+  };
+
+  return sum;
+}
+
 vec4_t vec4_centroid(vec4_t * a, vec4_t * b, vec4_t * c) {
   vec4_t centroid = {
     .x = (a->x + b->x + c->x) / 3.0,

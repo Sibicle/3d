@@ -9,7 +9,7 @@
 
 #define RENDER_ORIGIN       false
 
-#define RENDER_LINES        true
+#define RENDER_LINES        false
 #define RENDER_FACES        true
 #define RENDER_VERTICES     false
 #define RENDER_CENTROIDS    false

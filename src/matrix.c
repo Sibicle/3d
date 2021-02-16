@@ -141,8 +141,8 @@ mat4_t mat4_make_persp(float fov, float aspect, float znear, float zfar) {
 void mat4_to_string(char * str, mat4_t * m) {
   int len = 0;
 
-  len += sprintf(str + len, "┌ %6.2f  %6.2f  %6.2f  %6.2f  ┐\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
-  len += sprintf(str + len, "│ %6.2f  %6.2f  %6.2f  %6.2f  │\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
-  len += sprintf(str + len, "│ %6.2f  %6.2f  %6.2f  %6.2f  │\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
-  len += sprintf(str + len, "└ %6.2f  %6.2f  %6.2f  %6.2f  ┘\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
+  len += sprintf(str + len, "┌ %6.2f  %6.2f  %6.2f  %6.2f ┐\n", m->m[0][0], m->m[0][1], m->m[0][2], m->m[0][3]);
+  len += sprintf(str + len, "│ %6.2f  %6.2f  %6.2f  %6.2f │\n", m->m[1][0], m->m[1][1], m->m[1][2], m->m[1][3]);
+  len += sprintf(str + len, "│ %6.2f  %6.2f  %6.2f  %6.2f │\n", m->m[2][0], m->m[2][1], m->m[2][2], m->m[2][3]);
+  len += sprintf(str + len, "└ %6.2f  %6.2f  %6.2f  %6.2f ┘\n", m->m[3][0], m->m[3][1], m->m[3][2], m->m[3][3]);
 }

@@ -14,6 +14,7 @@
 #include "mesh.h"
 // #include "origin.h"
 #include "camera.h"
+#include "light.h"
 
 void setup(void) {
   color_buffer = (color_t*) malloc(sizeof(color_t) * window_width * window_height);
@@ -97,9 +98,15 @@ void update(void) {
 
     vec3_t normal_normal = vec3_from_vec4(&normal);
     vec3_normalize_inplace(&normal_normal);
+
+    vec3_t light_orientation = global_light.orientation;
+    vec3_normalize_inplace(&light_orientation);
+
+    float light_dot = vec3_dot(normal_normal, light_orientation);
+
     vec3_scale_uniform_inplace(&normal_normal, 0.5);
-    vec3_add_inplace(&normal_normal, vec3_from_vec4(&centroid));
     vec4_t vec4_normal_normal = vec4_from_vec3(&normal_normal);
+    vec4_add(&vec4_normal_normal, &centroid);
 
     triangle_t projected_triangle;
 
@@ -117,7 +124,9 @@ void update(void) {
     projected_triangle.normal.x += (window_width / 2.0);
     projected_triangle.normal.y += (window_height / 2.0);
 
-    projected_triangle.color         = mesh_face.color;
+    light_dot = (light_dot + 1) / 2;
+    color_t lit_color = light_apply_intensity(PURPLE, light_dot);
+    projected_triangle.color = lit_color;
 
     for (int j = 0; j < 3; j++) {
       vec4_t projected_point = mat4_mul_vec4_project(&proj_matrix, &transformed_vertices[j]);
@@ -148,12 +157,11 @@ void render(void) {
     triangle_t triangle = projected_triangles[i];
 
     if (render_faces) {
-      color_t color = render_colors ? triangle.color : PURPLE;
       draw_filled_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
         triangle.points[2].x, triangle.points[2].y,
-        color
+        triangle.color
       );
     }
 
