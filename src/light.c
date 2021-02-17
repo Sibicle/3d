@@ -3,12 +3,15 @@
 light_t global_light = {
   .orientation = {
     .x =  0.0,
-    .y = -1.0,
+    .y =  1.0,
     .z =  0.0
   }
 };
 
 color_t light_apply_intensity(color_t original, float percent) {
+  percent = fmax(percent, 0.0);
+  percent = fmin(percent, 1.0);
+
   color_t a = (original & 0xFF000000);
   color_t r = (original & 0x00FF0000) * percent;
   color_t g = (original & 0x0000FF00) * percent;
