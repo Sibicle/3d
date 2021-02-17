@@ -6,12 +6,14 @@
 #include "vector.h"
 #include "triangle.h"
 #include "matrix.h"
+#include "texture.h"
 
 typedef struct {
   vec3_t * vertices;
   face_t * faces;
   vec3_t * normals;
   vec3_t * centroids;
+  tex2_t * uvs;
   vec3_t rotation;
   vec3_t position;
   vec3_t scale;
@@ -31,7 +33,8 @@ void scale_mesh_uniform(float scale);
 
 mat4_t mat4_make_world_matrix();
 
-void print_mesh_pos(void);
+void mesh_print(void);
+void mesh_print_pos(void);
 
 void free_mesh();
 

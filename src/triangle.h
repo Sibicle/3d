@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "vector.h"
+#include "texture.h"
 
 typedef uint32_t color_t;
 
@@ -11,6 +12,9 @@ typedef struct {
   int a;
   int b;
   int c;
+  int a_uv;
+  int b_uv;
+  int c_uv;
   color_t color;
 } face_t;
 
@@ -18,6 +22,8 @@ typedef struct {
   vec4_t points[3];
   vec4_t centroid;
   vec4_t normal;
+
+  tex2_t uvs[3];
 
   float average_depth;
 

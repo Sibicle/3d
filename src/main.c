@@ -35,6 +35,8 @@ void setup(void) {
 
   load_mesh_files();
   load_next_mesh_file();
+
+  mesh_print();
 }
 
 void update(void) {

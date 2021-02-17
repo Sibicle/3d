@@ -53,27 +53,27 @@ void process_input(void) {
 
         case SDLK_RIGHT:
           mesh.position.x += 0.1;
-          print_mesh_pos();
+          mesh_print_pos();
           break;
         case SDLK_LEFT:
           mesh.position.x -= 0.1;
-          print_mesh_pos();
+          mesh_print_pos();
           break;
         case SDLK_UP:
           mesh.position.y += 0.1;
-          print_mesh_pos();
+          mesh_print_pos();
           break;
         case SDLK_DOWN:
           mesh.position.y -= 0.1;
-          print_mesh_pos();
+          mesh_print_pos();
           break;
         case SDLK_PERIOD:
           mesh.position.z += 0.1;
-          print_mesh_pos();
+          mesh_print_pos();
           break;
         case SDLK_COMMA:
           mesh.position.z -= 0.1;
-          print_mesh_pos();
+          mesh_print_pos();
           break;
 
         case SDLK_SPACE:

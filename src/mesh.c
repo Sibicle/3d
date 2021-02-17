@@ -8,10 +8,12 @@
 #include "array.h"
 #include "util.h"
 #include "display.h"
+#include "texture.h"
 
 mesh_t mesh = {
-    .vertices = 0,
-    .faces    = 0,
+    .vertices = NULL,
+    .faces    = NULL,
+    .uvs      = NULL,
     .rotation = { 0.0, 0.0, 0.0 },
     .position = { 0.0, 0.0, 5.0 },
     .scale    = { 1.0, 1.0, 1.0 }
@@ -22,36 +24,22 @@ void parse_obj_line(char * line) {
     vec3_t vertex;
     sscanf(line, "v %f %f %f", &vertex.x, &vertex.y, &vertex.z);
     array_push(mesh.vertices, vertex);
+  } else if (strncmp(line, "vt ", 2) == 0) {
+    tex2_t uv;
+    sscanf(line, "vt %f %f", &uv.u, &uv.v);
+    array_push(mesh.uvs, uv);
   } else if (strncmp(line, "f ", 2) == 0) {
-    int vertex_indices[3];
-    int texture_indices[3];
-    int normal_indices[3];
+    face_t face = { 0 };
 
-    int matches = sscanf(
-      line, "f %d/%d/%d %d/%d/%d %d/%d/%d",
-      &vertex_indices[0], &texture_indices[0], &normal_indices[0],
-      &vertex_indices[1], &texture_indices[1], &normal_indices[1],
-      &vertex_indices[2], &texture_indices[2], &normal_indices[2]
+    sscanf(
+      line, "f %d/%d %d/%d %d/%d",
+      &face.a, &face.a_uv,
+      &face.b, &face.b_uv,
+      &face.c, &face.c_uv
     );
 
-    if (matches != 9) {
-      matches = sscanf(
-        line, "f %d %d %d",
-        &vertex_indices[0],
-        &vertex_indices[1],
-        &vertex_indices[2]
-      );
-    }
-
     int color_index = rand_int(0, NUM_COLORS - 1);
-    uint32_t color = colors[color_index];
-
-    face_t face = {
-      .a = vertex_indices[0],
-      .b = vertex_indices[1],
-      .c = vertex_indices[2],
-      .color = color
-    };
+    face.color = colors[color_index];
 
     array_push(mesh.faces, face);
   }
@@ -160,15 +148,34 @@ mat4_t mat4_make_world_matrix() {
   return world_matrix;
 }
 
-void print_mesh_pos(void) {
-  if (DEBUG_MODE) {
-    char str[1024];
-    vec3_to_string(str, &mesh.position);
-    printf("mesh: %s\n", str);
+void mesh_print_pos(void) {
+  char str[1024];
+  vec3_to_string(str, &mesh.position);
+  printf("mesh: %s\n", str);
+}
+
+void mesh_print(void) {
+  for(int i = 0; i < array_length(mesh.faces); i++) {
+    face_t face = mesh.faces[i];
+
+    vec3_t va   = mesh.vertices[face.a - 1];
+    vec3_t vb   = mesh.vertices[face.b - 1];
+    vec3_t vc   = mesh.vertices[face.c - 1];
+
+    tex2_t ta   = mesh.uvs[face.a_uv - 1];
+    tex2_t tb   = mesh.uvs[face.b_uv - 1];
+    tex2_t tc   = mesh.uvs[face.c_uv - 1];
+
+    printf(
+      "a: %d (% 4.2f, % 4.2f, % 4.2f), b: %d (% 4.2f, % 4.2f, % 4.2f), c: %d (% 4.2f, % 4.2f, % 4.2f)\n"
+      "uva: {% 4.2f, % 4.2f},        uvb: {% 4.2f, % 4.2f},        uvc: {% 4.2f, % 4.2f}\n\n",
+      face.a, va.x, va.y, va.z,      face.b, vb.x, vb.y, vb.z,     face.c, vc.x, vc.y, vc.z,
+      ta.u, ta.v,                    tb.u, tb.v,                   tc.u, tc.v
+    );
   }
 }
 
-void free_mesh() {
+void free_mesh(void) {
   array_free(mesh.vertices);
   array_free(mesh.faces);
 }
