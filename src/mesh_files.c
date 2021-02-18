@@ -56,7 +56,7 @@ void load_next_mesh_file() {
   char path[1024] = "assets/";
   strcat(path, file.filename);
 
-  if (DEBUG_MODE) {
+  if (flags & DEBUG_MODE) {
     printf("loading mesh '%s'\n", file.filename);
   }
 

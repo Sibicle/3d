@@ -1,8 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <stdbool.h>
-
 typedef enum {
 
   DEBUG_MODE       = (1 << 1),
@@ -25,6 +23,18 @@ typedef enum {
 
 } FLAGS;
 
+#define FLAGS_TEXTURED         RENDER_FACES           \
+                             | RENDER_TEXTURES        \
+                             | CULL_BACK_FACES
+
+#define FLAGS_SHADED           RENDER_FACES           \
+                             | RENDER_LIGHTING        \
+                             | CULL_BACK_FACES
+
+#define FLAGS_WIREFRAME        RENDER_LINES           \
+                             | RENDER_LIGHTING        \
+                             | CULL_BACK_FACES
+
 #define FLAGS_DEBUG_MATH       DEBUG_MODE             \
                              | RENDER_LINES           \
                              | SHOW_VERTICES          \
@@ -43,17 +53,6 @@ typedef enum {
                              | RENDER_FACES           \
                              | RENDER_TEXTURES
 
-#define FLAGS_WIREFRAME        RENDER_LINES           \
-                             | RENDER_LIGHTING        \
-                             | CULL_BACK_FACES
-
-#define FLAGS_SHADED           RENDER_FACES           \
-                             | RENDER_LIGHTING        \
-                             | CULL_BACK_FACES
-
-#define FLAGS_TEXTURED         RENDER_FACES           \
-                             | RENDER_TEXTURES        \
-                             | CULL_BACK_FACES
 
 
 int flags;

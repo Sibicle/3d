@@ -10,10 +10,13 @@
 
 typedef struct {
   vec3_t * vertices;
+
   face_t * faces;
+  tex2_t * uvs;
+
   vec3_t * normals;
   vec3_t * centroids;
-  tex2_t * uvs;
+
   vec3_t rotation;
   vec3_t position;
   vec3_t scale;
@@ -21,6 +24,7 @@ typedef struct {
 
 extern mesh_t mesh;
 
+void mesh_init(void);
 void load_obj(char * filename);
 
 void calculate_centroids_normals();
@@ -31,11 +35,11 @@ void rotate_mesh(vec3_t rotate);
 void scale_mesh(vec3_t scale);
 void scale_mesh_uniform(float scale);
 
-mat4_t mat4_make_world_matrix();
+mat4_t mat4_make_world_matrix(void);
 
 void mesh_print(void);
 void mesh_print_pos(void);
 
-void free_mesh();
+void free_mesh(void);
 
 #endif

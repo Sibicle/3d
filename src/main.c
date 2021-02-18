@@ -12,7 +12,7 @@
 #include "input.h"
 #include "mesh_files.h"
 #include "mesh.h"
-// #include "origin.h"
+#include "origin.h"
 #include "camera.h"
 #include "light.h"
 
@@ -35,8 +35,6 @@ void setup(void) {
 
   load_mesh_files();
   load_next_mesh_file();
-
-  mesh_print();
 }
 
 void update(void) {
@@ -121,9 +119,11 @@ void update(void) {
     projected_triangle.normal.x += (window_width / 2.0);
     projected_triangle.normal.y += (window_height / 2.0);
 
-    light_dot = (light_dot + 1) / 2;
-    color_t lit_color = light_apply_intensity(PURPLE, light_dot);
-    projected_triangle.color = lit_color;
+    if (flags & RENDER_LIGHTING) {
+      light_dot = (light_dot + 1) / 2;
+      color_t lit_color = light_apply_intensity(PURPLE, light_dot);
+      projected_triangle.color = lit_color;
+    }
 
     for (int j = 0; j < 3; j++) {
       vec4_t projected_point = mat4_mul_vec4_project(&proj_matrix, &transformed_vertices[j]);
@@ -145,10 +145,10 @@ void update(void) {
 void render(void) {
   draw_dots(grid_spacing, LINE);
 
-  // if (render_origin) {
-  //   origin_render();
-  //   mesh_origin_render();
-  // }
+  if (flags & SHOW_ORIGIN) {
+    show_origin();
+    show_mesh_origin();
+  }
 
   for (int i = 0; i < array_length(projected_triangles); i++) {
     triangle_t triangle = projected_triangles[i];

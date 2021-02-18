@@ -34,6 +34,8 @@ int compare_z_depth(const void * a, const void * b);
 void sort_triangles_by_depth(triangle_t * a);
 
 void draw_filled_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t color);
+
 void fill_flat_bottom_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t color);
 void fill_flat_top_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color_t color);
+
 #endif

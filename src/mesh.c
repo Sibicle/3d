@@ -3,8 +3,9 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "config.h"
 #include "mesh.h"
+
+#include "config.h"
 #include "array.h"
 #include "util.h"
 #include "display.h"
@@ -19,6 +20,22 @@ mesh_t mesh = {
     .scale    = { 1.0, 1.0, 1.0 }
 };
 
+void mesh_init(void) {
+  mesh = (mesh_t) {
+    .vertices  = NULL,
+
+    .faces     = NULL,
+    .uvs       = NULL,
+
+    .normals   = NULL,
+    .centroids = NULL,
+
+    .rotation  = { 0.0, 0.0, 0.0 },
+    .position  = { 0.0, 0.0, 5.0 },
+    .scale     = { 1.0, 1.0, 1.0 }
+  };
+}
+
 void parse_obj_line(char * line) {
   if (strncmp(line, "v ", 2) == 0) {
     vec3_t vertex;
@@ -31,12 +48,32 @@ void parse_obj_line(char * line) {
   } else if (strncmp(line, "f ", 2) == 0) {
     face_t face = { 0 };
 
-    sscanf(
-      line, "f %d/%d %d/%d %d/%d",
-      &face.a, &face.a_uv,
-      &face.b, &face.b_uv,
-      &face.c, &face.c_uv
+    int normal[3];
+
+    int matches = sscanf(
+      line, "f %d/%d/%d %d/%d/%d %d/%d/%d",
+      &face.a, &face.a_uv, &normal[0],
+      &face.b, &face.b_uv, &normal[1],
+      &face.c, &face.c_uv, &normal[2]
     );
+
+    if (matches != 9) {
+      matches = sscanf(
+        line, "f %d/%d %d/%d %d/%d",
+        &face.a, &face.a_uv,
+        &face.b, &face.b_uv,
+        &face.c, &face.c_uv
+      );
+    }
+
+    if (matches != 6) {
+      sscanf(
+        line, "f %d %d %d",
+        &face.a,
+        &face.b,
+        &face.c
+      );
+    }
 
     int color_index = rand_int(0, NUM_COLORS - 1);
     face.color = colors[color_index];
@@ -46,12 +83,9 @@ void parse_obj_line(char * line) {
 }
 
 void load_obj(char * filename) {
-  free_mesh();
 
-  mesh.vertices = 0;
-  mesh.faces = 0;
-  mesh.normals = 0;
-  mesh.centroids = 0;
+  free_mesh();
+  mesh_init();
 
   FILE * fp;
   char * line = NULL;

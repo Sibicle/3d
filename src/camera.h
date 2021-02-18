@@ -12,6 +12,7 @@ float fov_factor;
 vec4_t camera_pos;
 vec2_t projected_camera_pos;
 
+vec2_t project(vec3_t point);
 void print_camera_pos(void);
 
 #endif

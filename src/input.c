@@ -15,6 +15,7 @@ void process_input(void) {
     case SDL_QUIT:
       is_running = false;
       break;
+
     case SDL_KEYDOWN:
       switch(event.key.keysym.sym) {
         case SDLK_ESCAPE:
@@ -28,52 +29,52 @@ void process_input(void) {
           break;
         case SDLK_a:
           camera_pos.x -= 0.1;
-          print_camera_pos();
+          if (flags & DEBUG_MODE) print_camera_pos();
           break;
         case SDLK_d:
           camera_pos.x += 0.1;
-          print_camera_pos();
+          if (flags & DEBUG_MODE) print_camera_pos();
           break;
         case SDLK_w:
           camera_pos.y += 0.1;
-          print_camera_pos();
+          if (flags & DEBUG_MODE) print_camera_pos();
           break;
         case SDLK_s:
           camera_pos.y -= 0.1;
-          print_camera_pos();
+          if (flags & DEBUG_MODE) print_camera_pos();
           break;
         case SDLK_e:
           camera_pos.z += 0.1;
-          print_camera_pos();
+          if (flags & DEBUG_MODE) print_camera_pos();
           break;
         case SDLK_q:
           camera_pos.z -= 0.1;
-          print_camera_pos();
+          if (flags & DEBUG_MODE) print_camera_pos();
           break;
 
         case SDLK_RIGHT:
           mesh.position.x += 0.1;
-          mesh_print_pos();
+          if (flags & DEBUG_MODE) mesh_print_pos();
           break;
         case SDLK_LEFT:
           mesh.position.x -= 0.1;
-          mesh_print_pos();
+          if (flags & DEBUG_MODE) mesh_print_pos();
           break;
         case SDLK_UP:
           mesh.position.y += 0.1;
-          mesh_print_pos();
+          if (flags & DEBUG_MODE) mesh_print_pos();
           break;
         case SDLK_DOWN:
           mesh.position.y -= 0.1;
-          mesh_print_pos();
+          if (flags & DEBUG_MODE) mesh_print_pos();
           break;
         case SDLK_PERIOD:
           mesh.position.z += 0.1;
-          mesh_print_pos();
+          if (flags & DEBUG_MODE) mesh_print_pos();
           break;
         case SDLK_COMMA:
           mesh.position.z -= 0.1;
-          mesh_print_pos();
+          if (flags & DEBUG_MODE) mesh_print_pos();
           break;
 
         case SDLK_SPACE:
