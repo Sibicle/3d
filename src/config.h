@@ -32,7 +32,6 @@ typedef enum {
                              | CULL_BACK_FACES
 
 #define FLAGS_WIREFRAME        RENDER_LINES           \
-                             | RENDER_LIGHTING        \
                              | CULL_BACK_FACES
 
 #define FLAGS_DEBUG_MATH       DEBUG_MODE             \

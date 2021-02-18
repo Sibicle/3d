@@ -13,6 +13,8 @@ extern int texture_height;
 
 extern uint32_t* mesh_texture;
 
-extern const uint8_t REDBRICK_TEXTURE[];
+extern const uint8_t RED_BRICK_TEXTURE[];
+
+void load_texture(void);
 
 #endif

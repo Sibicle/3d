@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 int rand_int(int lower, int upper);
-void int_swap(int* a, int* b);
+void swapi(int * a, int * b);
+void swapf(float * a, float * b);
 
 #endif

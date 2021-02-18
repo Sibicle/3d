@@ -17,6 +17,8 @@
 #include "light.h"
 
 void setup(void) {
+  load_texture();
+
   color_buffer = (color_t*) malloc(sizeof(color_t) * window_width * window_height);
 
   color_buffer_texture = SDL_CreateTexture(
@@ -121,7 +123,7 @@ void update(void) {
 
     if (flags & RENDER_LIGHTING) {
       light_dot = (light_dot + 1) / 2;
-      color_t lit_color = light_apply_intensity(PURPLE, light_dot);
+      color_t lit_color = light_apply_intensity(mesh_face.color, light_dot);
       projected_triangle.color = lit_color;
     }
 
@@ -153,7 +155,14 @@ void render(void) {
   for (int i = 0; i < array_length(projected_triangles); i++) {
     triangle_t triangle = projected_triangles[i];
 
-    if (flags & RENDER_FACES) {
+    if (flags & RENDER_TEXTURES) {
+      draw_textured_triangle(
+        triangle.points[0].x, triangle.points[0].y,
+        triangle.points[1].x, triangle.points[1].y,
+        triangle.points[2].x, triangle.points[2].y,
+        &triangle.color
+      );
+    } else if (flags & RENDER_FACES) {
       draw_filled_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,

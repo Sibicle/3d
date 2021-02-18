@@ -4,8 +4,14 @@ int rand_int(int lower, int upper) {
   return (rand() % (upper - lower + 1)) + lower;
 }
 
-void int_swap(int* a, int* b) {
-    int tmp = *a;
-    *a = *b;
-    *b = tmp;
+void swapi(int * a, int * b) {
+  int tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+void swapf(float * a, float * b) {
+  float tmp = *a;
+  *a = *b;
+  *b = tmp;
 }
