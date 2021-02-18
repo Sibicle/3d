@@ -178,4 +178,5 @@ void mesh_print(void) {
 void free_mesh(void) {
   array_free(mesh.vertices);
   array_free(mesh.faces);
+  array_free(mesh.uvs);
 }

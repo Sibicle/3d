@@ -19,11 +19,11 @@ SDL_Window* window     = NULL;
 SDL_Renderer* renderer = NULL;
 
 SDL_Texture* color_buffer_texture = NULL;
-color_t* color_buffer            = NULL;
+color_t* color_buffer             = NULL;
 
 int previous_frame_time = 0;
 
-mat4_t proj_matrix = {{{ 0 }}};
+mat4_t proj_matrix = { 0 };
 
 triangle_t * projected_triangles = 0;
 

@@ -86,37 +86,63 @@ void process_input(void) {
           scale_mesh_uniform(0.9);
           break;
 
-        case SDLK_f:
-          render_faces = !render_faces;
-          break;
         case SDLK_g:
-          render_lines = !render_lines;
+          flags ^= RENDER_LINES;
           break;
-        case SDLK_v:
-          render_vertices = !render_vertices;
-          break;
-        case SDLK_c:
-          render_centroids = !render_centroids;
-          break;
-        case SDLK_n:
-          render_normals = !render_normals;
-          break;
-        case SDLK_o:
-          render_origin = !render_origin;
+        case SDLK_f:
+          flags ^= RENDER_FACES;
           break;
         case SDLK_r:
-          render_camera_ray = !render_camera_ray;
+          flags ^= RENDER_COLORS;
           break;
+        case SDLK_l:
+          flags ^= RENDER_LIGHTING;
+          break;
+        case SDLK_t:
+          flags ^= RENDER_TEXTURES;
+          break;
+
+        case SDLK_v:
+          flags ^= SHOW_VERTICES;
+          break;
+        case SDLK_c:
+          flags ^= SHOW_CENTROIDS;
+          break;
+        case SDLK_n:
+          flags ^= SHOW_NORMALS;
+          break;
+
+        case SDLK_o:
+          flags ^= SHOW_ORIGIN;
+          break;
+        case SDLK_p:
+          flags ^= SHOW_CAMERA_RAY;
+          break;
+
+        case SDLK_y:
+          flags ^= CULL_BACK_FACES;
+          break;
+        case SDLK_h:
+          flags ^= CULL_FRONT_FACES;
+          break;
+
         case SDLK_1:
-          render_colors = !render_colors;
+          flags = FLAGS_TEXTURED;
           break;
-
-        case SDLK_b:
-          cull_faces = (cull_faces + 1) % 3;
+        case SDLK_2:
+          flags = FLAGS_SHADED;
           break;
-
-        case SDLK_SLASH:
-          move_camera_w_mouse = !move_camera_w_mouse;
+        case SDLK_3:
+          flags = FLAGS_WIREFRAME;
+          break;
+        case SDLK_4:
+          flags = FLAGS_DEBUG_MATH;
+          break;
+        case SDLK_5:
+          flags = FLAGS_DEBUG_SHADING;
+          break;
+        case SDLK_6:
+          flags = FLAGS_DEBUG_TEXTURES;
           break;
       }
       break;

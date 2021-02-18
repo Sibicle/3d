@@ -50,13 +50,8 @@ void update(void) {
 
   projected_triangles = 0;
 
-  if (true == move_camera_w_mouse) {
-    camera_pos.y = ( mouse_y - (window_height / 2)) / -200.0;
-    camera_pos.x = ( mouse_x - (window_width  / 2)) / 200.0;
-  } else {
-    mesh.rotation.x = ( mouse_y - (window_height / 2)) / -200.0;
-    mesh.rotation.y = ( mouse_x - (window_width  / 2)) / -200.0;
-  }
+  mesh.rotation.x = ( mouse_y - (window_height / 2)) / -200.0;
+  mesh.rotation.y = ( mouse_x - (window_width  / 2)) / -200.0;
 
   mat4_t world_matrix = mat4_make_world_matrix();
 
@@ -90,11 +85,11 @@ void update(void) {
     vec4_t camera_ray = vec4_sub(&camera_pos, a);
     float back_dot = vec4_dot(&normal, &camera_ray);
 
-    if (cull_faces == CULL_BACK_FACES && back_dot < 0) {
+    if (flags & CULL_BACK_FACES && back_dot < 0) {
       continue;
     }
 
-    if (cull_faces == CULL_FRONT_FACES && back_dot > 0) {
+    if (flags &  CULL_FRONT_FACES && back_dot > 0) {
       continue;
     }
 
@@ -158,7 +153,7 @@ void render(void) {
   for (int i = 0; i < array_length(projected_triangles); i++) {
     triangle_t triangle = projected_triangles[i];
 
-    if (render_faces) {
+    if (flags & RENDER_FACES) {
       draw_filled_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
@@ -167,7 +162,7 @@ void render(void) {
       );
     }
 
-    if (render_lines) {
+    if (flags & RENDER_LINES) {
       draw_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
@@ -176,7 +171,7 @@ void render(void) {
       );
     }
 
-    if (render_vertices) {
+    if (flags & SHOW_VERTICES) {
       for(int j = 0; j < 3; j++) {
         draw_rect(
           triangle.points[j].x - 1, triangle.points[j].y - 1,
@@ -186,7 +181,7 @@ void render(void) {
       }
     }
 
-    if (render_centroids) {
+    if (flags & SHOW_CENTROIDS) {
       draw_rect(
         triangle.centroid.x - 1, triangle.centroid.y - 1,
         3, 3,
@@ -194,7 +189,7 @@ void render(void) {
       );
     }
 
-    if (render_normals) {
+    if (flags & SHOW_NORMALS) {
       draw_line(
         triangle.centroid.x, triangle.centroid.y,
         triangle.normal.x, triangle.normal.y,

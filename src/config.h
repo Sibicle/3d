@@ -3,38 +3,59 @@
 
 #include <stdbool.h>
 
-#define DEBUG_MODE          false
+typedef enum {
 
-#define RENDER_CAMERA_RAY   false
+  DEBUG_MODE       = (1 << 1),
 
-#define RENDER_ORIGIN       false
+  RENDER_LINES     = (1 << 2),
+  RENDER_FACES     = (1 << 3),
+  RENDER_COLORS    = (1 << 4),
+  RENDER_LIGHTING  = (1 << 5),
+  RENDER_TEXTURES  = (1 << 6),
 
-#define RENDER_LINES        false
-#define RENDER_FACES        true
-#define RENDER_VERTICES     false
-#define RENDER_CENTROIDS    false
-#define RENDER_NORMALS      false
-#define RENDER_COLORS       false
+  CULL_FRONT_FACES = (1 << 7),
+  CULL_BACK_FACES  = (1 << 8),
 
-#define CULL_NO_FACES       0
-#define CULL_FRONT_FACES    1
-#define CULL_BACK_FACES     2
+  SHOW_VERTICES    = (1 << 9),
+  SHOW_NORMALS     = (1 << 10),
+  SHOW_CENTROIDS   = (1 << 11),
 
-#define MOVE_CAMERA_W_MOUSE false
+  SHOW_ORIGIN      = (1 << 12),
+  SHOW_CAMERA_RAY  = (1 << 13)
 
-extern bool render_camera_ray;
+} FLAGS;
 
-extern bool render_origin;
+#define FLAGS_DEBUG_MATH       DEBUG_MODE             \
+                             | RENDER_LINES           \
+                             | SHOW_VERTICES          \
+                             | SHOW_NORMALS           \
+                             | SHOW_CENTROIDS         \
+                             | SHOW_ORIGIN            \
+                             | SHOW_CAMERA_RAY
 
-extern bool render_lines;
-extern bool render_faces;
-extern bool render_vertices;
-extern bool render_centroids;
-extern bool render_normals;
-extern bool render_colors;
+#define FLAGS_DEBUG_SHADING    DEBUG_MODE             \
+                             | RENDER_FACES           \
+                             | RENDER_COLORS          \
+                             | RENDER_LIGHTING        \
+                             | SHOW_NORMALS
 
-extern int cull_faces;
+#define FLAGS_DEBUG_TEXTURES   DEBUG_MODE             \
+                             | RENDER_FACES           \
+                             | RENDER_TEXTURES
 
-extern bool move_camera_w_mouse;
+#define FLAGS_WIREFRAME        RENDER_LINES           \
+                             | RENDER_LIGHTING        \
+                             | CULL_BACK_FACES
+
+#define FLAGS_SHADED           RENDER_FACES           \
+                             | RENDER_LIGHTING        \
+                             | CULL_BACK_FACES
+
+#define FLAGS_TEXTURED         RENDER_FACES           \
+                             | RENDER_TEXTURES        \
+                             | CULL_BACK_FACES
+
+
+int flags;
 
 #endif
