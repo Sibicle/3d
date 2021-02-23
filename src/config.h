@@ -39,8 +39,7 @@ typedef enum {
                              | SHOW_VERTICES          \
                              | SHOW_NORMALS           \
                              | SHOW_CENTROIDS         \
-                             | SHOW_ORIGIN            \
-                             | SHOW_CAMERA_RAY
+                             | SHOW_ORIGIN
 
 #define FLAGS_DEBUG_SHADING    DEBUG_MODE             \
                              | RENDER_FACES           \

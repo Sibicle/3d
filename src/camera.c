@@ -6,7 +6,7 @@
 #include "display.h"
 
 float fov_factor = 640;
-vec4_t camera_pos = { .x = 0.0, .y = 0.0, .z = -5.0, .w = 1.0 };
+vec4_t camera_pos = { .x = 0.0, .y = 0.0, .z = 0.0, .w = 1.0 };
 vec2_t projected_camera_pos = { .x = 0, .y = 0 };
 
 vec2_t project(vec3_t point) {

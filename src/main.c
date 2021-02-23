@@ -148,8 +148,8 @@ void render(void) {
   draw_dots(grid_spacing, LINE);
 
   if (flags & SHOW_ORIGIN) {
-    show_origin();
-    show_mesh_origin();
+    // show_origin();
+    // show_mesh_origin();
   }
 
   for (int i = 0; i < array_length(projected_triangles); i++) {
@@ -160,6 +160,9 @@ void render(void) {
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
         triangle.points[2].x, triangle.points[2].y,
+        triangle.uvs[0].u, triangle.uvs[0].v,
+        triangle.uvs[1].u, triangle.uvs[1].v,
+        triangle.uvs[2].u, triangle.uvs[2].v,
         &triangle.color
       );
     } else if (flags & RENDER_FACES) {
