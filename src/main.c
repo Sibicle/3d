@@ -53,8 +53,7 @@ void update(void) {
   mesh.rotation.x = ( mouse_y - (window_height / 2)) / -200.0;
   mesh.rotation.y = ( mouse_x - (window_width  / 2)) / -200.0;
 
-  mat4_t world_matrix = mat4_make_world_matrix();
-
+  mat4_t world_matrix  = mat4_make_world_matrix();
   mat4_t screen_matrix = mat4_make_screen_matrix();
 
   for (int i = 0; i < array_length(mesh.faces); i++) {
@@ -123,7 +122,8 @@ void update(void) {
 
     if (flags & RENDER_LIGHTING) {
       light_dot = (light_dot + 1) / 2;
-      color_t lit_color = light_apply_intensity(mesh_face.color, light_dot);
+      color_t color = (flags & RENDER_COLORS) ? mesh_face.color : PURPLE;
+      color_t lit_color = light_apply_intensity(color, light_dot);
       projected_triangle.color = lit_color;
     }
 
@@ -155,7 +155,17 @@ void render(void) {
   for (int i = 0; i < array_length(projected_triangles); i++) {
     triangle_t triangle = projected_triangles[i];
 
-    if (flags & RENDER_FACES) {
+    if (flags & RENDER_TEXTURES) {
+      draw_textured_triangle(
+        triangle.points[0].x, triangle.points[0].y,
+        triangle.points[1].x, triangle.points[1].y,
+        triangle.points[2].x, triangle.points[2].y,
+        triangle.uvs[0].u, triangle.uvs[0].v,
+        triangle.uvs[1].u, triangle.uvs[1].v,
+        triangle.uvs[2].u, triangle.uvs[2].v,
+        mesh_texture
+      );
+    } else if (flags & RENDER_FACES) {
       draw_filled_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,

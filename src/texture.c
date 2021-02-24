@@ -19,6 +19,7 @@ void load_texture(void) {
     for(int j = 0; j < texture_height; j++) {
       int color_index = (i * texture_width) + j;
       color_t color = (color_t) RED_BRICK_TEXTURE[color_index];
+      mesh_texture[color_index] = color;
     }
   }
 }
