@@ -155,17 +155,7 @@ void render(void) {
   for (int i = 0; i < array_length(projected_triangles); i++) {
     triangle_t triangle = projected_triangles[i];
 
-    if (flags & RENDER_TEXTURES) {
-      draw_textured_triangle(
-        triangle.points[0].x, triangle.points[0].y,
-        triangle.points[1].x, triangle.points[1].y,
-        triangle.points[2].x, triangle.points[2].y,
-        triangle.uvs[0].u, triangle.uvs[0].v,
-        triangle.uvs[1].u, triangle.uvs[1].v,
-        triangle.uvs[2].u, triangle.uvs[2].v,
-        &triangle.color
-      );
-    } else if (flags & RENDER_FACES) {
+    if (flags & RENDER_FACES) {
       draw_filled_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
