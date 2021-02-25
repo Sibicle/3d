@@ -29,7 +29,6 @@ const vec4_t VEC4_ONE = {
   .z = 1.0,
   .w = 1.0
 };
-
 float vec2_length(vec2_t v) {
   return sqrt(v.x * v.x + v.y * v.y);
 }
@@ -71,8 +70,13 @@ vec2_t vec2_scale(vec2_t v, float s) {
   return scale;
 }
 
-float vec2_dot(vec2_t a, vec2_t b) {
-  return (a.x * b.x) + (a.y * b.y);
+float vec2_cross(vec2_t * a, vec2_t * b) {
+  return (a->x * b->y) - (a->y * b->x);
+}
+
+
+float vec2_dot(vec2_t * a, vec2_t * b) {
+  return (a->x * b->x) + (a->y * b->y);
 }
 
 void vec2_normalize(vec2_t * a) {

@@ -1,3 +1,3 @@
 #include "config.h"
 
-int flags = FLAGS_SHADED;
+int flags = FLAGS_TEXTURED;

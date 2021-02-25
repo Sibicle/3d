@@ -11,9 +11,9 @@ typedef struct {
 extern int texture_width;
 extern int texture_height;
 
-extern uint32_t* mesh_texture;
-
 extern const uint8_t RED_BRICK_TEXTURE[];
+
+extern uint32_t * mesh_texture;
 
 void load_texture(void);
 

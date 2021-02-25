@@ -20,12 +20,15 @@ typedef struct {
   vec3_t rotation;
   vec3_t position;
   vec3_t scale;
+
+  bool has_uvs;
 } mesh_t;
 
 extern mesh_t mesh;
 
 void mesh_init(void);
 void load_obj(char * filename);
+bool mesh_has_uvs();
 
 void calculate_centroids_normals();
 

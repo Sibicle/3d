@@ -27,7 +27,8 @@ const vec4_t VEC4_ONE;
 
 void vec2_normalize(vec2_t * a);
 
-float vec2_dot(vec2_t a, vec2_t b);
+float vec2_cross(vec2_t * a, vec2_t * b);
+float vec2_dot(vec2_t * a, vec2_t * b);
 float vec2_length(vec2_t a);
 
 void vec2_add_inplace(vec2_t * a, vec2_t * b);

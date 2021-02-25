@@ -27,12 +27,6 @@ mat4_t proj_matrix = { 0 };
 
 triangle_t * projected_triangles = 0;
 
-void draw_pixel(int x, int y, color_t color) {
-  if (x >= 0 && x < window_width && y>= 0 && y < window_height) {
-    color_buffer[(window_width * (window_height - y - 1)) + x] = color;
-  }
-}
-
 bool initialize_window(void) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     fprintf(stderr, "error initializing SDl");
@@ -92,6 +86,22 @@ void render_color_buffer(void) {
   );
 
   SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
+}
+
+void draw_pixel(int x, int y, color_t color) {
+  if (x >= 0 && x < window_width && y>= 0 && y < window_height) {
+    color_buffer[(window_width * (window_height - y - 1)) + x] = color;
+  }
+}
+
+void draw_texel(int x, int y, tex2_t uv, color_t * texture) {
+  if (uv.u >= 0.0 && uv.u <= 1.0 && uv.v >= 0.0 && uv.v <= 1.0) {
+    int tex_x     = (int) (uv.u * texture_width);
+    int tex_y     = (int) (uv.v * texture_height);
+    int tex_index = (texture_width * tex_y) + tex_x;
+
+    draw_pixel(x, y, texture[tex_index]);
+  }
 }
 
 mat4_t mat4_make_screen_matrix() {

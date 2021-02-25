@@ -12,12 +12,19 @@
 #include "texture.h"
 
 mesh_t mesh = {
-    .vertices = NULL,
-    .faces    = NULL,
-    .uvs      = NULL,
-    .rotation = { 0.0, 0.0, 0.0 },
-    .position = { 0.0, 0.0, 5.0 },
-    .scale    = { 1.0, 1.0, 1.0 }
+  .vertices  = NULL,
+
+  .faces     = NULL,
+  .uvs       = NULL,
+
+  .normals   = NULL,
+  .centroids = NULL,
+
+  .rotation  = { 0.0, 0.0, 0.0 },
+  .position  = { 0.0, 0.0, 5.0 },
+  .scale     = { 1.0, 1.0, 1.0 },
+
+  .has_uvs   = false
 };
 
 void mesh_init(void) {
@@ -32,7 +39,9 @@ void mesh_init(void) {
 
     .rotation  = { 0.0, 0.0, 0.0 },
     .position  = { 0.0, 0.0, 5.0 },
-    .scale     = { 1.0, 1.0, 1.0 }
+    .scale     = { 1.0, 1.0, 1.0 },
+
+    .has_uvs   = false
   };
 }
 
@@ -57,23 +66,28 @@ void parse_obj_line(char * line) {
       &face.c, &face.c_uv, &normal[2]
     );
 
-    if (matches != 9) {
+    if (matches == 9) {
+      mesh.has_uvs = true;
+    } else {
       matches = sscanf(
         line, "f %d/%d %d/%d %d/%d",
         &face.a, &face.a_uv,
         &face.b, &face.b_uv,
         &face.c, &face.c_uv
       );
+
+      if (matches == 6) {
+        mesh.has_uvs = true;
+      } else {
+        sscanf(
+          line, "f %d %d %d",
+          &face.a,
+          &face.b,
+          &face.c
+        );
+      }
     }
 
-    if (matches != 6) {
-      sscanf(
-        line, "f %d %d %d",
-        &face.a,
-        &face.b,
-        &face.c
-      );
-    }
 
     int color_index = rand_int(0, NUM_COLORS - 1);
     face.color = colors[color_index];
@@ -104,6 +118,10 @@ void load_obj(char * filename) {
 
   if (line)
     free(line);
+}
+
+bool mesh_has_uvs() {
+  return mesh.has_uvs;
 }
 
 

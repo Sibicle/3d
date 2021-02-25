@@ -54,6 +54,7 @@ void destroy_window(void);
 void render_color_buffer(void);
 void clear_color_buffer(color_t color);
 void draw_pixel(int x, int y, color_t color);
+void draw_texel(int x, int y, tex2_t uv, color_t * texture);
 
 mat4_t mat4_make_screen_matrix();
 

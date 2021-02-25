@@ -17,8 +17,6 @@
 #include "light.h"
 
 void setup(void) {
-  load_texture();
-
   color_buffer = (color_t*) malloc(sizeof(color_t) * window_width * window_height);
 
   color_buffer_texture = SDL_CreateTexture(
@@ -34,6 +32,8 @@ void setup(void) {
   float znear  = 0.1;
   float zfar   = 100;
   proj_matrix = mat4_make_persp(fov, aspect, znear, zfar);
+
+  load_texture();
 
   load_mesh_files();
   load_next_mesh_file();
@@ -106,6 +106,12 @@ void update(void) {
 
     triangle_t projected_triangle;
 
+    if (array_length(mesh.uvs) > 0) {
+      projected_triangle.uvs[0] = mesh.uvs[mesh_face.a_uv - 1];
+      projected_triangle.uvs[1] = mesh.uvs[mesh_face.b_uv - 1];
+      projected_triangle.uvs[2] = mesh.uvs[mesh_face.c_uv - 1];
+    }
+
     projected_triangle.centroid      = mat4_mul_vec4_project(&proj_matrix, &centroid);
     projected_triangle.normal        = mat4_mul_vec4_project(&proj_matrix, &vec4_normal_normal);
     projected_triangle.average_depth = centroid.z;
@@ -155,7 +161,7 @@ void render(void) {
   for (int i = 0; i < array_length(projected_triangles); i++) {
     triangle_t triangle = projected_triangles[i];
 
-    if (flags & RENDER_TEXTURES) {
+    if ((flags & RENDER_TEXTURES) && mesh_has_uvs()) {
       draw_textured_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,
@@ -165,7 +171,7 @@ void render(void) {
         triangle.uvs[2].u, triangle.uvs[2].v,
         mesh_texture
       );
-    } else if (flags & RENDER_FACES) {
+    } else if ((flags & RENDER_FACES) || ((flags & RENDER_TEXTURES) && !mesh_has_uvs())) {
       draw_filled_triangle(
         triangle.points[0].x, triangle.points[0].y,
         triangle.points[1].x, triangle.points[1].y,

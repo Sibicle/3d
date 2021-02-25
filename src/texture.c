@@ -5,23 +5,15 @@
 #include "texture.h"
 
 #include "triangle.h"
+#include "display.h"
 
-int texture_width = 64;
+int texture_width  = 64;
 int texture_height = 64;
 
 color_t * mesh_texture = NULL;
 
 void load_texture(void) {
-  int bytes = sizeof(color_t) * texture_width * texture_height;
-  mesh_texture = malloc(bytes);
-
-  for(int i = 0; i < texture_width; i++) {
-    for(int j = 0; j < texture_height; j++) {
-      int color_index = (i * texture_width) + j;
-      color_t color = (color_t) RED_BRICK_TEXTURE[color_index];
-      mesh_texture[color_index] = color;
-    }
-  }
+  mesh_texture = (uint32_t*) RED_BRICK_TEXTURE;
 }
 
 const uint8_t RED_BRICK_TEXTURE[] = {
