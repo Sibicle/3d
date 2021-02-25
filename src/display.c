@@ -111,7 +111,7 @@ void draw_texel(
     .v = (v2 / a->w) * alpha + (v1 / b->w) * beta + (v0 / c->w) * gamma
   };
 
-  // TODO: pass 1/w as paramater to avoid all these divides
+  // TODO: pass 1/w as paramater to avoid all this division
   float interpolated_w_i = (1 / a->w) * alpha + (1 / b->w) * beta + (1 / c->w) * gamma;
 
   uv.u = uv.u / interpolated_w_i;
@@ -120,7 +120,7 @@ void draw_texel(
   if (uv.u >= 0.0 && uv.u <= 1.0 && uv.v >= 0.0 && uv.v <= 1.0) {
     int tex_x     = (int) (uv.u * texture_width);
     int tex_y     = (int) (uv.v * texture_height);
-    int tex_index = (texture_width * tex_y) + tex_x;
+    int tex_index = (texture_width * texture_height) - (texture_width * (tex_y + 1)) + tex_x;
 
     draw_pixel(x, y, texture[tex_index]);
   }
