@@ -164,11 +164,14 @@ void render(void) {
     if ((flags & RENDER_TEXTURES) && mesh_has_uvs()) {
       draw_textured_triangle(
         triangle.points[0].x, triangle.points[0].y,
+        triangle.points[0].z, triangle.points[0].w,
+        triangle.uvs[0].u,    triangle.uvs[0].v,
         triangle.points[1].x, triangle.points[1].y,
+        triangle.points[1].z, triangle.points[1].w,
+        triangle.uvs[1].u,    triangle.uvs[1].v,
         triangle.points[2].x, triangle.points[2].y,
-        triangle.uvs[0].u, triangle.uvs[0].v,
-        triangle.uvs[1].u, triangle.uvs[1].v,
-        triangle.uvs[2].u, triangle.uvs[2].v,
+        triangle.points[2].z, triangle.points[2].w,
+        triangle.uvs[2].u,    triangle.uvs[2].v,
         mesh_texture
       );
     } else if ((flags & RENDER_FACES) || ((flags & RENDER_TEXTURES) && !mesh_has_uvs())) {

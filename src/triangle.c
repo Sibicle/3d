@@ -18,36 +18,24 @@ void sort_triangles_by_depth(triangle_t * a) {
   qsort(a, array_length(a), sizeof a[0], compare_z_depth);
 }
 
-vec3_t barycentric_weights(vec2_t * a, vec2_t * b, vec2_t * c, vec2_t * p) {
-  vec2_t ab = vec2_sub(*b, *a);
-  vec2_t bc = vec2_sub(*c, *b);
-  vec2_t ac = vec2_sub(*c, *a);
-  vec2_t ap = vec2_sub(*p, *a);
-  vec2_t bp = vec2_sub(*p, *b);
+vec3_t barycentric_weights(vec4_t * a, vec4_t * b, vec4_t * c, vec4_t * p) {
+  vec4_t ab = vec4_sub(b, a);
+  vec4_t bc = vec4_sub(c, b);
+  vec4_t ac = vec4_sub(c, a);
+  vec4_t ap = vec4_sub(p, a);
+  vec4_t bp = vec4_sub(p, b);
 
-  float area_abc = fabs(vec2_cross(&ac, &ab));
-  float alpha    = fabs(vec2_cross(&bc, &bp) / area_abc);
-  float beta     = fabs(vec2_cross(&ac, &ap) / area_abc);
-float gamma    = 1 - alpha - beta;
+  vec4_t area_v  = vec4_cross(&ac, &ab);
+  vec4_t alpha_v = vec4_cross(&bc, &bp);
+  vec4_t beta_v  = vec4_cross(&ac, &ap);
+
+  float area  = fabs(area_v.z);
+  float alpha = fabs(alpha_v.z / area);
+  float beta  = fabs(beta_v.z / area);
+  float gamma = 1 - alpha - beta;
 
   vec3_t weights = { alpha, beta, gamma };
   return weights;
-}
-
-tex2_t barycentric_uv_coords(
-  float u_a, float v_a, float u_b, float v_b, float u_c, float v_c,
-  vec3_t * weights
-) {
-  float alpha = weights->x;
-  float beta  = weights->y;
-  float gamma = weights->z;
-
-  tex2_t uv = {
-    .u = u_a * alpha + u_b * beta + u_c * gamma,
-    .v = v_a * alpha + v_b * beta + v_c * gamma
-  };
-
-  return uv;
 }
 
 void draw_filled_triangle(
@@ -115,32 +103,39 @@ void fill_flat_bottom_triangle(
 }
 
 void draw_textured_triangle(
-  int x0,   int y0,   int x1,   int y1,   int x2,   int y2,
-  float u0, float v0, float u1, float v1, float u2, float v2,
+  int x0, int y0, float z0, float w0, float u0, float v0,
+  int x1, int y1, float z1, float w1, float u1, float v1,
+  int x2, int y2, float z2, float w2, float u2, float v2,
   color_t * texture
 ) {
   if (y0 > y1) {
-    swapi(&y0, &y1);
     swapi(&x0, &x1);
+    swapi(&y0, &y1);
+    swapf(&z0, &z1);
+    swapf(&w0, &w1);
     swapf(&v0, &v1);
     swapf(&u0, &u1);
   }
   if (y1 > y2) {
-    swapi(&y1, &y2);
     swapi(&x1, &x2);
+    swapi(&y1, &y2);
+    swapf(&z1, &z2);
+    swapf(&w1, &w2);
     swapf(&v1, &v2);
     swapf(&u1, &u2);
   }
   if (y0 > y1) {
-    swapi(&y0, &y1);
     swapi(&x0, &x1);
+    swapi(&y0, &y1);
+    swapf(&z0, &z1);
+    swapf(&w0, &w1);
     swapf(&v0, &v1);
     swapf(&u0, &u1);
   }
 
-  vec2_t a = { x2, y2 };
-  vec2_t b = { x1, y1 };
-  vec2_t c = { x0, y0 };
+  vec4_t a = { x2, y2, z2, w2 };
+  vec4_t b = { x1, y1, z1, w1 };
+  vec4_t c = { x0, y0, z0, w0 };
 
   if (y2 - y0 != 0) {
     float inv_slope_1 = 0;
@@ -163,11 +158,7 @@ void draw_textured_triangle(
       }
 
       for (int x = x_start; x < x_end; x++) {
-        vec2_t p       = { x, y };
-        vec3_t weights = barycentric_weights(&a, &b, &c, &p);
-        tex2_t uv      = barycentric_uv_coords(u2, v2, u1, v1, u0, v0, &weights);
-
-        draw_texel(x, y, uv, texture);
+        draw_texel(x, y, texture, &a, &b, &c, u2, v2, u1, v1, u0, v0);
       }
     }
 
@@ -184,11 +175,7 @@ void draw_textured_triangle(
       }
 
       for (int x = x_start; x < x_end; x++) {
-        vec2_t p       = { x, y };
-        vec3_t weights = barycentric_weights(&a, &b, &c, &p);
-        tex2_t uv      = barycentric_uv_coords(u2, v2, u1, v1, u0, v0, &weights);
-
-        draw_texel(x, y, uv, texture);
+        draw_texel(x, y, texture, &a, &b, &c, u2, v2, u1, v1, u0, v0);
       }
     }
   }

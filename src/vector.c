@@ -325,6 +325,16 @@ vec4_t vec4_from_vec3(vec3_t * v) {
   return w;
 }
 
+
+vec2_t vec2_from_vec4(vec4_t * v) {
+  vec2_t w = {
+    .x = v->x,
+    .y = v->y
+  };
+
+  return w;
+}
+
 //
 // vector utility functions
 //

@@ -74,6 +74,7 @@ vec4_t vec4_centroid(vec4_t * a, vec4_t * b, vec4_t * c);
 vec4_t vec4_normal(vec4_t * a, vec4_t * b, vec4_t * c);
 
 vec4_t vec4_from_vec3(vec3_t * v);
+vec2_t vec2_from_vec4(vec4_t * v);
 
 void vec3_to_string(char * str, vec3_t * v);
 

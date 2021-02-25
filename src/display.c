@@ -94,7 +94,29 @@ void draw_pixel(int x, int y, color_t color) {
   }
 }
 
-void draw_texel(int x, int y, tex2_t uv, color_t * texture) {
+void draw_texel(
+  int x, int y, color_t * texture,
+  vec4_t * a, vec4_t * b, vec4_t * c,
+  float u2, float v2, float u1, float v1, float u0, float v0
+) {
+  vec4_t p = { x, y, 0, 1 };
+  vec3_t weights = barycentric_weights(a, b, c, &p);
+
+  float alpha = weights.x;
+  float beta  = weights.y;
+  float gamma = weights.z;
+
+  tex2_t uv = {
+    .u = (u2 / a->w) * alpha + (u1 / b->w) * beta + (u0 / c->w) * gamma,
+    .v = (v2 / a->w) * alpha + (v1 / b->w) * beta + (v0 / c->w) * gamma
+  };
+
+  // TODO: pass 1/w as paramater to avoid all these divides
+  float interpolated_w_i = (1 / a->w) * alpha + (1 / b->w) * beta + (1 / c->w) * gamma;
+
+  uv.u = uv.u / interpolated_w_i;
+  uv.v = uv.v / interpolated_w_i;
+
   if (uv.u >= 0.0 && uv.u <= 1.0 && uv.v >= 0.0 && uv.v <= 1.0) {
     int tex_x     = (int) (uv.u * texture_width);
     int tex_y     = (int) (uv.v * texture_height);
