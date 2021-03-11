@@ -6,8 +6,8 @@
 #include "util.h"
 #include "display.h"
 
-int mouse_x;
-int mouse_y;
+extern int mouse_x;
+extern int mouse_y;
 
 void process_input(void);
 

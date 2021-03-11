@@ -7,6 +7,9 @@
 #include "mesh_files.h"
 #include "origin.h"
 
+int mouse_x = 0;
+int mouse_y = 0;
+
 void process_input(void) {
   SDL_Event event;
   SDL_PollEvent(&event);

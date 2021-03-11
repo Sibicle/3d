@@ -19,11 +19,11 @@ typedef struct {
   float w;
 } vec4_t;
 
-const vec3_t VEC3_ZERO;
-const vec3_t VEC3_ONE;
+extern const vec3_t VEC3_ZERO;
+extern const vec3_t VEC3_ONE;
 
-const vec4_t VEC4_ZERO;
-const vec4_t VEC4_ONE;
+extern const vec4_t VEC4_ZERO;
+extern const vec4_t VEC4_ONE;
 
 void vec2_normalize(vec2_t * a);
 
